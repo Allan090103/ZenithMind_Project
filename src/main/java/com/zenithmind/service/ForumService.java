@@ -1,6 +1,7 @@
 package com.zenithmind.service;
 
 import com.zenithmind.model.Post;
+import com.zenithmind.model.Comment;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,13 +17,20 @@ public class ForumService {
     public ForumService() {
         long now = System.currentTimeMillis();
         // Sample data matching the React component
-        save(new Post(null, "Dealing with exam anxiety - tips that helped me",
+        Post p1 = new Post(null, "Dealing with exam anxiety - tips that helped me",
                 "I wanted to share some techniques that really helped me manage my exam anxiety this semester. Deep breathing before exams, regular study breaks, and talking to friends made a huge difference.",
-                "anxiety", "Anonymous", "anon1", true, 24, 8, now - (2 * 60 * 60 * 1000), false));
+                "anxiety", "Anonymous", "anon1", true, 24, 0, now - (2 * 60 * 60 * 1000), false);
+        p1.addComment(
+                new Comment(1L, "Fatima", "Thanks for sharing! I really needed this.", now - (1 * 60 * 60 * 1000)));
+        p1.addComment(new Comment(2L, "Zainab", "Breathing exercises are a game changer.", now - (30 * 60 * 1000)));
+        save(p1);
 
-        save(new Post(null, "How do you balance work, study, and self-care?",
+        Post p2 = new Post(null, "How do you balance work, study, and self-care?",
                 "I'm struggling to find time for everything. Between part-time work, classes, and trying to maintain my mental health, I feel overwhelmed. Any advice?",
-                "stress", "Student_247", "user2", false, 15, 12, now - (5 * 60 * 60 * 1000), false));
+                "stress", "Student_247", "user2", false, 15, 0, now - (5 * 60 * 60 * 1000), false);
+        p2.addComment(
+                new Comment(3L, "Ahmed", "It's tough. I try to make a strict schedule.", now - (4 * 60 * 60 * 1000)));
+        save(p2);
 
         save(new Post(null, "6 months of therapy - worth it!",
                 "Just wanted to share that after 6 months of counseling through the campus center, I'm in such a better place. Don't hesitate to reach out for professional help!",
@@ -59,11 +67,24 @@ public class ForumService {
         posts.add(post);
     }
 
-    public void likePost(Long id) {
+    public void likePost(Long id, String userId) {
         posts.stream()
                 .filter(p -> p.getId().equals(id))
                 .findFirst()
-                .ifPresent(p -> p.setLikes(p.getLikes() + 1));
+                .ifPresent(p -> {
+                    if (p.isLikedBy(userId)) {
+                        p.removeLike(userId);
+                    } else {
+                        p.addLike(userId);
+                    }
+                });
+    }
+
+    public void addComment(Long postId, Comment comment) {
+        posts.stream()
+                .filter(p -> p.getId().equals(postId))
+                .findFirst()
+                .ifPresent(p -> p.addComment(comment));
     }
 
     public void toggleFlag(Long id) {

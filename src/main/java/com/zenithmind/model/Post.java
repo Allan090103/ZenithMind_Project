@@ -15,6 +15,9 @@ public class Post {
     private int replies;
     private long timestamp; // Storing as long for easier sorting/comparison
 
+    private java.util.List<Comment> comments = new java.util.ArrayList<>();
+    private java.util.Set<String> likedByUsers = new java.util.HashSet<>();
+
     public Post() {
         this.timestamp = System.currentTimeMillis();
         this.timeAgo = "Just now";
@@ -116,7 +119,7 @@ public class Post {
     }
 
     public int getReplies() {
-        return replies;
+        return comments.size();
     }
 
     public void setReplies(int replies) {
@@ -146,5 +149,34 @@ public class Post {
 
     public void setTimeAgo(String timeAgo) {
         this.timeAgo = timeAgo;
+    }
+
+    public java.util.List<Comment> getComments() {
+        return comments;
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+        this.replies = this.comments.size();
+    }
+
+    public java.util.Set<String> getLikedByUsers() {
+        return likedByUsers;
+    }
+
+    public boolean isLikedBy(String userId) {
+        return likedByUsers.contains(userId);
+    }
+
+    public void addLike(String userId) {
+        if (likedByUsers.add(userId)) {
+            this.likes++;
+        }
+    }
+
+    public void removeLike(String userId) {
+        if (likedByUsers.remove(userId)) {
+            this.likes--;
+        }
     }
 }

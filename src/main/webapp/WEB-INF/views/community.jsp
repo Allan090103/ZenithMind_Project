@@ -13,7 +13,8 @@
                     --text: #4c5d70;
                     --bg: #f5f7fb;
                     --card: #ffffff;
-                    --border: #e2e8f0;
+                    --border: #e5ebf4;
+                    /* Synced with Dashboard */
                     --purple: #8b5cf6;
                     --blue: #3b82f6;
                     --green: #22c55e;
@@ -137,27 +138,29 @@
                 }
 
                 /* Header */
-                .header {
+                .top-bar {
                     display: flex;
                     justify-content: space-between;
-                    align-items: flex-start;
-                    margin-bottom: 32px;
+                    align-items: center;
+                    margin-bottom: 28px;
+                    gap: 18px;
                 }
 
-                .header h1 {
-                    margin: 0 0 8px 0;
+                .top-bar h1 {
+                    margin: 0 0 4px 0;
                     font-size: 28px;
                     color: var(--dark);
                 }
 
-                .header p {
+                .top-bar p {
                     margin: 0;
                     color: #64748b;
+                    font-size: 14px;
                 }
 
                 .btn {
-                    padding: 10px 20px;
-                    border-radius: 8px;
+                    padding: 12px 20px;
+                    border-radius: 12px;
                     font-weight: 600;
                     cursor: pointer;
                     border: none;
@@ -170,12 +173,14 @@
                 }
 
                 .btn-primary {
-                    background: var(--dark);
+                    background: linear-gradient(120deg, #00b3c7, #01a0f9);
+                    /* Consistent gradient */
                     color: #fff;
                 }
 
                 .btn-primary:hover {
                     opacity: 0.9;
+                    box-shadow: 0 4px 12px rgba(1, 160, 249, 0.3);
                 }
 
                 .btn-outline {
@@ -204,16 +209,17 @@
                 .stats-grid {
                     display: grid;
                     grid-template-columns: repeat(4, 1fr);
-                    gap: 16px;
+                    gap: 18px;
                     margin-bottom: 24px;
                 }
 
                 .card {
                     background: var(--card);
-                    border-radius: 12px;
-                    border: 1px solid var(--border);
+                    border-radius: 20px;
+                    /* Removed border */
                     padding: 24px;
-                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+                    box-shadow: 0 8px 30px rgba(15, 37, 64, 0.08);
+                    /* Elevated shadow */
                 }
 
                 .stat-label {
@@ -254,10 +260,12 @@
 
                 .search-box input {
                     width: 100%;
-                    padding: 10px 16px 10px 40px;
-                    border-radius: 8px;
+                    padding: 12px 16px 12px 44px;
+                    border-radius: 24px;
+                    /* Pill shape */
                     border: 1px solid var(--border);
                     font-size: 14px;
+                    background: #ffffff;
                 }
 
                 .search-icon {
@@ -289,7 +297,7 @@
                 .tab.active {
                     background: #fff;
                     color: var(--dark);
-                    shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+                    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
                 }
 
                 .tab:hover:not(.active) {
@@ -307,11 +315,12 @@
                     display: flex;
                     gap: 16px;
                     align-items: flex-start;
-                    transition: box-shadow 0.2s;
+                    transition: transform 0.2s, box-shadow 0.2s;
                 }
 
                 .post-card:hover {
-                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                    transform: translateY(-2px);
+                    box-shadow: 0 12px 40px rgba(15, 37, 64, 0.12);
                 }
 
                 .avatar {
@@ -502,6 +511,15 @@
                         closeModal();
                     }
                 }
+
+                function toggleComments(postId) {
+                    var section = document.getElementById('comments-' + postId);
+                    if (section.style.display === 'none') {
+                        section.style.display = 'block';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                }
             </script>
         </head>
 
@@ -510,40 +528,60 @@
                 <!-- Sidebar (Duplicated from Dashboard for consistency) -->
                 <aside class="sidebar">
                     <div class="brand">
-                        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Simplified ZenithMind Logo placeholder or copy exact SVG -->
+                        <svg viewBox="0 0 64 64" role="img" aria-label="ZenithMind">
+                            <defs>
+                                <linearGradient id="sidebarGrad" x1="8" y1="6" x2="56" y2="58"
+                                    gradientUnits="userSpaceOnUse">
+                                    <stop offset="0" stop-color="#7de3ff" />
+                                    <stop offset="1" stop-color="#0095b0" />
+                                </linearGradient>
+                            </defs>
                             <path
                                 d="M32 7c-9 0-17 7-17 15-8 2-12 7-12 14 0 7 4 12 12 14 2 6 7 10 17 10 10 0 15-4 17-10 8-2 12-7 12-14s-4-12-12-14c0-8-8-15-17-15z"
-                                fill="#00b3c7" fill-opacity="0.2" stroke="#00b3c7" stroke-width="2" />
+                                fill="url(#sidebarGrad)" stroke="#0f7596" stroke-width="2" stroke-linejoin="round" />
+                            <path d="M16 42l10-13 9 11 9-12 12 16" fill="none" stroke="#e3fbff" stroke-width="4"
+                                stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-                        <div class="brand-title">ZenithMind<br><small style="font-size:12px;color:#64748b;">Mental
+                        <div class="brand-title">ZenithMind<br><small
+                                style="font-size:12px;font-weight:500;color:#5a6a7f;">Mental
                                 Health Hub</small></div>
                     </div>
 
                     <div class="user-card">
-                        <div class="name">${user.name}</div>
-                        <div class="role">${user.role}</div>
+                        <div class="avatar">
+                            ${avatarInitial}
+                        </div>
+                        <div class="name">
+                            ${name}
+                        </div>
+                        <div class="email">
+                            ${email}
+                        </div>
+                        <div class="dept">
+                            ${department}
+                        </div>
+                        <span class="badge">
+                            ${roleTitle}
+                        </span>
                     </div>
 
                     <nav>
-                        <a href="${pageContext.request.contextPath}/dashboard"><span class="icon">D</span>Dashboard</a>
-                        <a href="${pageContext.request.contextPath}/modules"><span class="icon">LM</span>Learning
-                            Modules</a>
-                        <a href="${pageContext.request.contextPath}/self-assessment"><span class="icon">SA</span>Self
-                            Assessment</a>
-                        <a href="${pageContext.request.contextPath}/mood"><span class="icon">MT</span>Mood Tracker</a>
-                        <a href="${pageContext.request.contextPath}/support"><span class="icon">VS</span>Virtual
-                            Support</a>
-                        <a class="active" href="${pageContext.request.contextPath}/forum"><span
-                                class="icon">CF</span>Community Forum</a>
+                        <a href="${dashboardLink}"><span class="icon">D</span>Dashboard</a>
+                        <a href="${modulesLink}"><span class="icon">LM</span>Learning Modules</a>
+                        <a href="${selfAssessmentLink}"><span class="icon">SA</span>Self Assessment</a>
+                        <a href="${moodLink}"><span class="icon">MT</span>Mood Tracker</a>
+                        <a href="${supportLink}"><span class="icon">VS</span>Virtual Support</a>
+                        <a class="active" href="${communityLink}"><span class="icon">CF</span>Community Forum</a>
+                        <a href="#"><span class="icon">PS</span>Profile Settings</a>
                     </nav>
                 </aside>
 
                 <main class="main-content">
-                    <div class="header">
+                    <div class="top-bar">
                         <div>
+                            <p style="margin:0;font-size:14px;color:#7c8b9e;">Connect with peers, share experiences, and
+                                support each other</p>
                             <h1>Community Forum</h1>
-                            <p>Connect with peers, share experiences, and support each other</p>
                         </div>
                         <button class="btn btn-primary" onclick="openModal()">
                             <span style="font-size:18px;">+</span> New Post
@@ -628,12 +666,14 @@
 
                                     <div class="post-actions">
                                         <a href="${pageContext.request.contextPath}/forum/like?id=${post.id}"
-                                            class="btn btn-ghost btn-sm">
-                                            👍 <span style="margin-left:4px;">${post.likes}</span>
+                                            class="btn btn-ghost btn-sm ${post.isLikedBy(user.name) ? 'liked' : ''}"
+                                            style="${post.isLikedBy(user.name) ? 'color:#ef4444;background:#fef2f2;' : ''}">
+                                            ${post.isLikedBy(user.name) ? '❤️' : '🤍'} <span
+                                                style="margin-left:4px;">${post.likes}</span>
                                         </a>
-                                        <div class="btn btn-ghost btn-sm">
+                                        <button class="btn btn-ghost btn-sm" onclick="toggleComments(${post.id})">
                                             💬 <span style="margin-left:4px;">${post.replies} replies</span>
-                                        </div>
+                                        </button>
 
                                         <c:if test="${user.role == 'admin'}">
                                             <a href="${pageContext.request.contextPath}/forum/flag?id=${post.id}"
@@ -642,6 +682,36 @@
                                                 ${post.flagged ? '⚠️ Unflag' : '🚩 Flag'}
                                             </a>
                                         </c:if>
+                                    </div>
+
+                                    <!-- Comment Section -->
+                                    <div id="comments-${post.id}"
+                                        style="display:none; margin-top:16px; padding-top:16px; border-top:1px solid var(--border);">
+                                        <div style="margin-bottom:12px;">
+                                            <c:forEach var="comment" items="${post.comments}">
+                                                <div
+                                                    style="background:#f8fafc; padding:10px; border-radius:8px; margin-bottom:8px;">
+                                                    <div
+                                                        style="display:flex; justify-content:space-between; font-size:12px; color:#64748b; margin-bottom:4px;">
+                                                        <strong>${comment.author}</strong>
+                                                        <span>${comment.timeAgo}</span>
+                                                    </div>
+                                                    <div style="font-size:14px; color:#334155;">${comment.content}</div>
+                                                </div>
+                                            </c:forEach>
+                                            <c:if test="${empty post.comments}">
+                                                <p style="font-size:13px; color:#94a3b8; font-style:italic;">No comments
+                                                    yet.</p>
+                                            </c:if>
+                                        </div>
+
+                                        <form action="${pageContext.request.contextPath}/forum/comment" method="post"
+                                            style="display:flex; gap:8px;">
+                                            <input type="hidden" name="postId" value="${post.id}">
+                                            <input type="text" name="content" placeholder="Write a reply..."
+                                                class="form-input" style="flex:1; padding:8px;" required>
+                                            <button type="submit" class="btn btn-primary btn-sm">Reply</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
