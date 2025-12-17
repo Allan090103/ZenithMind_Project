@@ -1,12 +1,15 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
         <!DOCTYPE html>
         <html lang="en">
 
         <head>
             <meta charset="UTF-8">
             <title>ZenithMind | Self Assessment</title>
+            <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+                rel="stylesheet">
             <style>
+                /* Base Dashboard Styles */
                 :root {
                     --teal: #00b3c7;
                     --dark: #0a2540;
@@ -14,6 +17,22 @@
                     --bg: #f5f7fb;
                     --card: #ffffff;
                     --border: #e5ebf4;
+
+                    /* Assessment Specific Colors (Tailwind-like) */
+                    --teal-50: #f0fdfa;
+                    --teal-100: #ccfbf1;
+                    --teal-500: #14b8a6;
+                    --teal-600: #0d9488;
+                    --cyan-50: #ecfeff;
+                    --gray-50: #f9fafb;
+                    --gray-100: #f3f4f6;
+                    --gray-200: #e5e7eb;
+                    --gray-600: #4b5563;
+                    --gray-900: #111827;
+                    --green-500: #22c55e;
+                    --yellow-500: #eab308;
+                    --orange-500: #f97316;
+                    --red-500: #ef4444;
                 }
 
                 * {
@@ -23,6 +42,7 @@
                 body {
                     margin: 0;
                     font-family: "Segoe UI", Tahoma, sans-serif;
+                    /* Matching Dashboard Font */
                     background: var(--bg);
                     color: var(--text);
                 }
@@ -146,268 +166,273 @@
                     font-weight: 700;
                 }
 
-                .content {
+                .dashboard {
                     flex: 1;
                     padding: 32px 48px;
                 }
 
-                .top-bar {
+                .sidebar-footer {
+                    margin-top: 12px;
                     display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    margin-bottom: 24px;
-                    gap: 18px;
+                    justify-content: center;
                 }
 
-                .top-bar h1 {
-                    margin: 4px 0 0;
-                    font-size: 28px;
-                    color: var(--dark);
-                }
-
-                .search {
-                    display: flex;
-                    align-items: center;
-                    gap: 16px;
-                }
-
-                .search input {
-                    width: 320px;
-                    padding: 12px 16px;
-                    border-radius: 24px;
-                    border: 1px solid var(--border);
-                    font-size: 14px;
-                    background: #fff;
-                }
-
-                .score-pill {
-                    padding: 10px 16px;
-                    border-radius: 18px;
-                    background: rgba(0, 179, 199, 0.15);
-                    color: var(--dark);
-                    font-weight: 600;
-                    font-size: 14px;
-                }
-
-                .assessment-cards {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-                    gap: 16px;
-                    margin: 24px 0;
-                }
-
-                .assessment-card {
-                    background: var(--card);
-                    border-radius: 18px;
-                    padding: 18px;
-                    border: 2px solid transparent;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
+                .logout-btn {
+                    display: inline-block;
+                    padding: 10px 14px;
+                    border-radius: 10px;
+                    background: #f3f4f6;
+                    color: var(--text);
                     text-decoration: none;
+                    font-weight: 700;
+                    border: 1px solid rgba(0, 0, 0, 0.04);
+                }
+
+                .logout-btn:hover {
+                    background: #ffecec;
+                    color: #b91c1c;
+                }
+
+                /* Assessment Specific Styles (Merged) */
+                .page-header {
+                    margin-bottom: 32px;
+                }
+
+                .page-title {
+                    font-size: 28px;
+                    font-weight: 700;
+                    margin: 0 0 8px;
                     color: var(--dark);
                 }
 
-                .assessment-card.active {
-                    border-color: #04c0cb;
-                    box-shadow: 0 12px 50px rgba(4, 160, 180, 0.18);
+                .page-desc {
+                    color: var(--gray-600);
                 }
 
-                .assessment-card span {
-                    font-size: 34px;
+                .grid-types {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 16px;
+                    margin-bottom: 24px;
                 }
 
-                .assessment-card h3 {
-                    margin: 0;
-                    font-size: 17px;
+                .type-card {
+                    background: #fff;
+                    border: 2px solid var(--gray-200);
+                    border-radius: 12px;
+                    padding: 24px;
+                    text-align: center;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                    text-decoration: none;
+                    color: inherit;
+                    display: block;
                 }
 
-                .assessment-card p {
-                    margin: 0;
-                    font-size: 13px;
-                    color: #5c6f82;
+                .type-card:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
                 }
 
-                .assessment-layout {
+                .type-card.active {
+                    border-color: var(--teal-500);
+                    background-color: var(--teal-50);
+                }
+
+                .type-icon {
+                    font-size: 36px;
+                    margin-bottom: 12px;
+                    display: block;
+                }
+
+                .type-title {
+                    font-weight: 600;
+                    display: block;
+                    margin-bottom: 4px;
+                }
+
+                .type-desc {
+                    font-size: 12px;
+                    color: var(--gray-600);
+                    display: block;
+                }
+
+                .content-grid {
                     display: grid;
                     grid-template-columns: 2fr 1fr;
-                    gap: 20px;
+                    gap: 24px;
                 }
 
-                .question-card {
-                    background: var(--card);
-                    border-radius: 18px;
-                    padding: 24px;
-                    box-shadow: 0 12px 40px rgba(12, 36, 64, 0.08);
-                }
-
-                .question-card h2 {
-                    margin: 0 0 6px;
-                }
-
-                .question-card p {
-                    margin: 0 0 16px;
-                    color: #6c7b91;
-                }
-
-                .question-block {
-                    margin-bottom: 18px;
-                }
-
-                .question-block h4 {
-                    margin: 0 0 10px;
-                    color: var(--dark);
-                }
-
-                .option-row {
-                    display: grid;
-                    grid-template-columns: repeat(2, minmax(150px, 1fr));
-                    gap: 12px;
-                }
-
-                .radio-option {
-                    border: 1px solid var(--border);
-                    border-radius: 14px;
-                    padding: 10px 14px;
-                    text-align: center;
-                    font-weight: 600;
-                    cursor: pointer;
-                    background: #f8fafc;
-                }
-
-                .radio-option input {
-                    display: none;
-                }
-
-                .radio-option.selected {
-                    border-color: var(--dark);
-                    background: #e3e9f4;
-                }
-
-                .cta-row {
-                    margin-top: 22px;
-                    display: flex;
-                    justify-content: flex-end;
-                    gap: 12px;
-                }
-
-                .cta-row button {
-                    border: none;
+                .card {
+                    background: #fff;
                     border-radius: 12px;
-                    padding: 12px 20px;
-                    font-weight: 600;
-                    cursor: pointer;
+                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                    overflow: hidden;
+                    margin-bottom: 24px;
                 }
 
-                .btn-secondary {
-                    background: #f1f5f9;
-                    color: #4a5568;
+                .card-header {
+                    padding: 24px;
+                    border-bottom: 1px solid var(--gray-100);
+                }
+
+                .card-title {
+                    font-size: 18px;
+                    font-weight: 600;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    margin: 0;
+                }
+
+                .card-desc {
+                    color: var(--gray-600);
+                    font-size: 14px;
+                    margin-top: 4px;
+                }
+
+                .card-content {
+                    padding: 24px;
+                }
+
+                .question-item {
+                    margin-bottom: 24px;
+                    padding-bottom: 24px;
+                    border-bottom: 1px solid var(--gray-100);
+                }
+
+                .question-item:last-child {
+                    border-bottom: none;
+                    margin-bottom: 0;
+                    padding-bottom: 0;
+                }
+
+                .question-text {
+                    font-weight: 500;
+                    margin-bottom: 12px;
+                }
+
+                .radio-grid {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 12px;
+                }
+
+                .radio-label {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    padding: 12px;
+                    border: 1px solid var(--gray-200);
+                    border-radius: 8px;
+                    cursor: pointer;
+                    font-size: 14px;
+                    transition: background 0.1s;
+                }
+
+                .radio-label:hover {
+                    background: var(--gray-50);
+                }
+
+                input[type="radio"] {
+                    margin: 0;
+                }
+
+                .btn {
+                    display: inline-flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 12px 24px;
+                    border-radius: 8px;
+                    font-weight: 500;
+                    cursor: pointer;
+                    border: none;
+                    font-size: 14px;
+                    transition: all 0.2s;
+                    text-decoration: none;
                 }
 
                 .btn-primary {
-                    background: var(--dark);
+                    background: var(--teal-500);
                     color: #fff;
+                    width: 100%;
                 }
 
-                .message {
-                    margin-top: 12px;
-                    padding: 12px 16px;
-                    border-radius: 12px;
-                    font-weight: 600;
-                    background: #f1f5f9;
-                    color: #1e293b;
-                }
-
-                .message.info {
-                    background: rgba(59, 130, 246, 0.15);
-                    color: #1d4ed8;
-                }
-
-                .message.warning {
-                    background: rgba(251, 191, 36, 0.25);
-                    color: #92400e;
-                }
-
-                .message.success {
-                    background: rgba(16, 185, 129, 0.2);
-                    color: #047857;
-                }
-
-                .message.hidden {
-                    display: none;
-                }
-
-                .info-card {
-                    background: var(--card);
-                    border-radius: 18px;
-                    padding: 22px;
-                    box-shadow: 0 12px 40px rgba(12, 36, 64, 0.08);
-                    display: flex;
-                    flex-direction: column;
-                    gap: 16px;
-                }
-
-                .info-card h3 {
-                    margin: 0;
-                }
-
-                .info-card p {
-                    margin: 0;
-                    font-size: 14px;
-                    color: #6c7b91;
-                }
-
-                .info-card button {
-                    border: none;
-                    border-radius: 12px;
-                    padding: 12px;
-                    font-weight: 600;
-                    cursor: pointer;
-                }
-
-                .btn-crisis {
-                    background: #ef4444;
-                    color: #fff;
+                .btn-primary:hover {
+                    background: var(--teal-600);
                 }
 
                 .btn-outline {
                     background: transparent;
-                    border: 1px solid var(--border);
-                    color: var(--dark);
+                    border: 1px solid var(--gray-200);
+                    color: var(--gray-900);
+                    width: 100%;
                 }
 
-                @media (max-width: 1080px) {
-                    .app-shell {
-                        flex-direction: column;
-                    }
+                .btn-outline:hover {
+                    background: var(--gray-50);
+                }
 
-                    .sidebar {
-                        width: 100%;
-                    }
+                .btn.disabled {
+                    opacity: 0.5;
+                    pointer-events: none;
+                }
 
-                    .assessment-layout {
-                        grid-template-columns: 1fr;
-                    }
+                .result-score {
+                    font-size: 60px;
+                    font-weight: 700;
+                    color: var(--teal-600);
+                    margin-bottom: 8px;
+                }
 
-                    .option-row {
-                        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-                    }
+                .result-badge {
+                    display: inline-block;
+                    padding: 6px 16px;
+                    border-radius: 20px;
+                    color: #fff;
+                    font-size: 14px;
+                    font-weight: 600;
+                    margin-bottom: 24px;
+                }
 
-                    .search {
-                        flex-direction: column;
-                        align-items: flex-start;
-                        width: 100%;
-                    }
+                .bg-green-500 {
+                    background-color: var(--green-500);
+                }
 
-                    .search input {
-                        width: 100%;
-                    }
+                .bg-yellow-500 {
+                    background-color: var(--yellow-500);
+                }
+
+                .bg-orange-500 {
+                    background-color: var(--orange-500);
+                }
+
+                .bg-red-500 {
+                    background-color: var(--red-500);
+                }
+
+                .recommendation {
+                    display: flex;
+                    gap: 12px;
+                    align-items: flex-start;
+                    margin-bottom: 12px;
+                    font-size: 14px;
+                }
+
+                .dot {
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50%;
+                    margin-top: 6px;
+                    flex-shrink: 0;
                 }
             </style>
         </head>
 
         <body>
             <div class="app-shell">
+
+                <!-- Unified Sidebar -->
                 <aside class="sidebar">
                     <div class="brand">
                         <svg viewBox="0 0 64 64" role="img" aria-label="ZenithMind">
@@ -441,230 +466,186 @@
                     <nav>
                         <a href="${dashboardLink}"><span class="icon">D</span>Dashboard</a>
                         <a href="${modulesLink}"><span class="icon">LM</span>Learning Modules</a>
-                        <a class="active" href="${selfAssessmentLink}"><span class="icon">SA</span>Self Assessment</a>
+                        <a href="${selfAssessmentLink}" class="active"><span class="icon">SA</span>Self Assessment</a>
                         <a href="${moodLink}"><span class="icon">MT</span>Mood Tracker</a>
                         <a href="${supportLink}"><span class="icon">VS</span>Virtual Support</a>
                         <a href="${communityLink}"><span class="icon">CF</span>Community Forum</a>
                         <a href="#"><span class="icon">PS</span>Profile Settings</a>
                     </nav>
+
+                    <div style="margin-top:auto; padding-top:20px; border-top:1px solid var(--border);">
+                        <a href="${pageContext.request.contextPath}/logout" class="btn btn-ghost"
+                            style="width:100%; justify-content:flex-start; color:#ef4444; background:none;">
+                            <span class="icon" style="background:rgba(239, 68, 68, 0.1); color:#ef4444;">🚪</span>
+                            Logout
+                        </a>
+                    </div>
                 </aside>
 
-                <main class="content">
-                    <div class="top-bar">
-                        <div>
-                            <p style="margin:0;font-size:14px;color:#7c8b9e;">Take confidential screenings to understand
-                                your mental health</p>
-                            <h1>Self Assessment 🧾</h1>
-                        </div>
-                        <div class="search">
-                            <input type="text" placeholder="Search for modules, resources, or support...">
-                            <div class="score-pill">Wellness Score: <strong>${wellnessScore} / 100</strong></div>
-                        </div>
+                <main class="dashboard">
+                    <div class="page-header">
+                        <h1 class="page-title">Self Assessment 📋</h1>
+                        <p class="page-desc">Take confidential screenings to understand your mental health</p>
                     </div>
 
-                    <div class="assessment-cards">
-                        <c:forEach var="cat" items="${categories}">
-                            <a class="assessment-card ${cat[0] == selectedCategory ? 'active' : ''}"
-                                href="self-assessment?category=${cat[0]}&role=${param.role}">
-                                <span>${cat[3]}</span>
-                                <h3>${cat[1]}</h3>
-                                <p>${cat[2]}</p>
+                    <!-- Type Selection -->
+                    <div class="grid-types">
+                        <c:forEach var="entry" items="${assessmentTypes}">
+                            <a href="?role=${param.role}&type=${entry.key}"
+                                class="type-card ${selectedType == entry.key ? 'active' : ''}">
+                                <span class="type-icon">${entry.value.icon}</span>
+                                <span class="type-title">${entry.value.title}</span>
+                                <span class="type-desc">${entry.value.description}</span>
                             </a>
                         </c:forEach>
                     </div>
 
-                    <div class="assessment-layout">
-                        <section class="question-card">
-                            <form id="assessmentForm"
-                                data-draft-key="assessment_draft_${param.role}_${selectedCategory}"
-                                data-question-count="${questionPrompts.length}">
-                                <h2>Stress Assessment</h2>
-                                <p>Over the last 2 weeks, how often have you experienced the following:</p>
-
-                                <c:forEach var="qLabel" items="${questionPrompts}" varStatus="status">
-                                    <div class="question-block">
-                                        <h4>${status.count}. ${qLabel}</h4>
-                                        <div class="option-row">
-                                            <c:forEach var="option" items="${answerOptions}">
-                                                <c:set var="inputId"
-                                                    value="q${status.index}-${option.replace(' ', '').toLowerCase()}" />
-                                                <label class="radio-option" for="${inputId}">
-                                                    <input type="radio" id="${inputId}" name="question-${status.index}"
-                                                        value="${option}">
-                                                    ${option}
-                                                </label>
-                                            </c:forEach>
+                    <div class="content-grid">
+                        <div class="main-col">
+                            <c:choose>
+                                <c:when test="${submitted}">
+                                    <!-- Result View -->
+                                    <div class="card"
+                                        style="background: linear-gradient(135deg, #f0fdfa 0%, #ecfeff 100%); border:none;">
+                                        <div class="card-header" style="border-bottom-color:rgba(0,0,0,0.05);">
+                                            <h2 class="card-title" style="color:#0f766e;">✅ Assessment Complete</h2>
+                                        </div>
+                                        <div class="card-content" style="text-align:center;">
+                                            <div class="result-score">${score}%</div>
+                                            <span class="result-badge ${severityColor}">${severityLevel} Level</span>
+                                            <div
+                                                style="height:8px; background:#e2e8f0; border-radius:4px; overflow:hidden; margin-bottom:24px;">
+                                                <div style="width:${score}%; height:100%; background:currentColor;"
+                                                    class="${severityUnsafeColor}-500"></div>
+                                            </div>
+                                            <div
+                                                style="background:#fff; padding:20px; border-radius:12px; text-align:left; color:#334155; line-height:1.6;">
+                                                ${severityDesc}
+                                            </div>
                                         </div>
                                     </div>
-                                </c:forEach>
 
-                                <div class="cta-row">
-                                    <button type="button" class="btn-secondary" id="saveDraftBtn">Save draft</button>
-                                    <button type="button" class="btn-primary" id="submitAssessmentBtn">Submit
-                                        assessment</button>
+                                    <!-- Recommendations -->
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h2 class="card-title">💡 Recommendations</h2>
+                                        </div>
+                                        <div class="card-content">
+                                            <div class="recommendation">
+                                                <div class="dot" style="background:var(--teal-500);"></div>
+                                                <div>Practice daily mindfulness and meditation exercises</div>
+                                            </div>
+                                            <div class="recommendation">
+                                                <div class="dot" style="background:var(--teal-500);"></div>
+                                                <div>Maintain regular sleep schedule (7-9 hours per night)</div>
+                                            </div>
+                                            <div class="recommendation">
+                                                <div class="dot" style="background:var(--teal-500);"></div>
+                                                <div>Stay physically active with regular exercise</div>
+                                            </div>
+
+                                            <c:if test="${score >= 50}">
+                                                <div class="recommendation">
+                                                    <div class="dot" style="background:var(--orange-500);"></div>
+                                                    <div>Consider reaching out to a counselor or therapist</div>
+                                                </div>
+                                            </c:if>
+
+                                            <c:if test="${score >= 75}">
+                                                <div class="recommendation">
+                                                    <div class="dot" style="background:var(--red-500);"></div>
+                                                    <div style="font-weight:600; color:var(--red-500);">Contact mental
+                                                        health services immediately</div>
+                                                </div>
+                                            </c:if>
+                                        </div>
+                                    </div>
+
+                                    <div style="display:flex; gap:16px;">
+                                        <a href="?role=${param.role}&type=${selectedType}" class="btn btn-outline">Take
+                                            Another Assessment</a>
+                                        <a href="${supportLink}" class="btn btn-primary">Get Support</a>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <!-- Form View -->
+                                    <form action="${pageContext.request.contextPath}/self-assessment/submit"
+                                        method="post">
+                                        <input type="hidden" name="role" value="${param.role}" />
+                                        <input type="hidden" name="type" value="${selectedType}" />
+
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h2 class="card-title">📝 ${currentAssessment.title}</h2>
+                                                <div class="card-desc">Over the last 2 weeks, how often have you
+                                                    experienced the following:</div>
+                                            </div>
+                                            <div class="card-content">
+                                                <c:forEach var="question" items="${currentAssessment.questions}"
+                                                    varStatus="loop">
+                                                    <div class="question-item">
+                                                        <div class="question-text">${loop.index + 1}. ${question}?</div>
+                                                        <div class="radio-grid">
+                                                            <label class="radio-label">
+                                                                <input type="radio" name="q${loop.index}" value="0"
+                                                                    required>
+                                                                Not at all
+                                                            </label>
+                                                            <label class="radio-label">
+                                                                <input type="radio" name="q${loop.index}" value="1">
+                                                                Several days
+                                                            </label>
+                                                            <label class="radio-label">
+                                                                <input type="radio" name="q${loop.index}" value="2">
+                                                                Often
+                                                            </label>
+                                                            <label class="radio-label">
+                                                                <input type="radio" name="q${loop.index}" value="3">
+                                                                Nearly daily
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </c:forEach>
+
+                                                <button type="submit" class="btn btn-primary"
+                                                    style="margin-top:12px;">Submit Assessment</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+
+                        <!-- Side Info -->
+                        <div class="side-col">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h2 class="card-title">About These Assessments</h2>
                                 </div>
-                                <div id="assessmentMessage" class="message hidden" aria-live="polite"></div>
-                                <div id="assessmentSummary" class="message hidden"></div>
-                            </form>
-                        </section>
-
-                        <aside class="info-card">
-                            <div>
-                                <h3>About These Assessments</h3>
-                                <p><strong>Confidentiality</strong><br>
-                                    Your responses are private and secure. Results are for personal insight only.</p>
-                                <p><strong>Not a Diagnosis</strong><br>
-                                    These screenings are educational tools. Consult a professional for medical guidance.
-                                </p>
-                                <p><strong>When to Seek Help</strong><br>
-                                    Experiencing distress or symptoms that interfere with life? Reach out to support
-                                    services.</p>
+                                <div class="card-content" style="font-size:14px; color:var(--gray-600);">
+                                    <div style="margin-bottom:16px;">
+                                        <strong style="color:var(--gray-900);">Confidentiality</strong><br>
+                                        Your responses are private and secure using HIPAA-compliant standards.
+                                    </div>
+                                    <div style="margin-bottom:16px;">
+                                        <strong style="color:var(--gray-900);">Not a Diagnosis</strong><br>
+                                        These screenings are educational tools, not medical diagnoses.
+                                    </div>
+                                    <div
+                                        style="border-top:1px solid var(--gray-200); padding-top:16px; margin-top:16px;">
+                                        <strong style="color:var(--gray-900);">Need Help Now?</strong>
+                                        <button class="btn"
+                                            style="width:100%; background:#fee2e2; color:#ef4444; margin-top:8px;">Call
+                                            988 - Crisis Line</button>
+                                        <a href="${supportLink}" class="btn btn-outline" style="margin-top:8px;">Contact
+                                            Counseling</a>
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <p style="font-weight:600;margin-bottom:8px;">Need help now?</p>
-                                <button class="btn-crisis">Call 988 - Crisis Line</button>
-                                <button class="btn-outline">Contact Counseling Services</button>
-                            </div>
-                        </aside>
+                        </div>
                     </div>
                 </main>
             </div>
-
-            <script>
-                (function () {
-                    const form = document.getElementById('assessmentForm');
-                    if (!form) {
-                        return;
-                    }
-
-                    const messageBox = document.getElementById('assessmentMessage');
-                    const summaryBox = document.getElementById('assessmentSummary');
-                    const draftKey = form.dataset.draftKey;
-                    const totalQuestions = parseInt(form.dataset.questionCount, 10);
-
-                    form.addEventListener('change', event => {
-                        const target = event.target;
-                        if (target.matches('input[type="radio"]')) {
-                            highlightGroup(target.name);
-                            hideSummary();
-                            persistDraft(true);
-                        }
-                    });
-
-                    function highlightGroup(name) {
-                        const radios = form.querySelectorAll(`input[name="\${name}"]`);
-                        radios.forEach(radio => {
-                            if (radio.parentElement) {
-                                radio.parentElement.classList.toggle('selected', radio.checked);
-                            }
-                        });
-                    }
-
-                    function collectResponses() {
-                        const result = {};
-                        form.querySelectorAll('input[type="radio"]:checked').forEach(input => {
-                            result[input.name] = input.value;
-                        });
-                        return result;
-                    }
-
-                    function showMessage(text, type) {
-                        if (!messageBox) {
-                            return;
-                        }
-                        messageBox.textContent = text;
-                        messageBox.className = 'message ' + type;
-                    }
-
-                    function showSummary(responses, statusText) {
-                        if (!summaryBox) {
-                            return;
-                        }
-                        const listItems = Object.keys(responses).map(name => {
-                            const questionIndex = parseInt(name.split('-')[1], 10);
-                            const label = form.querySelectorAll('.question-block h4')[questionIndex]?.textContent || `Question \${questionIndex + 1}`;
-                            return `<li><strong>\${label}</strong>: \${responses[name]}</li>`;
-                        }).join('');
-                        summaryBox.innerHTML = `<p><strong>Result:</strong> \${statusText}</p><ul>\${listItems}</ul>`;
-                        summaryBox.classList.remove('hidden');
-                    }
-
-                    function hideSummary() {
-                        if (summaryBox) {
-                            summaryBox.classList.add('hidden');
-                        }
-                    }
-
-                    function persistDraft(silent) {
-                        const responses = collectResponses();
-                        localStorage.setItem(draftKey, JSON.stringify(responses));
-                        if (!silent) {
-                            showMessage('Draft saved. You can revisit anytime.', 'info');
-                        }
-                        hideSummary();
-                    }
-
-                    function saveDraft() {
-                        persistDraft(false);
-                    }
-
-                    function restoreDraft() {
-                        const saved = localStorage.getItem(draftKey);
-                        if (!saved) {
-                            return;
-                        }
-                        try {
-                            const parsed = JSON.parse(saved);
-                            Object.keys(parsed).forEach(name => {
-                                const value = parsed[name];
-                                const input = form.querySelector(`input[name="\${name}"][value="\${value}"]`);
-                                if (input) {
-                                    input.checked = true;
-                                    highlightGroup(name);
-                                }
-                            });
-                            showMessage('Draft loaded from your previous session.', 'info');
-                        } catch (err) {
-                            console.warn('Unable to parse draft data', err);
-                        }
-                    }
-
-                    function submitAssessment() {
-                        const responses = collectResponses();
-                        if (Object.keys(responses).length !== totalQuestions) {
-                            showMessage('Please answer each question before submitting.', 'warning');
-                            hideSummary();
-                            return;
-                        }
-
-                        const scoreMap = {
-                            'Not at all': 0,
-                            'Several days': 1,
-                            'Often': 2,
-                            'Nearly daily': 3
-                        };
-                        let sum = 0;
-                        Object.values(responses).forEach(value => {
-                            sum += scoreMap[value] || 0;
-                        });
-                        const avg = sum / totalQuestions;
-                        let status = 'Low stress';
-                        if (avg >= 2.5) {
-                            status = 'High stress';
-                        } else if (avg >= 1.5) {
-                            status = 'Moderate stress';
-                        }
-                        localStorage.removeItem(draftKey);
-                        showMessage('Assessment submitted. Result: ' + status + '.', 'success');
-                        showSummary(responses, status);
-                    }
-
-                    document.getElementById('saveDraftBtn').addEventListener('click', saveDraft);
-                    document.getElementById('submitAssessmentBtn').addEventListener('click', submitAssessment);
-
-                    restoreDraft();
-                })();
-            </script>
         </body>
 
         </html>

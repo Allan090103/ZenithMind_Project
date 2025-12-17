@@ -10,4 +10,10 @@ public class AuthController {
     public String home() {
         return "login";
     }
+
+    @GetMapping("/logout")
+    public String logout(javax.servlet.http.HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
 }

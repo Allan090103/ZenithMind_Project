@@ -442,6 +442,12 @@
                 <a href="${communityLink}"><span class="icon">CF</span>Community Forum</a>
                 <a href="#"><span class="icon">PS</span>Profile Settings</a>
             </nav>
+            <div style="margin-top:auto; padding-top:20px; border-top:1px solid var(--border);">
+                <a href="${pageContext.request.contextPath}/logout" class="btn btn-ghost"
+                    style="width:100%; justify-content:flex-start; color:#ef4444;">
+                    <span class="icon" style="background:rgba(239, 68, 68, 0.1); color:#ef4444;">🚪</span> Logout
+                </a>
+            </div>
         </aside>
 
         <main class="dashboard">

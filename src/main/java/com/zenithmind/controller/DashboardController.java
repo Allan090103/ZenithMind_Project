@@ -25,9 +25,10 @@ public class DashboardController {
         model.addAllAttributes(userData);
 
         // Ensure session user is set for header/forum compatibility
+        // Ensure session user matches the requested role
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User((String) userData.get("name"), role, 150); // Default points
+        if (user == null || !user.getRole().equalsIgnoreCase(role)) {
+            user = new User((String) userData.get("name"), role, 150);
             session.setAttribute("user", user);
         }
 
@@ -40,6 +41,10 @@ public class DashboardController {
         model.addAttribute("communityLink", "forum");
         model.addAttribute("moodLink", "mood?" + roleSuffix);
         model.addAttribute("supportLink", "support?" + roleSuffix);
+
+        if ("professional".equalsIgnoreCase(role)) {
+            return "professional-dashboard";
+        }
 
         return "dashboard";
     }
