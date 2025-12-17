@@ -1,41 +1,39 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>ZenithMind Dashboard</title>
-    <style>
-        body {
-            font-family: Arial;
-            background: #f4fdfc;
-            padding: 30px;
-        }
-        .menu a {
-            display: block;
-            background: white;
-            padding: 15px;
-            margin: 10px 0;
-            text-decoration: none;
-            border-radius: 6px;
-            color: #333;
-            border-left: 6px solid #2bbbad;
-        }
-        .menu a:hover {
-            background: #e0f7f5;
-        }
-    </style>
-</head>
-<body>
+    <!DOCTYPE html>
+    <html>
 
-<h1>Welcome to ZenithMind</h1>
-<p>Your mental wellbeing dashboard</p>
+    <head>
+        <title>ZenithMind Dashboard</title>
+        <%@ include file="common/header.jsp" %>
 
-<div class="menu">
-    <a href="modules">📚 Learning Modules</a>
-    <a href="mood">💭 Mood Tracker</a>
-    <a href="support">💬 Virtual Support</a>
-</div>
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <h1>Welcome back, Alex</h1>
+                <p>Your daily wellness check-in awaits.</p>
+            </div>
 
-</body>
-</html>
+            <div class="card-grid">
+                <a href="modules" class="card">
+                    <div class="card-icon"><span class="material-symbols-outlined">menu_book</span></div>
+                    <h3>Learning Modules</h3>
+                    <p>Explore resources to build resilience and understanding.</p>
+                    <span class="btn btn-primary" style="margin-top: auto; text-align: center;">Start Learning</span>
+                </a>
 
+                <a href="mood" class="card">
+                    <div class="card-icon"><span class="material-symbols-outlined">mood</span></div>
+                    <h3>Mood Tracker</h3>
+                    <p>Log your emotions and track your journey over time.</p>
+                    <span class="btn btn-primary" style="margin-top: auto; text-align: center;">Check In</span>
+                </a>
 
+                <a href="support" class="card">
+                    <div class="card-icon"><span class="material-symbols-outlined">forum</span></div>
+                    <h3>Virtual Support</h3>
+                    <p>Connect with professionals or your support circle.</p>
+                    <span class="btn btn-primary" style="margin-top: auto; text-align: center;">Get Help</span>
+                </a>
+            </div>
+
+            <%@ include file="common/footer.jsp" %>
+
+    </html>
