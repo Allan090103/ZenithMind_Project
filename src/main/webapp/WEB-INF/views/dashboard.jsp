@@ -335,6 +335,28 @@
             color: #b7791f;
         }
 
+        .sidebar-footer {
+            margin-top: 12px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .logout-btn {
+            display: inline-block;
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: #f3f4f6;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 700;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .logout-btn:hover {
+            background: #ffecec;
+            color: #b91c1c;
+        }
+
         @media (max-width: 1080px) {
             .app-shell {
                 flex-direction: column;
@@ -369,6 +391,7 @@
 </head>
 
 <body>
+
     <div class="app-shell">
         <aside class="sidebar">
             <div class="brand">
@@ -388,6 +411,7 @@
                 <div class="brand-title">
                     ZenithMind<br>
                     <small style="font-size:12px;font-weight:500;color:#5a6a7f;">Mental Health Hub</small>
+
                 </div>
             </div>
 
