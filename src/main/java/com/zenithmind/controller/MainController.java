@@ -35,5 +35,10 @@ public class MainController {
     public String support() {
         return "support";
     }
+
+    @GetMapping("/profile-settings")
+    public String profileSettings() {
+        return "profile-settings";
+    }
 }
 

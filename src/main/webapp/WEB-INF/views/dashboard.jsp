@@ -441,6 +441,28 @@
             color: #b7791f;
         }
 
+        .sidebar-footer {
+            margin-top: 12px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .logout-btn {
+            display: inline-block;
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: #f3f4f6;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 700;
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .logout-btn:hover {
+            background: #ffecec;
+            color: #b91c1c;
+        }
+
         @media (max-width: 1080px) {
             .app-shell {
                 flex-direction: column;
@@ -503,16 +525,39 @@
             <div class="dept"><%= department %></div>
             <span class="badge"><%= roleTitle %></span>
         </div>
-
         <nav>
-            <a class="active" href="<%= dashboardLink %>"><span class="icon">D</span>Dashboard</a>
-            <a href="<%= modulesLink %>"><span class="icon">LM</span>Learning Modules</a>
-            <a href="<%= selfAssessmentLink %>"><span class="icon">SA</span>Self Assessment</a>
-            <a href="<%= moodLink %>"><span class="icon">MT</span>Mood Tracker</a>
-            <a href="<%= supportLink %>"><span class="icon">VS</span>Virtual Support</a>
-            <a href="<%= communityLink %>"><span class="icon">CF</span>Community Forum</a>
-            <a href="#"><span class="icon">PS</span>Profile Settings</a>
+            <% if ("student".equals(roleParam)) { %>
+                <a class="active" href="<%= dashboardLink %>"><span class="icon">D</span>Dashboard</a>
+                <a href="<%= modulesLink %>"><span class="icon">LM</span>Learning Modules</a>
+                <a href="<%= selfAssessmentLink %>"><span class="icon">SA</span>Self Assessment</a>
+                <a href="<%= moodLink %>"><span class="icon">MT</span>Mood Tracker</a>
+                <a href="<%= supportLink %>"><span class="icon">VS</span>Virtual Support</a>
+                <a href="<%= communityLink %>"><span class="icon">CF</span>Community Forum</a>
+                <a href="profile-settings?<%= roleSuffix %>"><span class="icon">PS</span>Profile Settings</a>
+            <% } else if ("faculty".equals(roleParam) || "professional".equals(roleParam)) { %>
+                <a class="active" href="<%= dashboardLink %>"><span class="icon">D</span>Dashboard</a>
+                <a href="dashboard?role=<%= roleParam %>"><span class="icon">FD</span>Faculty Dashboard</a>
+                <a href="<%= modulesLink %>"><span class="icon">LM</span>Learning Modules</a>
+                <a href="<%= communityLink %>"><span class="icon">CF</span>Community Forum</a>
+                <a href="<%= supportLink %>"><span class="icon">VS</span>Virtual Support</a>
+                <a href="profile-settings?<%= roleSuffix %>"><span class="icon">PS</span>Profile Settings</a>
+            <% } else if ("admin".equals(roleParam)) { %>
+                <a class="active" href="<%= dashboardLink %>"><span class="icon">D</span>Dashboard</a>
+                <a href="admin/panel?<%= roleSuffix %>"><span class="icon">AP</span>Admin Panel</a>
+                <a href="admin/analytics?<%= roleSuffix %>"><span class="icon">AN</span>Analytics</a>
+                <a href="admin/users?<%= roleSuffix %>"><span class="icon">UM</span>User Management</a>
+                <a href="<%= supportLink %>"><span class="icon">VS</span>Support</a>
+                <a href="profile-settings?<%= roleSuffix %>"><span class="icon">PS</span>Profile Settings</a>
+            <% } else { %>
+                <a class="active" href="<%= dashboardLink %>"><span class="icon">D</span>Dashboard</a>
+                <a href="profile-settings?<%= roleSuffix %>"><span class="icon">PS</span>Profile Settings</a>
+            <% } %>
         </nav>
+
+        <div style="flex:1"></div>
+        <div class="sidebar-footer">
+            <a class="logout-btn" href="${pageContext.request.contextPath}/">Logout</a>
+        </div>
     </aside>
 
     <main class="dashboard">
