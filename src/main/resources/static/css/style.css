@@ -129,6 +129,18 @@ p {
     box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
 }
 
+/* Danger button */
+.btn-danger {
+    background: var(--error);
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+}
+
 /* Cards */
 .card-grid {
     display: grid;

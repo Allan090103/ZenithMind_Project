@@ -42,52 +42,8 @@
     String communityLink = "modules?section=community&" + roleSuffix;
 %>
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>ZenithMind | Virtual Support</title>
-    <style>
-        :root {
-            --teal: #00b3c7;
-            --dark: #0a2540;
-            --text: #4c5d70;
-            --bg: #f5f7fb;
-            --card: #ffffff;
-            --border: #e5ebf4;
-        }
-
-        * { box-sizing: border-box; }
-
-        body {
-            margin: 0;
-            font-family: "Segoe UI", Tahoma, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-        }
-
-        .app-shell {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        .sidebar {
-            width: 260px;
-            background: #ffffff;
-            border-right: 1px solid var(--border);
-            padding: 32px 26px;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .brand { display: flex; align-items: center; gap: 12px; }
-
-        .brand svg { width: 42px; height: 42px; }
-
-        .brand-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--dark);
+<div class="app-shell">
+    <%@ include file="common/sidebar.jsp" %>
             line-height: 1.2;
         }
 

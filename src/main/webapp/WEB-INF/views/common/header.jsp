@@ -24,6 +24,7 @@
                             <a href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
                             <a href="${pageContext.request.contextPath}/modules">Modules</a>
                             <a href="${pageContext.request.contextPath}/mood">Mood</a>
+                            <a href="${pageContext.request.contextPath}/profile-settings">Profile Settings</a>
                         </nav>
                     </div>
                 </header>
