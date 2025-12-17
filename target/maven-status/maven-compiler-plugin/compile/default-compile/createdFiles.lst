@@ -1,0 +1,3 @@
+com\zenithmind\init\WebInitializer.class
+com\zenithmind\config\WebConfig.class
+com\zenithmind\controller\MainController.class
