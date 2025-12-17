@@ -42,12 +42,18 @@ public class DashboardController {
         model.addAttribute("moodLink", "mood?" + roleSuffix);
         model.addAttribute("supportLink", "support?" + roleSuffix);
 
+<<<<<<< HEAD
         if ("professional".equalsIgnoreCase(role)) {
             return "professional-dashboard";
         }
 
         if ("faculty".equalsIgnoreCase(role)) {
             return "faculty-dashboard";
+=======
+        // Route admin users to dedicated admin dashboard
+        if ("admin".equalsIgnoreCase(role)) {
+            return "admin_dashboard";
+>>>>>>> 14c0bf0822728b5c7e98f9897d1f564bbc2ec48d
         }
 
         return "dashboard";
