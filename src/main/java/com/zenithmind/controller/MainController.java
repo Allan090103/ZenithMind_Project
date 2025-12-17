@@ -21,6 +21,11 @@ public class MainController {
         return "modules";
     }
 
+    @GetMapping("/self-assessment")
+    public String selfAssessment() {
+        return "self-assessment";
+    }
+
     @GetMapping("/mood")
     public String mood() {
         return "mood";
@@ -31,5 +36,4 @@ public class MainController {
         return "support";
     }
 }
-
 
