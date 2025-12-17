@@ -606,6 +606,7 @@ form.addEventListener('change', event => {
     if (target.matches('input[type="radio"]')) {
         highlightGroup(target.name);
         hideSummary();
+        persistDraft(true);
     }
 });
 
@@ -653,11 +654,17 @@ function hideSummary() {
     }
 }
 
-function saveDraft() {
+function persistDraft(silent) {
     const responses = collectResponses();
     localStorage.setItem(draftKey, JSON.stringify(responses));
-    showMessage('Draft saved. You can revisit anytime.', 'info');
+    if (!silent) {
+        showMessage('Draft saved. You can revisit anytime.', 'info');
+    }
     hideSummary();
+}
+
+function saveDraft() {
+    persistDraft(false);
 }
 
     function restoreDraft() {
