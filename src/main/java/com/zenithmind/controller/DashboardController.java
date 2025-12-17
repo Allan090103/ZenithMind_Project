@@ -46,6 +46,10 @@ public class DashboardController {
             return "professional-dashboard";
         }
 
+        if ("faculty".equalsIgnoreCase(role)) {
+            return "faculty-dashboard";
+        }
+
         return "dashboard";
     }
 }

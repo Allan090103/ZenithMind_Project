@@ -400,16 +400,14 @@
                     </div>
 
                     <nav>
-                        <a href="${dashboardLink}" class="active"><span class="icon">D</span>Dashboard</a>
-                        <a href="dashboard?role=professional&section=cases"><span class="icon">CM</span>Case
+                        <a href="/dashboard?role=professional" class="active"><span class="icon">D</span>Dashboard</a>
+                        <a href="/professional/cases?role=professional"><span class="icon">CM</span>Case
                             Management</a>
-                        <a href="dashboard?role=professional&section=telehealth"><span
-                                class="icon">TH</span>Telehealth</a>
-                        <a href="dashboard?role=professional&section=monitoring"><span class="icon">PM</span>Patient
+                        <a href="/professional/telehealth?role=professional"><span class="icon">TH</span>Telehealth</a>
+                        <a href="/professional/monitoring?role=professional"><span class="icon">PM</span>Patient
                             Monitoring</a>
-                        <a href="dashboard?role=professional&section=resources"><span
-                                class="icon">RM</span>Resources</a>
-                        <a href="${communityLink}"><span class="icon">CF</span>Community</a>
+                        <a href="/professional/resources?role=professional"><span class="icon">RM</span>Resources</a>
+                        <a href="/forum"><span class="icon">CF</span>Community</a>
                     </nav>
 
                     <div style="margin-top:auto; padding-top:20px; border-top:1px solid var(--border);">
