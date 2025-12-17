@@ -41,6 +41,11 @@ public class DashboardController {
         model.addAttribute("moodLink", "mood?" + roleSuffix);
         model.addAttribute("supportLink", "support?" + roleSuffix);
 
+        // Route admin users to dedicated admin dashboard
+        if ("admin".equalsIgnoreCase(role)) {
+            return "admin_dashboard";
+        }
+
         return "dashboard";
     }
 }
