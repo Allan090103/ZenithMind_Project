@@ -36,7 +36,6 @@
                 class="icon">PM</span>Patient Monitoring</a>
         <a href="${resourcesLink}" class="${activeSection == 'resources' ? 'active' : ''}"><span
                 class="icon">RM</span>Resources</a>
-        <a href="${communityLink}"><span class="icon">CF</span>Community</a>
     </nav>
 
     <div style="margin-top:auto; padding-top:20px; border-top:1px solid var(--border);">

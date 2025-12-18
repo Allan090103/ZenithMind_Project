@@ -34,6 +34,12 @@ public class ForumController {
             role = user.getRole();
         }
 
+        // Restrict forum access to students only
+        if (!"student".equalsIgnoreCase(role)) {
+            // Redirect non-students to their dashboard
+            return "redirect:/dashboard?role=" + role;
+        }
+
         java.util.Map<String, Object> userData = userService.getUserData(role);
         model.addAllAttributes(userData);
 
@@ -69,8 +75,8 @@ public class ForumController {
     @PostMapping("/create")
     public String createPost(Post post, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return "redirect:/forum"; // Or login
+        if (user == null || !"student".equalsIgnoreCase(user.getRole())) {
+            return "redirect:/dashboard?role=" + (user != null ? user.getRole() : "student");
         }
 
         if (post.isAnonymous()) {
@@ -86,7 +92,10 @@ public class ForumController {
     @GetMapping("/like")
     public String like(@RequestParam Long id, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        String userId = (user != null) ? user.getName() : "anonymous"; // Simple ID fallback
+        if (user == null || !"student".equalsIgnoreCase(user.getRole())) {
+            return "redirect:/dashboard?role=" + (user != null ? user.getRole() : "student");
+        }
+        String userId = user.getName();
         forumService.likePost(id, userId);
         return "redirect:/forum";
     }
@@ -94,7 +103,10 @@ public class ForumController {
     @PostMapping("/comment")
     public String addComment(@RequestParam Long postId, @RequestParam String content, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        String author = (user != null) ? user.getName() : "Anonymous";
+        if (user == null || !"student".equalsIgnoreCase(user.getRole())) {
+            return "redirect:/dashboard?role=" + (user != null ? user.getRole() : "student");
+        }
+        String author = user.getName();
 
         com.zenithmind.model.Comment comment = new com.zenithmind.model.Comment(
                 System.currentTimeMillis(), author, content, System.currentTimeMillis());
@@ -103,7 +115,11 @@ public class ForumController {
     }
 
     @GetMapping("/flag")
-    public String flag(@RequestParam Long id) {
+    public String flag(@RequestParam Long id, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null || !"student".equalsIgnoreCase(user.getRole())) {
+            return "redirect:/dashboard?role=" + (user != null ? user.getRole() : "student");
+        }
         forumService.toggleFlag(id);
         return "redirect:/forum";
     }
