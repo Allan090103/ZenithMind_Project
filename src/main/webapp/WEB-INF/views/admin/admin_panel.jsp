@@ -41,7 +41,7 @@
                                 style="padding: 20px; background: rgba(16, 185, 129, 0.08); border-radius: 12px; border-left: 4px solid var(--admin-success);">
                                 <h3 style="margin-top: 0; font-size: 16px;">System Status</h3>
                                 <p style="margin: 10px 0;"><strong>Status:</strong> <span
-                                        style="color: var(--admin-success);">● Online</span></p>
+                                        style="color: var(--admin-success);">Online</span></p>
                                 <p style="margin: 10px 0;"><strong>Uptime:</strong> 99.9%</p>
                                 <p style="margin: 10px 0;"><strong>Server Load:</strong> 23%</p>
                                 <p style="margin: 10px 0;"><strong>Memory:</strong> 4.2GB / 16GB</p>
@@ -50,10 +50,10 @@
                             <div
                                 style="padding: 20px; background: rgba(245, 158, 11, 0.08); border-radius: 12px; border-left: 4px solid var(--admin-warning);">
                                 <h3 style="margin-top: 0; font-size: 16px;">Pending Tasks</h3>
-                                <p style="margin: 10px 0;">• 3 flagged posts to review</p>
-                                <p style="margin: 10px 0;">• 2 user verification requests</p>
-                                <p style="margin: 10px 0;">• 5 system notifications</p>
-                                <p style="margin: 10px 0;">• 1 analytics report ready</p>
+                                <p style="margin: 10px 0;">3 flagged posts to review</p>
+                                <p style="margin: 10px 0;">2 user verification requests</p>
+                                <p style="margin: 10px 0;">5 system notifications</p>
+                                <p style="margin: 10px 0;">1 analytics report ready</p>
                             </div>
                         </div>
 

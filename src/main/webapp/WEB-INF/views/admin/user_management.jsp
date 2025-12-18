@@ -112,7 +112,7 @@
                                     <td>ali@student.edu</td>
                                     <td><span class="role-badge student">Student</span></td>
                                     <td>Computer Science</td>
-                                    <td><span style="color: var(--admin-success);">● Active</span></td>
+                                    <td><span style="color: var(--admin-success);">Active</span></td>
                                     <td>
                                         <button class="btn btn-primary btn-small">Edit</button>
                                         <button class="btn btn-small"
@@ -124,7 +124,7 @@
                                     <td>aiman@faculty.edu</td>
                                     <td><span class="role-badge faculty">Faculty</span></td>
                                     <td>Psychology</td>
-                                    <td><span style="color: var(--admin-success);">● Active</span></td>
+                                    <td><span style="color: var(--admin-success);">Active</span></td>
                                     <td>
                                         <button class="btn btn-primary btn-small">Edit</button>
                                         <button class="btn btn-small"
@@ -136,7 +136,7 @@
                                     <td>aisyah@wellness.org</td>
                                     <td><span class="role-badge professional">Professional</span></td>
                                     <td>Counseling Services</td>
-                                    <td><span style="color: var(--admin-success);">● Active</span></td>
+                                    <td><span style="color: var(--admin-success);">Active</span></td>
                                     <td>
                                         <button class="btn btn-primary btn-small">Edit</button>
                                         <button class="btn btn-small"
@@ -148,7 +148,7 @@
                                     <td>ain@admin.edu</td>
                                     <td><span class="role-badge admin">Admin</span></td>
                                     <td>System Administration</td>
-                                    <td><span style="color: var(--admin-success);">● Active</span></td>
+                                    <td><span style="color: var(--admin-success);">Active</span></td>
                                     <td>
                                         <button class="btn btn-primary btn-small">Edit</button>
                                         <button class="btn btn-small"
@@ -160,7 +160,7 @@
                                     <td>sarah@student.edu</td>
                                     <td><span class="role-badge student">Student</span></td>
                                     <td>Engineering</td>
-                                    <td><span style="color: var(--text);">● Inactive</span></td>
+                                    <td><span style="color: var(--text);">Inactive</span></td>
                                     <td>
                                         <button class="btn btn-primary btn-small">Edit</button>
                                         <button class="btn btn-small"
