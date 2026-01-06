@@ -32,7 +32,7 @@ public class AdminController {
 
         // Links
         String roleSuffix = "role=admin";
-        model.addAttribute("dashboardLink", "dashboard?" + roleSuffix);
+        model.addAttribute("dashboardLink", "/dashboard?" + roleSuffix);
 
         return "admin/admin_panel";
     }
@@ -49,7 +49,7 @@ public class AdminController {
         }
 
         String roleSuffix = "role=admin";
-        model.addAttribute("dashboardLink", "dashboard?" + roleSuffix);
+        model.addAttribute("dashboardLink", "/dashboard?" + roleSuffix);
 
         return "admin/user_management";
     }
@@ -66,7 +66,7 @@ public class AdminController {
         }
 
         String roleSuffix = "role=admin";
-        model.addAttribute("dashboardLink", "dashboard?" + roleSuffix);
+        model.addAttribute("dashboardLink", "/dashboard?" + roleSuffix);
 
         return "admin/platform_analytics";
     }
@@ -83,7 +83,7 @@ public class AdminController {
         }
 
         String roleSuffix = "role=admin";
-        model.addAttribute("dashboardLink", "dashboard?" + roleSuffix);
+        model.addAttribute("dashboardLink", "/dashboard?" + roleSuffix);
 
         return "admin/content_moderation";
     }
@@ -100,7 +100,7 @@ public class AdminController {
         }
 
         String roleSuffix = "role=admin";
-        model.addAttribute("dashboardLink", "dashboard?" + roleSuffix);
+        model.addAttribute("dashboardLink", "/dashboard?" + roleSuffix);
 
         return "admin/profile_settings";
     }

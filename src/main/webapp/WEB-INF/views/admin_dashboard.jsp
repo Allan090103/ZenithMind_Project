@@ -508,264 +508,219 @@
     <body>
 
         <div class="app-shell">
-            <aside class="sidebar">
-                <div class="brand">
-                    <svg viewBox="0 0 64 64" role="img" aria-label="ZenithMind">
-                        <defs>
-                            <linearGradient id="sidebarGrad" x1="8" y1="6" x2="56" y2="58"
-                                gradientUnits="userSpaceOnUse">
-                                <stop offset="0" stop-color="#7de3ff" />
-                                <stop offset="1" stop-color="#0095b0" />
-                            </linearGradient>
-                        </defs>
-                        <path
-                            d="M32 7c-9 0-17 7-17 15-8 2-12 7-12 14 0 7 4 12 12 14 2 6 7 10 17 10 10 0 15-4 17-10 8-2 12-7 12-14s-4-12-12-14c0-8-8-15-17-15z"
-                            fill="url(#sidebarGrad)" stroke="#0f7596" stroke-width="2" stroke-linejoin="round" />
-                        <path d="M16 42l10-13 9 11 9-12 12 16" fill="none" stroke="#e3fbff" stroke-width="4"
-                            stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                    <div class="brand-title">
-                        ZenithMind<br>
-                        <small style="font-size:12px;font-weight:500;color:#5a6a7f;">Mental Health Hub</small>
-                    </div>
-                </div>
+            <%@ include file="common/admin_sidebar.jsp" %>
 
-                <div class="user-card">
-                    <div class="avatar">
-                        ${avatarInitial}
-                    </div>
-                    <div class="name">
-                        ${name}
-                    </div>
-                    <div class="email">
-                        ${email}
-                    </div>
-                    <div class="dept">
-                        ${department}
-                    </div>
-                    <span class="badge">
-                        ${roleTitle}
-                    </span>
-                </div>
-
-                <nav>
-                    <a class="active" href="${dashboardLink}"><span class="icon">D</span>Dashboard</a>
-                    <a href="/admin/panel"><span class="icon">AP</span>Admin Panel</a>
-                    <a href="/admin/users"><span class="icon">UM</span>User Management</a>
-                    <a href="/admin/analytics"><span class="icon">PA</span>Platform Analytics</a>
-                    <a href="/admin/moderation"><span class="icon">CM</span>Content Moderation</a>
-                    <a href="/admin/settings"><span class="icon">PS</span>Profile Settings</a>
-                </nav>
-
-                <div class="sidebar-footer">
-                    <a class="logout-btn" href="/">Logout</a>
-                </div>
-            </aside>
-
-            <main class="dashboard">
-                <!-- Admin Panel Section -->
-                <div id="admin-panel">
-                    <div class="top-bar">
-                        <div class="welcome">
-                            <p>Admin Control Center</p>
-                            <h1>Welcome back, ${name}!</h1>
-                        </div>
-                        <div class="search">
-                            <input type="text" placeholder="Search users, content, or system logs...">
-                            <div class="admin-badge"><strong>Admin Access</strong></div>
-                        </div>
-                    </div>
-
-                    <div class="grid metrics">
-                        <div class="card stat-card highlight-blue">
-                            <div class="stat-value">1,247</div>
-                            <div class="stat-label">Total Users</div>
-                            <div class="stat-change positive">↑ 12% this week</div>
-                        </div>
-                        <div class="card stat-card highlight-purple">
-                            <div class="stat-value">342</div>
-                            <div class="stat-label">Active Today</div>
-                            <div class="stat-change positive">↑ 8% from yesterday</div>
-                        </div>
-                        <div class="card stat-card highlight-green">
-                            <div class="stat-value">89%</div>
-                            <div class="stat-label">System Health</div>
-                            <div class="stat-change positive">All services operational</div>
-                        </div>
-                        <div class="card stat-card highlight-orange">
-                            <div class="stat-value">3</div>
-                            <div class="stat-label">Flagged Content</div>
-                            <div class="stat-change negative">Requires review</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="section-divider"></div>
-
-                <!-- Platform Analytics Section -->
-                <div id="platform-analytics">
-                    <div class="card">
-                        <h3>Platform Analytics</h3>
-                        <div class="chart-placeholder">
-                            User Engagement Chart<br>
-                            <small>(Visualization placeholder)</small>
-                        </div>
-                        <div style="margin-top: 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
-                            <div style="text-align: center;">
-                                <div style="font-size: 20px; font-weight: 700; color: var(--teal);">456</div>
-                                <div style="font-size: 12px; color: var(--text);">Modules Completed</div>
+                <main class="dashboard">
+                    <!-- Admin Panel Section -->
+                    <div id="admin-panel">
+                        <div class="top-bar">
+                            <div class="welcome">
+                                <p>Admin Control Center</p>
+                                <h1>Welcome back, ${name}!</h1>
                             </div>
-                            <div style="text-align: center;">
-                                <div style="font-size: 20px; font-weight: 700; color: var(--admin-success);">2,134</div>
-                                <div style="font-size: 12px; color: var(--text);">Forum Posts</div>
+                            <div class="search">
+                                <input type="text" placeholder="Search users, content, or system logs...">
+                                <div class="admin-badge"><strong>Admin Access</strong></div>
                             </div>
-                            <div style="text-align: center;">
-                                <div style="font-size: 20px; font-weight: 700; color: var(--admin-warning);">178</div>
-                                <div style="font-size: 12px; color: var(--text);">Support Sessions</div>
+                        </div>
+
+                        <div class="grid metrics">
+                            <div class="card stat-card highlight-blue">
+                                <div class="stat-value">1,247</div>
+                                <div class="stat-label">Total Users</div>
+                                <div class="stat-change positive">↑ 12% this week</div>
+                            </div>
+                            <div class="card stat-card highlight-purple">
+                                <div class="stat-value">342</div>
+                                <div class="stat-label">Active Today</div>
+                                <div class="stat-change positive">↑ 8% from yesterday</div>
+                            </div>
+                            <div class="card stat-card highlight-green">
+                                <div class="stat-value">89%</div>
+                                <div class="stat-label">System Health</div>
+                                <div class="stat-change positive">All services operational</div>
+                            </div>
+                            <div class="card stat-card highlight-orange">
+                                <div class="stat-value">3</div>
+                                <div class="stat-label">Flagged Content</div>
+                                <div class="stat-change negative">Requires review</div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="section-divider"></div>
+                    <div class="section-divider"></div>
 
-                <!-- User Management Section -->
-                <div id="user-management">
-                    <div class="grid two-col">
+                    <!-- Platform Analytics Section -->
+                    <div id="platform-analytics">
                         <div class="card">
-                            <h3>User Management</h3>
-                            <div class="user-list">
-                                <div class="user-item">
-                                    <div>
-                                        <strong style="color: var(--dark);">Students</strong>
-                                        <div style="font-size: 12px; color: var(--text);">Active users</div>
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 12px;">
-                                        <span style="font-size: 20px; font-weight: 700; color: var(--teal);">847</span>
-                                        <span class="role-badge student">Student</span>
-                                    </div>
+                            <h3>Platform Analytics</h3>
+                            <div class="chart-placeholder">
+                                User Engagement Chart<br>
+                                <small>(Visualization placeholder)</small>
+                            </div>
+                            <div
+                                style="margin-top: 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                                <div style="text-align: center;">
+                                    <div style="font-size: 20px; font-weight: 700; color: var(--teal);">456</div>
+                                    <div style="font-size: 12px; color: var(--text);">Modules Completed</div>
                                 </div>
-                                <div class="user-item">
-                                    <div>
-                                        <strong style="color: var(--dark);">Faculty</strong>
-                                        <div style="font-size: 12px; color: var(--text);">Active users</div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 20px; font-weight: 700; color: var(--admin-success);">2,134
                                     </div>
-                                    <div style="display: flex; align-items: center; gap: 12px;">
-                                        <span style="font-size: 20px; font-weight: 700; color: #a78bfa;">234</span>
-                                        <span class="role-badge faculty">Faculty</span>
-                                    </div>
+                                    <div style="font-size: 12px; color: var(--text);">Forum Posts</div>
                                 </div>
-                                <div class="user-item">
-                                    <div>
-                                        <strong style="color: var(--dark);">Professionals</strong>
-                                        <div style="font-size: 12px; color: var(--text);">Active users</div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 20px; font-weight: 700; color: var(--admin-warning);">178
                                     </div>
-                                    <div style="display: flex; align-items: center; gap: 12px;">
-                                        <span style="font-size: 20px; font-weight: 700; color: #34d399;">166</span>
-                                        <span class="role-badge professional">Professional</span>
-                                    </div>
+                                    <div style="font-size: 12px; color: var(--text);">Support Sessions</div>
                                 </div>
                             </div>
-                            <button class="btn btn-view" style="width: 100%; margin-top: 12px;">View All Users
-                                →</button>
                         </div>
                     </div>
-                </div>
 
-                <div class="section-divider"></div>
+                    <div class="section-divider"></div>
 
-                <!-- Content Moderation Section -->
-                <div id="content-moderation">
-                    <div class="grid three-col">
-                        <div class="card">
-                            <h3>Content Moderation</h3>
-                            <div class="moderation-item">
-                                <p><strong>Flagged Post #247</strong></p>
-                                <p style="font-size: 13px;">"Inappropriate language detected in community forum..."</p>
-                                <div class="moderation-actions">
-                                    <button class="btn btn-approve">Approve</button>
-                                    <button class="btn btn-remove">Remove</button>
-                                    <button class="btn btn-view">View</button>
-                                </div>
-                            </div>
-                            <div class="moderation-item">
-                                <p><strong>Flagged Post #246</strong></p>
-                                <p style="font-size: 13px;">"Multiple reports on anxiety support thread..."</p>
-                                <div class="moderation-actions">
-                                    <button class="btn btn-approve">Approve</button>
-                                    <button class="btn btn-remove">Remove</button>
-                                    <button class="btn btn-view">View</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <h3>Recent System Activities</h3>
-                            <div class="activity-log">
-                                <c:forEach var="activity" items="${activities}">
-                                    <div class="activity-item">
-                                        <div class="activity-icon">⚙️</div>
-                                        <div class="activity-content">
-                                            <div><strong>${activity[0]}</strong></div>
-                                            <div class="activity-time">${activity[1]}</div>
+                    <!-- User Management Section -->
+                    <div id="user-management">
+                        <div class="grid two-col">
+                            <div class="card">
+                                <h3>User Management</h3>
+                                <div class="user-list">
+                                    <div class="user-item">
+                                        <div>
+                                            <strong style="color: var(--dark);">Students</strong>
+                                            <div style="font-size: 12px; color: var(--text);">Active users</div>
+                                        </div>
+                                        <div style="display: flex; align-items: center; gap: 12px;">
+                                            <span
+                                                style="font-size: 20px; font-weight: 700; color: var(--teal);">847</span>
+                                            <span class="role-badge student">Student</span>
                                         </div>
                                     </div>
-                                </c:forEach>
+                                    <div class="user-item">
+                                        <div>
+                                            <strong style="color: var(--dark);">Faculty</strong>
+                                            <div style="font-size: 12px; color: var(--text);">Active users</div>
+                                        </div>
+                                        <div style="display: flex; align-items: center; gap: 12px;">
+                                            <span style="font-size: 20px; font-weight: 700; color: #a78bfa;">234</span>
+                                            <span class="role-badge faculty">Faculty</span>
+                                        </div>
+                                    </div>
+                                    <div class="user-item">
+                                        <div>
+                                            <strong style="color: var(--dark);">Professionals</strong>
+                                            <div style="font-size: 12px; color: var(--text);">Active users</div>
+                                        </div>
+                                        <div style="display: flex; align-items: center; gap: 12px;">
+                                            <span style="font-size: 20px; font-weight: 700; color: #34d399;">166</span>
+                                            <span class="role-badge professional">Professional</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-view" style="width: 100%; margin-top: 12px;">View All Users
+                                    →</button>
                             </div>
                         </div>
+                    </div>
 
+                    <div class="section-divider"></div>
+
+                    <!-- Content Moderation Section -->
+                    <div id="content-moderation">
+                        <div class="grid three-col">
+                            <div class="card">
+                                <h3>Content Moderation</h3>
+                                <div class="moderation-item">
+                                    <p><strong>Flagged Post #247</strong></p>
+                                    <p style="font-size: 13px;">"Inappropriate language detected in community forum..."
+                                    </p>
+                                    <div class="moderation-actions">
+                                        <button class="btn btn-approve">Approve</button>
+                                        <button class="btn btn-remove">Remove</button>
+                                        <button class="btn btn-view">View</button>
+                                    </div>
+                                </div>
+                                <div class="moderation-item">
+                                    <p><strong>Flagged Post #246</strong></p>
+                                    <p style="font-size: 13px;">"Multiple reports on anxiety support thread..."</p>
+                                    <div class="moderation-actions">
+                                        <button class="btn btn-approve">Approve</button>
+                                        <button class="btn btn-remove">Remove</button>
+                                        <button class="btn btn-view">View</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <h3>Recent System Activities</h3>
+                                <div class="activity-log">
+                                    <c:forEach var="activity" items="${activities}">
+                                        <div class="activity-item">
+                                            <div class="activity-icon">⚙️</div>
+                                            <div class="activity-content">
+                                                <div><strong>${activity[0]}</strong></div>
+                                                <div class="activity-time">${activity[1]}</div>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <h3>Weekly Goal</h3>
+                                <p style="color: var(--text);">
+                                    ${goalDescription}
+                                </p>
+                                <div
+                                    style="margin: 16px 0; height: 8px; background: rgba(0, 179, 199, 0.1); border-radius: 8px; position: relative;">
+                                    <span
+                                        style="position: absolute; left: 0; top: 0; height: 100%; width: ${goalPercent}%; background: linear-gradient(90deg, #00b3c7, #01a0f9); border-radius: 8px;"></span>
+                                </div>
+                                <small style="color: var(--text);">
+                                    ${goalNote}
+                                </small>
+                                <div
+                                    style="margin-top: 16px; padding: 12px; background: rgba(16, 185, 129, 0.1); border-radius: 8px; border-left: 4px solid var(--admin-success);">
+                                    <div style="font-size: 13px; color: var(--text);">Admin Performance</div>
+                                    <div
+                                        style="font-size: 18px; font-weight: 700; color: var(--dark); margin-top: 4px;">
+                                        ${dayStreak} days active streak
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-divider"></div>
+
+                    <!-- Profile Settings Section -->
+                    <div id="profile-settings">
                         <div class="card">
-                            <h3>Weekly Goal</h3>
-                            <p style="color: var(--text);">
-                                ${goalDescription}
-                            </p>
-                            <div
-                                style="margin: 16px 0; height: 8px; background: rgba(0, 179, 199, 0.1); border-radius: 8px; position: relative;">
-                                <span
-                                    style="position: absolute; left: 0; top: 0; height: 100%; width: ${goalPercent}%; background: linear-gradient(90deg, #00b3c7, #01a0f9); border-radius: 8px;"></span>
-                            </div>
-                            <small style="color: var(--text);">
-                                ${goalNote}
-                            </small>
-                            <div
-                                style="margin-top: 16px; padding: 12px; background: rgba(16, 185, 129, 0.1); border-radius: 8px; border-left: 4px solid var(--admin-success);">
-                                <div style="font-size: 13px; color: var(--text);">Admin Performance</div>
-                                <div style="font-size: 18px; font-weight: 700; color: var(--dark); margin-top: 4px;">
-                                    ${dayStreak} days active streak
+                            <h3>Profile Settings</h3>
+                            <p>Manage your admin account settings, preferences, and security options.</p>
+                            <div style="margin-top: 20px;">
+                                <div
+                                    style="padding: 16px; background: rgba(0, 179, 199, 0.05); border-radius: 12px; border-left: 4px solid var(--teal);">
+                                    <div
+                                        style="font-size: 14px; color: var(--dark); font-weight: 600; margin-bottom: 8px;">
+                                        Account Information</div>
+                                    <div style="font-size: 13px; color: var(--text); line-height: 1.8;">
+                                        <strong>Name:</strong> ${name}<br>
+                                        <strong>Email:</strong> ${email}<br>
+                                        <strong>Department:</strong> ${department}<br>
+                                        <strong>Role:</strong> ${roleTitle}
+                                    </div>
+                                </div>
+                                <div style="margin-top: 16px; display: flex; gap: 12px;">
+                                    <button class="btn btn-view">Edit Profile</button>
+                                    <button class="btn btn-view">Change Password</button>
+                                    <button class="btn btn-view">Security Settings</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="section-divider"></div>
-
-                <!-- Profile Settings Section -->
-                <div id="profile-settings">
-                    <div class="card">
-                        <h3>Profile Settings</h3>
-                        <p>Manage your admin account settings, preferences, and security options.</p>
-                        <div style="margin-top: 20px;">
-                            <div
-                                style="padding: 16px; background: rgba(0, 179, 199, 0.05); border-radius: 12px; border-left: 4px solid var(--teal);">
-                                <div style="font-size: 14px; color: var(--dark); font-weight: 600; margin-bottom: 8px;">
-                                    Account Information</div>
-                                <div style="font-size: 13px; color: var(--text); line-height: 1.8;">
-                                    <strong>Name:</strong> ${name}<br>
-                                    <strong>Email:</strong> ${email}<br>
-                                    <strong>Department:</strong> ${department}<br>
-                                    <strong>Role:</strong> ${roleTitle}
-                                </div>
-                            </div>
-                            <div style="margin-top: 16px; display: flex; gap: 12px;">
-                                <button class="btn btn-view">Edit Profile</button>
-                                <button class="btn btn-view">Change Password</button>
-                                <button class="btn btn-view">Security Settings</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </main>
+                </main>
         </div>
     </body>
 

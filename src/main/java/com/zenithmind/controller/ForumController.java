@@ -50,13 +50,13 @@ public class ForumController {
 
         // Links for sidebar
         String roleSuffix = "role=" + role;
-        model.addAttribute("dashboardLink", "dashboard?" + roleSuffix);
-        model.addAttribute("modulesLink", "modules?" + roleSuffix);
-        model.addAttribute("modulesAssessmentLink", "modules?section=assessment&" + roleSuffix);
-        model.addAttribute("selfAssessmentLink", "self-assessment?" + roleSuffix);
-        model.addAttribute("communityLink", "forum");
-        model.addAttribute("moodLink", "mood?" + roleSuffix);
-        model.addAttribute("supportLink", "support?" + roleSuffix);
+        model.addAttribute("dashboardLink", "/dashboard?" + roleSuffix);
+        model.addAttribute("modulesLink", "/modules?" + roleSuffix);
+        model.addAttribute("modulesAssessmentLink", "/modules?section=assessment&" + roleSuffix);
+        model.addAttribute("selfAssessmentLink", "/self-assessment?" + roleSuffix);
+        model.addAttribute("communityLink", "/forum");
+        model.addAttribute("moodLink", "/mood?" + roleSuffix);
+        model.addAttribute("supportLink", "/support?" + roleSuffix);
 
         List<Post> posts = forumService.getFilteredPosts(category, search);
 

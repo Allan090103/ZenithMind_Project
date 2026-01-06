@@ -93,13 +93,13 @@ public class ModuleController {
 
         // Links
         String roleSuffix = "role=" + role;
-        model.addAttribute("dashboardLink", "dashboard?" + roleSuffix);
-        model.addAttribute("modulesLink", "modules?" + roleSuffix);
-        model.addAttribute("modulesAssessmentLink", "modules?section=assessment&" + roleSuffix);
-        model.addAttribute("selfAssessmentLink", "self-assessment?" + roleSuffix);
-        model.addAttribute("communityLink", "forum");
-        model.addAttribute("moodLink", "mood?" + roleSuffix);
-        model.addAttribute("supportLink", "support?" + roleSuffix);
+        model.addAttribute("dashboardLink", "/dashboard?" + roleSuffix);
+        model.addAttribute("modulesLink", "/modules?" + roleSuffix);
+        model.addAttribute("modulesAssessmentLink", "/modules?section=assessment&" + roleSuffix);
+        model.addAttribute("selfAssessmentLink", "/self-assessment?" + roleSuffix);
+        model.addAttribute("communityLink", "/forum");
+        model.addAttribute("moodLink", "/mood?" + roleSuffix);
+        model.addAttribute("supportLink", "/support?" + roleSuffix);
 
         model.addAttribute("currentSection", section);
 

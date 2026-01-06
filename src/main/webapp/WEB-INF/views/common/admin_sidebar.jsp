@@ -54,6 +54,6 @@
         </nav>
 
         <div class="sidebar-footer">
-            <a class="logout-btn" href="/">← Logout</a>
+            <a class="logout-btn" href="${pageContext.request.contextPath}/logout">← Logout</a>
         </div>
     </aside>

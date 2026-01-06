@@ -8,12 +8,17 @@ public class AuthController {
 
     @GetMapping("/")
     public String home() {
+        return "redirect:/login";
+    }
+
+    @GetMapping("/login")
+    public String login() {
         return "login";
     }
 
     @GetMapping("/logout")
     public String logout(javax.servlet.http.HttpSession session) {
         session.invalidate();
-        return "redirect:/";
+        return "redirect:/login?logout";
     }
 }
