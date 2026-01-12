@@ -247,7 +247,7 @@
                                         here</a></p>
                             </div>
 
-                            <div class="card-footer">GDPR &amp; HIPAA Compliant • Secure &amp; Confidential</div>
+                            <div class="card-footer">GDPR &amp; HIPAA Compliant &bull; Secure &amp; Confidential</div>
         </section>
     </main>
 

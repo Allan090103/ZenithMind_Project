@@ -53,7 +53,10 @@
                     class="icon">PS</span>Profile Settings</a>
         </nav>
 
-        <div class="sidebar-footer">
-            <a class="logout-btn" href="${pageContext.request.contextPath}/logout">← Logout</a>
+        <div style="margin-top:auto; padding-top:20px; border-top:1px solid var(--border);">
+            <a href="${pageContext.request.contextPath}/logout" class="btn btn-ghost"
+                style="width:100%; justify-content:flex-start; color:#ef4444;">
+                <span class="icon" style="background:rgba(239, 68, 68, 0.1); color:#ef4444;">&#128682;</span> Logout
+            </a>
         </div>
     </aside>

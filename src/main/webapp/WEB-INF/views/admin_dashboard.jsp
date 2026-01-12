@@ -437,6 +437,21 @@
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             }
 
+            .btn-ghost {
+                background: transparent;
+                color: var(--text);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                text-decoration: none;
+            }
+
+            .btn-ghost:hover {
+                background: rgba(239, 68, 68, 0.05);
+                transform: none;
+                box-shadow: none;
+            }
+
             .chart-placeholder {
                 height: 200px;
                 background: linear-gradient(180deg, rgba(0, 179, 199, 0.08), rgba(0, 179, 199, 0.02));

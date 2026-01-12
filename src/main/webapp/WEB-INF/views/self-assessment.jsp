@@ -476,7 +476,8 @@
                     <div style="margin-top:auto; padding-top:20px; border-top:1px solid var(--border);">
                         <a href="${pageContext.request.contextPath}/logout" class="btn btn-ghost"
                             style="width:100%; justify-content:flex-start; color:#ef4444; background:none;">
-                            <span class="icon" style="background:rgba(239, 68, 68, 0.1); color:#ef4444;">🚪</span>
+                            <span class="icon"
+                                style="background:rgba(239, 68, 68, 0.1); color:#ef4444;">&#128682;</span>
                             Logout
                         </a>
                     </div>
