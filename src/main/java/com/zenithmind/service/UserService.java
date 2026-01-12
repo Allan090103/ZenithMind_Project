@@ -1,13 +1,105 @@
 package com.zenithmind.service;
 
 import com.zenithmind.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
 public class UserService {
+
+        @Autowired
+        private DataSource dataSource;
+
+        /**
+         * Get user data by username from database
+         */
+        public Map<String, Object> getUserDataByUsername(String username, String role) {
+                if (role == null)
+                        role = "student";
+                role = role.toLowerCase();
+
+                Map<String, Object> data = new HashMap<>();
+
+                try {
+                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+                        // Query app_users table for user's actual data
+                        String sql = "SELECT name, role, points FROM app_users WHERE name = ? LIMIT 1";
+
+                        try {
+                                Map<String, Object> userRow = jdbcTemplate.queryForMap(sql, username);
+
+                                // Use actual user data from database
+                                String name = (String) userRow.get("name");
+                                int points = userRow.get("points") != null ? ((Number) userRow.get("points")).intValue()
+                                                : 0;
+
+                                data.put("name", name);
+                                data.put("email", username.toLowerCase().replace(" ", "") + "@student.edu");
+                                data.put("roleTitle", "Student");
+                                data.put("department", "Computer Science Department");
+                                data.put("score", points);
+                                data.put("improvementNote", "Welcome! Start your wellness journey");
+                                data.put("modulesCompleted", 0);
+                                data.put("dayStreak", 0);
+                                data.put("goalDescription", "Complete 3 modules this week");
+                                data.put("goalCompleted", 0);
+                                data.put("goalTarget", 3);
+                                data.put("goalNote", "0 of 3 completed");
+                                data.put("activities", new String[][] {
+                                                { "Joined ZenithMind", "Just now" }
+                                });
+                                data.put("badges", new String[][] {
+                                                { "First Steps", "blue" }
+                                });
+
+                        } catch (Exception e) {
+                                // User not found in database, use username as fallback
+                                data.put("name", username);
+                                data.put("email", username.toLowerCase() + "@student.edu");
+                                data.put("roleTitle", "Student");
+                                data.put("department", "Computer Science Department");
+                                data.put("score", 0);
+                                data.put("improvementNote", "Welcome! Start your wellness journey");
+                                data.put("modulesCompleted", 0);
+                                data.put("dayStreak", 0);
+                                data.put("goalDescription", "Complete 3 modules this week");
+                                data.put("goalCompleted", 0);
+                                data.put("goalTarget", 3);
+                                data.put("goalNote", "0 of 3 completed");
+                                data.put("activities", new String[][] {
+                                                { "Joined ZenithMind", "Just now" }
+                                });
+                                data.put("badges", new String[][] {
+                                                { "First Steps", "blue" }
+                                });
+                        }
+
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        // Return default data on error
+                        return getUserData(role);
+                }
+
+                // Add common calculated fields
+                String avatarInitial = ((String) data.get("name")).substring(0, 1).toUpperCase();
+                int wellnessPercent = Math.min(100, Math.max(0, (int) data.get("score")));
+                int goalCompleted = (int) data.get("goalCompleted");
+                int goalTarget = (int) data.get("goalTarget");
+                int goalPercent = (int) Math.round((goalCompleted * 100.0) / goalTarget);
+                goalPercent = Math.min(100, Math.max(0, goalPercent));
+
+                data.put("avatarInitial", avatarInitial);
+                data.put("wellnessPercent", wellnessPercent);
+                data.put("goalPercent", goalPercent);
+
+                return data;
+        }
 
         public Map<String, Object> getUserData(String role) {
                 if (role == null)

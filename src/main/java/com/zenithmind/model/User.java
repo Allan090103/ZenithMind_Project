@@ -1,9 +1,19 @@
 package com.zenithmind.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "app_users")
 public class User {
+    @Id
     private String name;
     private String role;
     private int points;
+
+    public User() {
+    }
 
     public User(String name, String role, int points) {
         this.name = name;

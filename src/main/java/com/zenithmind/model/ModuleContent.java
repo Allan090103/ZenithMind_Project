@@ -1,6 +1,13 @@
 package com.zenithmind.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "module_contents")
 public class ModuleContent {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String slug;
     private String title;
     private String description;
@@ -12,6 +19,9 @@ public class ModuleContent {
     private String icon;
     private String[] sections;
     private int currentSection;
+
+    public ModuleContent() {
+    }
 
     public ModuleContent(String slug, String title, String description, String duration,
             int points, int progress, String status, String buttonLabel,

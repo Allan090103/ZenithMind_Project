@@ -1,11 +1,20 @@
 package com.zenithmind.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "comments")
 public class Comment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String author;
     private String content;
     private long timestamp;
     private String timeAgo;
+
+    public Comment() {
+    }
 
     public Comment(Long id, String author, String content, long timestamp) {
         this.id = id;

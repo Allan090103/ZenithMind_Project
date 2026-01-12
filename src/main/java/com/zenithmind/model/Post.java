@@ -1,6 +1,12 @@
 package com.zenithmind.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "posts")
 public class Post {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String content;
@@ -15,7 +21,11 @@ public class Post {
     private int replies;
     private long timestamp; // Storing as long for easier sorting/comparison
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "post_id")
     private java.util.List<Comment> comments = new java.util.ArrayList<>();
+
+    @ElementCollection
     private java.util.Set<String> likedByUsers = new java.util.HashSet<>();
 
     public Post() {

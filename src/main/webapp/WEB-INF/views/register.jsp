@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>ZenithMind | Login</title>
+    <title>ZenithMind | Student Registration</title>
     <style>
         body {
             margin: 0;
@@ -22,7 +22,7 @@
 
         .card {
             width: 100%;
-            max-width: 440px;
+            max-width: 480px;
             background: #fff;
             border-radius: 24px;
             box-shadow: 0 25px 80px rgba(9, 36, 65, 0.12);
@@ -90,7 +90,7 @@
             box-shadow: 0 0 0 4px rgba(45, 139, 255, 0.15);
         }
 
-        .btn-login {
+        .btn-register {
             width: 100%;
             padding: 14px;
             background: linear-gradient(90deg, #2d8bff, #2462f7);
@@ -104,12 +104,12 @@
             margin-top: 10px;
         }
 
-        .btn-login:hover {
+        .btn-register:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(36, 98, 247, 0.25);
         }
 
-        .btn-login:active {
+        .btn-register:active {
             transform: translateY(0);
         }
 
@@ -121,16 +121,33 @@
             font-size: 14px;
             margin-bottom: 24px;
             border: 1px solid #ffdada;
+            text-align: left;
         }
 
-        .logout-msg {
-            background: #f0f9ff;
-            color: #2d8bff;
+        .success-msg {
+            background: #f0fff4;
+            color: #059669;
             padding: 12px;
             border-radius: 12px;
             font-size: 14px;
             margin-bottom: 24px;
-            border: 1px solid #d0e8ff;
+            border: 1px solid #d1fae5;
+        }
+
+        .back-link {
+            margin-top: 24px;
+            font-size: 14px;
+            color: #5c6f82;
+        }
+
+        .back-link a {
+            color: #2d8bff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
         }
 
         .card-footer {
@@ -138,6 +155,12 @@
             font-size: 12px;
             color: #8796a9;
             letter-spacing: 0.5px;
+        }
+
+        .password-hint {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
         }
     </style>
 </head>
@@ -167,56 +190,85 @@
                         stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </div>
-            <h1>ZenithMind</h1>
-            <p class="subtitle">Digital Mental Health Literacy Hub</p>
+            <h1>Create Student Account</h1>
+            <p class="subtitle">Join ZenithMind to access mental health resources</p>
 
-            <% if (request.getParameter("error") !=null) { %>
-                <div class="error-msg">Invalid username or password.</div>
+            <% if (request.getAttribute("error") !=null) { %>
+                <div class="error-msg">
+                    <%= request.getAttribute("error") %>
+                </div>
                 <% } %>
 
-                    <% if (request.getParameter("logout") !=null) { %>
-                        <div class="logout-msg">You have been logged out.</div>
+                    <% if (request.getAttribute("success") !=null) { %>
+                        <div class="success-msg">
+                            <%= request.getAttribute("success") %>
+                        </div>
                         <% } %>
 
-                            <% if (request.getParameter("registered") !=null) { %>
-                                <div class="logout-msg">Registration successful! Please log in with your credentials.
+                            <form action="${pageContext.request.contextPath}/register" method="post"
+                                onsubmit="return validateForm()">
+                                <div class="form-group">
+                                    <label for="username">Username *</label>
+                                    <input type="text" id="username" name="username" placeholder="Choose a username"
+                                        required autofocus>
                                 </div>
-                                <% } %>
 
-                                    <form action="${pageContext.request.contextPath}/login" method="post">
-                                        <div class="form-group">
-                                            <label for="username">Username</label>
-                                            <input type="text" id="username" name="username"
-                                                placeholder="Enter your username" required autofocus>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="password">Password</label>
-                                            <input type="password" id="password" name="password"
-                                                placeholder="Enter your password" required>
-                                        </div>
+                                <div class="form-group">
+                                    <label for="name">Full Name *</label>
+                                    <input type="text" id="name" name="name" placeholder="Enter your full name"
+                                        required>
+                                </div>
 
-                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                <div class="form-group">
+                                    <label for="email">Email (Optional)</label>
+                                    <input type="email" id="email" name="email" placeholder="your.email@student.edu">
+                                </div>
 
-                                        <button type="submit" class="btn-login">Sign In</button>
-                                    </form>
+                                <div class="form-group">
+                                    <label for="password">Password *</label>
+                                    <input type="password" id="password" name="password" placeholder="Create a password"
+                                        required>
+                                    <div class="password-hint">At least 6 characters</div>
+                                </div>
 
-                                    <div style="margin-top: 24px; font-size: 14px; color: #5c6f82;">
-                                        <p>New student? <a href="${pageContext.request.contextPath}/register"
-                                                style="color: #2d8bff; text-decoration: none; font-weight: 600;">Register
-                                                here</a></p>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="confirmPassword">Confirm Password *</label>
+                                    <input type="password" id="confirmPassword" name="confirmPassword"
+                                        placeholder="Re-enter your password" required>
+                                </div>
 
-                                    <div style="margin-top: 24px; font-size: 13px; color: #5c6f82;">
-                                        <p>Try logging in with: <br>
-                                            <b>admin/admin</b>, <b>student/student</b>, <br>
-                                            <b>faculty/faculty</b>, or <b>counselor/counselor</b>
-                                        </p>
-                                    </div>
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
-                                    <div class="card-footer">GDPR &amp; HIPAA Compliant • Secure &amp; Confidential
-                                    </div>
+                                <button type="submit" class="btn-register">Create Account</button>
+                            </form>
+
+                            <div class="back-link">
+                                <p>Already have an account? <a href="${pageContext.request.contextPath}/login">Sign in
+                                        here</a></p>
+                            </div>
+
+                            <div class="card-footer">GDPR &amp; HIPAA Compliant • Secure &amp; Confidential</div>
         </section>
     </main>
+
+    <script>
+        function validateForm() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters long');
+                return false;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return false;
+            }
+
+            return true;
+        }
+    </script>
 </body>
 
 </html>

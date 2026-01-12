@@ -19,9 +19,13 @@ public class DashboardController {
 
     @GetMapping("/dashboard")
     public String dashboard(@RequestParam(required = false, defaultValue = "student") String role,
-            Model model, HttpSession session) {
+            Model model, HttpSession session, java.security.Principal principal) {
 
-        Map<String, Object> userData = userService.getUserData(role);
+        // Get authenticated username from Spring Security
+        String username = principal != null ? principal.getName() : "guest";
+
+        // Fetch user data based on authenticated username
+        Map<String, Object> userData = userService.getUserDataByUsername(username, role);
         model.addAllAttributes(userData);
 
         // Ensure session user is set for header/forum compatibility
