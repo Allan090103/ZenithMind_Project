@@ -20,7 +20,7 @@ public class HibernateConfig {
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3307/zenithmind_db?createDatabaseIfNotExist=true");
         dataSource.setUsername("root");
-        dataSource.setPassword("root123");
+        dataSource.setPassword("");
         return dataSource;
     }
 
