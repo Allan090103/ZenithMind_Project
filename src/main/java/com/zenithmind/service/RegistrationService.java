@@ -62,7 +62,9 @@ public class RegistrationService {
 
             // Insert into app_users table
             String sql = "INSERT INTO app_users (name, role, points) VALUES (?, ?, ?)";
-            jdbcTemplate.update(sql, name != null ? name : username, "student", 0);
+            // Use username as the primary key 'name' to ensure matches with UserService
+            // lookups
+            jdbcTemplate.update(sql, username, "student", 0);
 
         } catch (Exception e) {
             e.printStackTrace();

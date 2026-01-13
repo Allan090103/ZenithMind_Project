@@ -838,7 +838,7 @@
                     const moodId = entry.mood || entry.mood_id;
                     const moodDetails = moodOptions.find(m => m.id === moodId) || { emoji: '🙂', label: moodId, score: entry.moodScore || 3 };
                     const activities = entry.activities || '';
-                    const note = entry.note || '';
+                    const note = entry.note ? entry.note.replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
                     const timestamp = entry.timestamp || Date.now();
                     div.innerHTML = `
                 <div>

@@ -14,20 +14,51 @@ public class UserService {
 
         @javax.annotation.PostConstruct
         public void init() {
+                JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
                 try {
-                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
                         jdbcTemplate.execute("ALTER TABLE app_users ADD COLUMN wellness_score INT DEFAULT 50");
                         System.out.println("Migrated DB: Added wellness_score column.");
                 } catch (Exception e) {
                         System.out.println("DB Migration check: " + e.getMessage());
                 }
                 try {
-                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
                         jdbcTemplate.update(
                                         "UPDATE app_users SET wellness_score = 50 WHERE wellness_score = 0 OR wellness_score IS NULL");
                         System.out.println("Migrated DB: Fixed 0 or NULL wellness_score values.");
                 } catch (Exception e) {
                         System.out.println("DB Data fix check: " + e.getMessage());
+                }
+
+                // Ensure mood_logs table exists
+                try {
+                        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS mood_logs (" +
+                                        "id BIGINT AUTO_INCREMENT PRIMARY KEY," +
+                                        "username VARCHAR(50) NOT NULL," +
+                                        "mood VARCHAR(50) NOT NULL," +
+                                        "mood_score INT NOT NULL," +
+                                        "activities VARCHAR(255)," +
+                                        "note TEXT," +
+                                        "log_date DATE NOT NULL," +
+                                        "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
+                                        ")");
+                        System.out.println("Migrated DB: Ensured mood_logs table exists.");
+                } catch (Exception e) {
+                        System.out.println("DB mood_logs check: " + e.getMessage());
+                }
+
+                // Ensure assessment_results table exists
+                try {
+                        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS assessment_results (" +
+                                        "id BIGINT AUTO_INCREMENT PRIMARY KEY," +
+                                        "username VARCHAR(50) NOT NULL," +
+                                        "assessment_type VARCHAR(255) NOT NULL," +
+                                        "score INT NOT NULL," +
+                                        "severity_level VARCHAR(255) NOT NULL," +
+                                        "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
+                                        ")");
+                        System.out.println("Migrated DB: Ensured assessment_results table exists.");
+                } catch (Exception e) {
+                        System.out.println("DB assessment_results check: " + e.getMessage());
                 }
         }
 

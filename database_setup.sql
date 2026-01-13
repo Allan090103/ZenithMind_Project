@@ -35,6 +35,28 @@ CREATE TABLE app_users (
   wellness_score INT DEFAULT 50
 );
 
+-- Create mood_logs table
+CREATE TABLE mood_logs (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) NOT NULL,
+  mood VARCHAR(50) NOT NULL,
+  mood_score INT NOT NULL,
+  activities VARCHAR(255),
+  note TEXT,
+  log_date DATE NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create assessment_results table
+CREATE TABLE assessment_results (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) NOT NULL,
+  assessment_type VARCHAR(255) NOT NULL,
+  score INT NOT NULL,
+  severity_level VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Create posts table
 CREATE TABLE posts (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
