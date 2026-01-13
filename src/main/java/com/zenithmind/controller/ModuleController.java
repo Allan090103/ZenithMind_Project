@@ -24,10 +24,13 @@ public class ModuleController {
     public String modules(@RequestParam(required = false, defaultValue = "student") String role,
             @RequestParam(required = false) String section,
             @RequestParam(required = false) String module,
-            Model model, HttpSession session) {
+            Model model, HttpSession session, java.security.Principal principal) {
 
-        // Populate User Data
-        Map<String, Object> userData = userService.getUserData(role);
+        // Get authenticated username
+        String username = principal != null ? principal.getName() : "guest";
+
+        // Fetch user data based on authenticated username
+        Map<String, Object> userData = userService.getUserDataByUsername(username, role);
         model.addAllAttributes(userData);
 
         // Ensure session user
@@ -41,28 +44,28 @@ public class ModuleController {
         List<ModuleContent> modules = new ArrayList<>();
         modules.add(new ModuleContent(
                 "stress-management", "Stress Management",
-                "Learn techniques to manage daily stress and build healthy routines.", "15 min", 50, 100, "done",
-                "Review", "✅",
+                "Learn techniques to manage daily stress and build healthy routines.", "15 min", 50, 0, "start",
+                "Start", "🧘",
                 new String[] { "Introduction to Stress", "Identifying Triggers", "Coping Strategies",
                         "Daily Routine Reset", "Knowledge Check" },
-                5));
+                1));
         modules.add(new ModuleContent(
                 "understanding-anxiety", "Understanding Anxiety",
-                "Learn about anxiety, its causes, symptoms, and effective coping strategies.", "20 min", 75, 60,
-                "progress", "Continue", "📘",
+                "Learn about anxiety, its causes, symptoms, and effective coping strategies.", "20 min", 75, 0,
+                "start", "Start", "📘",
                 new String[] { "Introduction to Anxiety", "Types of Anxiety Disorders", "Symptoms and Signs",
                         "Coping Strategies", "Quiz" },
                 1));
         modules.add(new ModuleContent(
                 "depression-awareness", "Depression Awareness",
-                "Recognize signs, risk factors, and when to seek help.", "25 min", 100, 0, "locked", "Start", "🔒",
+                "Recognize signs, risk factors, and when to seek help.", "25 min", 100, 0, "start", "Start", "☀️",
                 new String[] { "What is Depression?", "Signs and Symptoms", " Causes and Risk Factors",
                         "Treatment Options", "Helping Others" },
-                0));
+                1));
         modules.add(new ModuleContent(
                 "mindfulness-basics", "Mindfulness Basics",
-                "Introduction to mindfulness meditation and practice.", "10 min", 50, 0, "locked", "Start", "🔒",
-                new String[] { "What is Mindfulness?", "Breathing Techniques", "Body Scan", "Daily Practice" }, 0));
+                "Introduction to mindfulness meditation and practice.", "10 min", 50, 0, "start", "Start", "🌿",
+                new String[] { "What is Mindfulness?", "Breathing Techniques", "Body Scan", "Daily Practice" }, 1));
 
         // Calculate counts
         int completedCount = 0;

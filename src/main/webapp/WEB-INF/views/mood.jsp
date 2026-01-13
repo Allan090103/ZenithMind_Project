@@ -1,9 +1,11 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" import="java.util.List, java.util.Map" %>
     <!DOCTYPE html>
     <html lang="en">
 
     <head>
         <meta charset="UTF-8">
+        <meta name="_csrf" content="${_csrf.token}" />
+        <meta name="_csrf_header" content="${_csrf.headerName}" />
         <title>ZenithMind | Mood Tracker</title>
         <style>
             :root {
@@ -438,7 +440,7 @@
                     </div>
                     <div class="search">
                         <input type="text" placeholder="Search for modules, resources, or support...">
-                        <div class="score-pill">Wellness Score: <strong>${wellnessScore} / 100</strong></div>
+                        <div class="score-pill">Wellness Score: <strong>${wellnessPercent} / 100</strong></div>
                     </div>
                 </div>
 
@@ -520,251 +522,364 @@
 
                 const activityOptions = ['Exercise', 'Meditation', 'Social', 'Work', 'Hobbies', 'Rest'];
 
-                const storageKey = 'mood_logs_${param.role}';
                 const reminderKey = 'mood_reminders_${param.role}';
 
-                const moodOptionsContainer = document.getElementById('moodOptions');
-                const activityTagsContainer = document.getElementById('activityTags');
-                const noteField = document.getElementById('moodNote');
-                const logButton = document.getElementById('logMoodBtn');
-                const messageBox = document.getElementById('moodMessage');
-                const logList = document.getElementById('logList');
-                const trendChart = document.getElementById('trendChart');
-                const reminderList = document.getElementById('reminderList');
+                // Server-side data from database
+                let serverMoodLogs = [];
+                let serverMoodStats = { totalLogs: 0, averageMood: 0, dayStreak: 0 };
 
-                const averageMoodValue = document.getElementById('averageMoodValue');
-                const dayStreakValue = document.getElementById('dayStreakValue');
-                const totalLogsValue = document.getElementById('totalLogsValue');
-                const activeRemindersValue = document.getElementById('activeRemindersValue');
+                <%
+                    List < Map < String, Object >> moodLogs = (List < Map < String, Object >>) request.getAttribute("moodLogs");
+                Map < String, Object > moodStats = (Map < String, Object >) request.getAttribute("moodStats");
+                if (moodLogs != null && !moodLogs.isEmpty()) {
+                %>
+                        serverMoodLogs =[
+                    <% for (int i = 0; i < moodLogs.size(); i++) {
+                        Map < String, Object > log = moodLogs.get(i);
+                        String moodId = (String) log.get("mood");
+                        Integer moodScore = (Integer) log.get("mood_score");
+                        String activities = log.get("activities") != null ? (String) log.get("activities") : "";
+                        String note = log.get("note") != null ? ((String) log.get("note")).replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", " ") : "";
+                        java.sql.Timestamp createdAt = (java.sql.Timestamp) log.get("created_at");
+                    %>
+                            { mood: '<%= moodId %>', moodScore: <%= moodScore %>, activities: '<%= activities %>', note: '<%= note %>', timestamp: <%= createdAt != null ? createdAt.getTime() : 0 %> }<%= i < moodLogs.size() - 1 ? "," : "" %>
+                    <% } %>
+                ];
+                <% } 
+                    if (moodStats != null) {
+                        Object totalLogs = moodStats.get("totalLogs");
+                        Object averageMood = moodStats.get("averageMood");
+                        Object dayStreak = moodStats.get("dayStreak");
+                %>
+                    serverMoodStats = {
+                    totalLogs: <%= totalLogs != null ? totalLogs : 0 %>,
+                        averageMood: <%= averageMood != null ? averageMood : 0 %>,
+                            dayStreak: <%= dayStreak != null ? dayStreak : 0 %> 
+                };
+                <% } %>
 
-                const generateRemindersBtn = document.getElementById('generateRemindersBtn');
+                // Pre-process logs to add date property
+                serverMoodLogs.forEach(log => {
+                    log.date = new Date(log.timestamp).toISOString().split('T')[0];
+                });
 
-                let selectedMood = null;
-                const selectedActivities = new Set();
+            const moodOptionsContainer = document.getElementById('moodOptions');
+            const activityTagsContainer = document.getElementById('activityTags');
+            const noteField = document.getElementById('moodNote');
+            const logButton = document.getElementById('logMoodBtn');
+            const messageBox = document.getElementById('moodMessage');
+            const logList = document.getElementById('logList');
+            const trendChart = document.getElementById('trendChart');
+            const reminderList = document.getElementById('reminderList');
 
-                function renderMoodOptions() {
-                    moodOptionsContainer.innerHTML = '';
-                    moodOptions.forEach(option => {
-                        const button = document.createElement('button');
-                        button.type = 'button';
-                        button.className = 'mood-option';
-                        button.dataset.id = option.id;
-                        button.dataset.score = option.score;
-                        button.innerHTML = `<div style="font-size:26px;">\${option.emoji}</div><div style="margin-top:6px;font-weight:600;">\${option.label}</div>`;
-                        button.addEventListener('click', () => {
-                            selectedMood = option;
-                            document.querySelectorAll('.mood-option').forEach(btn => btn.classList.remove('active'));
-                            button.classList.add('active');
-                            hideMessage();
-                        });
-                        moodOptionsContainer.appendChild(button);
+            const averageMoodValue = document.getElementById('averageMoodValue');
+            const dayStreakValue = document.getElementById('dayStreakValue');
+            const totalLogsValue = document.getElementById('totalLogsValue');
+            const activeRemindersValue = document.getElementById('activeRemindersValue');
+
+            const generateRemindersBtn = document.getElementById('generateRemindersBtn');
+
+            let selectedMood = null;
+            const selectedActivities = new Set();
+
+            function renderMoodOptions() {
+                moodOptionsContainer.innerHTML = '';
+                moodOptions.forEach(option => {
+                    const button = document.createElement('button');
+                    button.type = 'button';
+                    button.className = 'mood-option';
+                    button.dataset.id = option.id;
+                    button.dataset.score = option.score;
+                    button.innerHTML = `<div style="font-size:26px;">\${option.emoji}</div><div style="margin-top:6px;font-weight:600;">\${option.label}</div>`;
+                    button.addEventListener('click', () => {
+                        selectedMood = option;
+                        document.querySelectorAll('.mood-option').forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        hideMessage();
                     });
-                }
+                    moodOptionsContainer.appendChild(button);
+                });
+            }
 
-                function renderActivityTags() {
-                    activityTagsContainer.innerHTML = '';
-                    activityOptions.forEach(label => {
-                        const tag = document.createElement('button');
-                        tag.type = 'button';
-                        tag.className = 'activity-tag';
-                        tag.textContent = label;
-                        tag.addEventListener('click', () => {
-                            if (selectedActivities.has(label)) {
-                                selectedActivities.delete(label);
-                                tag.classList.remove('active');
-                            } else {
-                                selectedActivities.add(label);
-                                tag.classList.add('active');
-                            }
-                        });
-                        activityTagsContainer.appendChild(tag);
-                    });
-                }
-
-                function getStoredLogs() {
-                    const value = localStorage.getItem(storageKey);
-                    if (!value) {
-                        return [];
-                    }
-                    try {
-                        return JSON.parse(value);
-                    } catch (err) {
-                        console.warn('Unable to parse mood logs', err);
-                        return [];
-                    }
-                }
-
-                function setStoredLogs(logs) {
-                    localStorage.setItem(storageKey, JSON.stringify(logs));
-                }
-
-                function getStoredReminders() {
-                    const value = localStorage.getItem(reminderKey);
-                    if (!value) {
-                        return [];
-                    }
-                    try {
-                        return JSON.parse(value);
-                    } catch (err) {
-                        console.warn('Unable to parse reminders', err);
-                        return [];
-                    }
-                }
-
-                function setStoredReminders(reminders) {
-                    localStorage.setItem(reminderKey, JSON.stringify(reminders));
-                }
-
-                function renderReminders() {
-                    const reminders = getStoredReminders();
-                    reminderList.innerHTML = '';
-                    if (reminders.length === 0) {
-                        reminderList.innerHTML = '<li>No reminders yet. Click "Generate Reminders" to create personalized suggestions.</li>';
-                    } else {
-                        reminders.forEach(text => {
-                            const li = document.createElement('li');
-                            li.textContent = text;
-                            reminderList.appendChild(li);
-                        });
-                    }
-                    activeRemindersValue.textContent = reminders.length;
-                }
-
-                function showMessage(text, type) {
-                    messageBox.textContent = text;
-                    messageBox.className = 'message';
-                    if (type === 'error') {
-                        messageBox.style.background = 'rgba(248,113,113,0.2)';
-                        messageBox.style.color = '#b91c1c';
-                    } else {
-                        messageBox.style.background = 'rgba(16,185,129,0.2)';
-                        messageBox.style.color = '#047857';
-                    }
-                }
-
-                function hideMessage() {
-                    messageBox.classList.add('hidden');
-                }
-
-                function logMood() {
-                    if (!selectedMood) {
-                        showMessage('Please select a mood before logging.', 'error');
-                        return;
-                    }
-                    const logs = getStoredLogs();
-                    const entry = {
-                        date: new Date().toISOString().split('T')[0],
-                        timestamp: Date.now(),
-                        mood: selectedMood,
-                        activities: Array.from(selectedActivities),
-                        note: noteField.value.trim()
-                    };
-                    logs.push(entry);
-                    setStoredLogs(logs);
-                    noteField.value = '';
-                    selectedActivities.clear();
-                    document.querySelectorAll('.activity-tag').forEach(tag => tag.classList.remove('active'));
-                    showMessage('Mood logged successfully!', 'success');
-                    updateDashboard();
-                }
-
-                function calculateStats(logs) {
-                    if (logs.length === 0) {
-                        return { averageMood: 0, dayStreak: 0 };
-                    }
-
-                    const totalScore = logs.reduce((sum, entry) => sum + entry.mood.score, 0);
-                    const averageScore = totalScore / logs.length;
-                    const averageMood = averageScore.toFixed(1);
-
-                    const uniqueDates = Array.from(new Set(logs.map(entry => entry.date))).sort((a, b) => b.localeCompare(a));
-                    let streak = 0;
-                    const today = new Date();
-                    for (let i = 0; i < uniqueDates.length; i++) {
-                        const date = new Date(uniqueDates[i]);
-                        const diffDays = Math.floor((today - date) / (1000 * 60 * 60 * 24));
-                        if (diffDays === i) {
-                            streak++;
+            function renderActivityTags() {
+                activityTagsContainer.innerHTML = '';
+                activityOptions.forEach(label => {
+                    const tag = document.createElement('button');
+                    tag.type = 'button';
+                    tag.className = 'activity-tag';
+                    tag.textContent = label;
+                    tag.addEventListener('click', () => {
+                        if (selectedActivities.has(label)) {
+                            selectedActivities.delete(label);
+                            tag.classList.remove('active');
                         } else {
+                            selectedActivities.add(label);
+                            tag.classList.add('active');
+                        }
+                    });
+                    activityTagsContainer.appendChild(tag);
+                });
+            }
+
+            function getStoredLogs() {
+                const value = localStorage.getItem(storageKey);
+                if (!value) {
+                    return [];
+                }
+                try {
+                    return JSON.parse(value);
+                } catch (err) {
+                    console.warn('Unable to parse mood logs', err);
+                    return [];
+                }
+            }
+
+            function setStoredLogs(logs) {
+                localStorage.setItem(storageKey, JSON.stringify(logs));
+            }
+
+            function getStoredReminders() {
+                const value = localStorage.getItem(reminderKey);
+                if (!value) {
+                    return [];
+                }
+                try {
+                    return JSON.parse(value);
+                } catch (err) {
+                    console.warn('Unable to parse reminders', err);
+                    return [];
+                }
+            }
+
+            function setStoredReminders(reminders) {
+                localStorage.setItem(reminderKey, JSON.stringify(reminders));
+            }
+
+            function renderReminders() {
+                const reminders = getStoredReminders();
+                reminderList.innerHTML = '';
+                if (reminders.length === 0) {
+                    reminderList.innerHTML = '<li>No reminders yet. Click "Generate Reminders" to create personalized suggestions.</li>';
+                } else {
+                    reminders.forEach(text => {
+                        const li = document.createElement('li');
+                        li.textContent = text;
+                        reminderList.appendChild(li);
+                    });
+                }
+                activeRemindersValue.textContent = reminders.length;
+            }
+
+            function showMessage(text, type) {
+                messageBox.textContent = text;
+                messageBox.className = 'message';
+                if (type === 'error') {
+                    messageBox.style.background = 'rgba(248,113,113,0.2)';
+                    messageBox.style.color = '#b91c1c';
+                } else {
+                    messageBox.style.background = 'rgba(16,185,129,0.2)';
+                    messageBox.style.color = '#047857';
+                }
+            }
+
+            function hideMessage() {
+                messageBox.classList.add('hidden');
+            }
+
+            function logMood() {
+                if (!selectedMood) {
+                    showMessage('Please select a mood before logging.', 'error');
+                    return;
+                }
+
+                // Send to backend to save to database
+                const formData = new URLSearchParams();
+                formData.append('role', '${param.role}' || 'student');
+                formData.append('mood', selectedMood.id);
+                formData.append('activities', Array.from(selectedActivities).join(','));
+                formData.append('note', noteField.value.trim());
+
+                // Get CSRF token
+                const csrfToken = document.querySelector('meta[name="_csrf"]');
+                const csrfHeader = document.querySelector('meta[name="_csrf_header"]');
+
+                fetch('${pageContext.request.contextPath}/mood/log', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        ...(csrfToken && csrfHeader ? { [csrfHeader.content]: csrfToken.content } : {})
+                    },
+                    body: formData.toString()
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            showMessage(data.message, 'success');
+                            // Update wellness score display
+                            const scorePill = document.querySelector('.score-pill strong');
+                            if (scorePill) {
+                                scorePill.textContent = data.wellnessPercent + ' / 100';
+                            }
+                            // Update stats from server response
+                            if (data.moodStats) {
+                                serverMoodStats = data.moodStats;
+                                totalLogsValue.textContent = serverMoodStats.totalLogs || 0;
+                                averageMoodValue.textContent = serverMoodStats.averageMood || 0;
+                                dayStreakValue.textContent = serverMoodStats.dayStreak || 0;
+                            }
+                            // Refresh the page to show updated logs from database
+                            setTimeout(() => window.location.reload(), 1000);
+                        } else {
+                            showMessage(data.message || 'Failed to log mood', 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error logging mood:', error);
+                        showMessage('Failed to save mood. Please try again.', 'error');
+                    });
+
+                // Reset form
+                noteField.value = '';
+                selectedActivities.clear();
+                document.querySelectorAll('.activity-tag').forEach(tag => tag.classList.remove('active'));
+            }
+
+            function calculateStats(logs) {
+                if (logs.length === 0) {
+                    return { averageMood: 0, dayStreak: 0 };
+                }
+
+                // Fix: mood is a string ID, moodScore is the number
+                const totalScore = logs.reduce((sum, entry) => sum + (entry.moodScore || 0), 0);
+                const averageScore = totalScore / logs.length;
+                const averageMood = averageScore.toFixed(1);
+
+                // Fix: derive date from timestamp
+                const uniqueDates = Array.from(new Set(logs.map(entry => {
+                    return entry.date || new Date(entry.timestamp).toISOString().split('T')[0];
+                }))).sort((a, b) => b.localeCompare(a));
+
+                let streak = 0;
+                const today = new Date();
+                const todayKey = today.toISOString().split('T')[0];
+
+                // Allow streak to start from today or yesterday
+                let current = new Date(today);
+
+                // Check up to 365 days back? Just iterate uniqueDates.
+                // But uniqueDates is sorted desc.
+                // 2026-01-13, 2026-01-12, ...
+
+                let checkDate = new Date(today);
+                for (let i = 0; i < uniqueDates.length; i++) {
+                    const dateKey = uniqueDates[i];
+                    const checkKey = checkDate.toISOString().split('T')[0];
+
+                    if (dateKey === checkKey) {
+                        streak++;
+                        checkDate.setDate(checkDate.getDate() - 1);
+                    } else if (i === 0 && dateKey !== checkKey) {
+                        // Maybe today wasn't logged yet, set checkDate to yesterday
+                        checkDate.setDate(checkDate.getDate() - 1);
+                        const yesterdayKey = checkDate.toISOString().split('T')[0];
+                        if (dateKey === yesterdayKey) {
+                            streak++;
+                            checkDate.setDate(checkDate.getDate() - 1);
+                        } else {
+                            // Streak broken
                             break;
                         }
-                    }
-
-                    return { averageMood, dayStreak: streak };
-                }
-
-                function renderTrend(logs) {
-                    trendChart.innerHTML = '';
-                    const today = new Date();
-                    for (let i = 6; i >= 0; i--) {
-                        const date = new Date(today);
-                        date.setDate(today.getDate() - i);
-                        const dateKey = date.toISOString().split('T')[0];
-                        const entries = logs.filter(entry => entry.date === dateKey);
-                        let heightPercent = 5;
-                        if (entries.length > 0) {
-                            const avg = entries.reduce((sum, entry) => sum + entry.mood.score, 0) / entries.length;
-                            heightPercent = (avg / 5) * 100;
-                        }
-                        const bar = document.createElement('div');
-                        bar.className = 'trend-bar';
-                        bar.style.height = Math.max(heightPercent, 8) + '%';
-                        bar.innerHTML = `<span>\${date.toLocaleDateString(undefined, { weekday: 'short' })}</span>`;
-                        trendChart.appendChild(bar);
+                    } else {
+                        break;
                     }
                 }
 
-                function renderLogs(logs) {
-                    logList.innerHTML = '';
-                    if (logs.length === 0) {
-                        logList.innerHTML = '<p style="color:#6c7b91;">Log your first mood to see it listed here.</p>';
-                        return;
-                    }
-                    const recent = logs.slice(-4).reverse();
-                    recent.forEach(entry => {
-                        const div = document.createElement('div');
-                        div.className = 'log-item';
-                        div.innerHTML = `
-                <div>
-                    <strong>\${entry.mood.emoji} \${entry.mood.label}</strong>
-                    <p style="margin:2px 0 0;color:#6c7b91;font-size:13px;">\${new Date(entry.timestamp).toLocaleString()}</p>
-                    <p style="margin:4px 0 0;font-size:13px;color:#4a5568;">\${entry.activities.join(', ') || 'No activity logged'}</p>
-                    \${entry.note ? `< p style = "margin:6px 0 0;color:#334155;" >“\${ entry.note }”</p > ` : ''}
-                </div>
-                <span style="font-weight:600;color:#6c7b91;">Score \${entry.mood.score}</span>
-            `;
-                        logList.appendChild(div);
+                return { averageMood, dayStreak: streak };
+            }
+
+            function renderTrend(logs) {
+                trendChart.innerHTML = '';
+                const today = new Date();
+                for (let i = 6; i >= 0; i--) {
+                    const date = new Date(today);
+                    date.setDate(today.getDate() - i);
+                    const dateKey = date.toISOString().split('T')[0];
+
+                    const entries = logs.filter(entry => {
+                        const entryDate = entry.date || new Date(entry.timestamp).toISOString().split('T')[0];
+                        return entryDate === dateKey;
                     });
-                }
 
-                function updateDashboard() {
-                    const logs = getStoredLogs();
-                    totalLogsValue.textContent = logs.length;
-                    const stats = calculateStats(logs);
-                    averageMoodValue.textContent = stats.averageMood;
-                    dayStreakValue.textContent = stats.dayStreak;
-                    renderTrend(logs);
-                    renderLogs(logs);
+                    let heightPercent = 5;
+                    if (entries.length > 0) {
+                        const avg = entries.reduce((sum, entry) => sum + (entry.moodScore || 0), 0) / entries.length;
+                        heightPercent = (avg / 5) * 100;
+                    }
+                    const bar = document.createElement('div');
+                    bar.className = 'trend-bar';
+                    bar.style.height = Math.max(heightPercent, 8) + '%';
+                    bar.innerHTML = `<span>\${date.toLocaleDateString(undefined, { weekday: 'short' })}</span>`;
+                    trendChart.appendChild(bar);
                 }
+            }
 
-                function generateReminders() {
-                    const reminders = [
-                        'Take a 10-minute mindful break when mood dips below “Okay”.',
-                        'Schedule an evening walk to maintain your positive streak.',
-                        'Reach out to your support buddy after two “Not Good” logs.'
-                    ];
-                    setStoredReminders(reminders);
-                    renderReminders();
+            function renderLogs(logs) {
+                logList.innerHTML = '';
+                if (logs.length === 0) {
+                    logList.innerHTML = '<p style="color:#6c7b91;">Log your first mood to see it listed here.</p>';
+                    return;
                 }
+                // Get the 4 most recent logs (already sorted by server)
+                const recent = logs.slice(0, 4);
+                recent.forEach(entry => {
+                    const div = document.createElement('div');
+                    div.className = 'log-item';
+                    // Find mood details from moodOptions
+                    const moodId = entry.mood || entry.mood_id;
+                    const moodDetails = moodOptions.find(m => m.id === moodId) || { emoji: '🙂', label: moodId, score: entry.moodScore || 3 };
+                    const activities = entry.activities || '';
+                    const note = entry.note || '';
+                    const timestamp = entry.timestamp || Date.now();
+                    div.innerHTML = `
+                <div>
+                    <strong>\${moodDetails.emoji} \${moodDetails.label}</strong>
+                    <p style="margin:2px 0 0;color:#6c7b91;font-size:13px;">\${new Date(timestamp).toLocaleString()}</p>
+                    <p style="margin:4px 0 0;font-size:13px;color:#4a5568;">\${activities || 'No activity logged'}</p>
+                    \${note ? `< p style = "margin:6px 0 0;color:#334155;" >\${ note }</p > ` : ''}
+                </div>
+                <span style="font-weight:600;color:#6c7b91;">Score \${moodDetails.score}</span>
+            `;
+                    logList.appendChild(div);
+                });
+            }
 
-                renderMoodOptions();
-                renderActivityTags();
+            function updateDashboard() {
+                // Use server-side data from database
+                totalLogsValue.textContent = serverMoodStats.totalLogs || 0;
+                averageMoodValue.textContent = serverMoodStats.averageMood || 0;
+                dayStreakValue.textContent = serverMoodStats.dayStreak || 0;
+                renderLogs(serverMoodLogs);
+                renderTrend(serverMoodLogs);
+            }
+
+            function generateReminders() {
+                const reminders = [
+                    'Take a 10-minute mindful break when mood dips below “Okay”.',
+                    'Schedule an evening walk to maintain your positive streak.',
+                    'Reach out to your support buddy after two “Not Good” logs.'
+                ];
+                setStoredReminders(reminders);
                 renderReminders();
-                updateDashboard();
+            }
 
-                logButton.addEventListener('click', logMood);
-                generateRemindersBtn.addEventListener('click', generateReminders);
-            })();
+            renderMoodOptions();
+            renderActivityTags();
+            renderReminders();
+            updateDashboard();
+
+            logButton.addEventListener('click', logMood);
+            generateRemindersBtn.addEventListener('click', generateReminders);
+            }) ();
         </script>
     </body>
 

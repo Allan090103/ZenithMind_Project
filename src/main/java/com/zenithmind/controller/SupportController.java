@@ -19,9 +19,10 @@ public class SupportController {
 
     @GetMapping("/support")
     public String support(@RequestParam(required = false, defaultValue = "student") String role,
-            Model model, HttpSession session) {
+            Model model, HttpSession session, java.security.Principal principal) {
 
-        Map<String, Object> userData = userService.getUserData(role);
+        String username = principal != null ? principal.getName() : "guest";
+        Map<String, Object> userData = userService.getUserDataByUsername(username, role);
         model.addAllAttributes(userData);
 
         User user = (User) session.getAttribute("user");

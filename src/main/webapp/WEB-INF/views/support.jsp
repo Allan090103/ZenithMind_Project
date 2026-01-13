@@ -458,7 +458,7 @@
                     </div>
                     <div class="search">
                         <input type="text" placeholder="Search for modules, resources, or support...">
-                        <div class="score-pill">Wellness Score: <strong>${wellnessScore} / 100</strong></div>
+                        <div class="score-pill">Wellness Score: <strong>${wellnessPercent} / 100</strong></div>
                     </div>
                 </div>
 

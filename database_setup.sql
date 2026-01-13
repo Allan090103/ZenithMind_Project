@@ -31,7 +31,8 @@ CREATE UNIQUE INDEX ix_auth_username ON authorities (username, authority);
 CREATE TABLE app_users (
   name VARCHAR(255) NOT NULL PRIMARY KEY,
   role VARCHAR(255),
-  points INT DEFAULT 0
+  points INT DEFAULT 0,
+  wellness_score INT DEFAULT 50
 );
 
 -- Create posts table

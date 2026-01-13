@@ -27,7 +27,7 @@ public class ForumController {
     @GetMapping
     public String viewForum(@RequestParam(required = false, defaultValue = "all") String category,
             @RequestParam(required = false) String search,
-            Model model, HttpSession session) {
+            Model model, HttpSession session, java.security.Principal principal) {
         User user = (User) session.getAttribute("user");
         String role = "student";
         if (user != null) {
@@ -40,7 +40,8 @@ public class ForumController {
             return "redirect:/dashboard?role=" + role;
         }
 
-        java.util.Map<String, Object> userData = userService.getUserData(role);
+        String username = principal != null ? principal.getName() : "guest";
+        java.util.Map<String, Object> userData = userService.getUserDataByUsername(username, role);
         model.addAllAttributes(userData);
 
         if (user == null) {

@@ -563,7 +563,8 @@
                                     </div>
 
                                     <div style="display:flex; gap:16px;">
-                                        <a href="?role=${param.role}&type=${selectedType}" class="btn btn-outline">Take
+                                        <a href="${selfAssessmentLink}&type=${selectedType}"
+                                            class="btn btn-outline">Take
                                             Another Assessment</a>
                                         <a href="${supportLink}" class="btn btn-primary">Get Support</a>
                                     </div>
@@ -574,6 +575,7 @@
                                         method="post">
                                         <input type="hidden" name="role" value="${param.role}" />
                                         <input type="hidden" name="type" value="${selectedType}" />
+                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
                                         <div class="card">
                                             <div class="card-header">

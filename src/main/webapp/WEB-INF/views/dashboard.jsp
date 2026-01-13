@@ -463,7 +463,7 @@
                     <div class="search">
                         <input type="text" placeholder="Search for modules, resources, or support...">
                         <div class="score-pill">Wellness Score: <strong>
-                                ${score} / 100
+                                ${wellnessPercent} / 100
                             </strong></div>
                     </div>
                 </div>
@@ -472,7 +472,7 @@
                     <div class="card highlight">
                         <small>Your Wellness Score</small>
                         <h2>
-                            ${score} / 100
+                            ${wellnessPercent} / 100
                         </h2>
                         <p style="margin:8px 0 14px;">
                             ${improvementNote}

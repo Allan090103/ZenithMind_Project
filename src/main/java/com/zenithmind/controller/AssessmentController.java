@@ -61,10 +61,11 @@ public class AssessmentController {
     @GetMapping("/self-assessment")
     public String selfAssessment(@RequestParam(required = false, defaultValue = "student") String role,
             @RequestParam(required = false, defaultValue = "stress") String type,
-            Model model, HttpSession session) {
+            Model model, HttpSession session, java.security.Principal principal) {
 
         // User & Sidebar Setup
-        Map<String, Object> userData = userService.getUserData(role);
+        String username = principal != null ? principal.getName() : "guest";
+        Map<String, Object> userData = userService.getUserDataByUsername(username, role);
         model.addAllAttributes(userData);
 
         User user = (User) session.getAttribute("user");
@@ -91,10 +92,11 @@ public class AssessmentController {
     public String submitAssessment(@RequestParam String role,
             @RequestParam String type,
             @RequestParam Map<String, String> allParams,
-            Model model, HttpSession session) {
+            Model model, HttpSession session, java.security.Principal principal) {
 
         // Restore Context
-        Map<String, Object> userData = userService.getUserData(role);
+        String username = principal != null ? principal.getName() : "guest";
+        Map<String, Object> userData = userService.getUserDataByUsername(username, role);
         model.addAllAttributes(userData);
         addSidebarLinks(model, role);
 
@@ -155,6 +157,15 @@ public class AssessmentController {
         model.addAttribute("severityColor", severityColor);
         model.addAttribute("severityUnsafeColor", severityUnsafeColor);
         model.addAttribute("severityDesc", severityDesc);
+
+        // Save assessment result to database
+        userService.saveAssessmentResult(username, type, percentage, severityLevel);
+
+        // Award points for completing assessment
+        userService.updateUserPoints(username, 10);
+
+        // Update wellness score in view
+        model.addAttribute("wellnessPercent", userService.getWellnessScore(username));
 
         return "self-assessment";
     }

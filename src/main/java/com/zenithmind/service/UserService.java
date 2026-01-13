@@ -12,6 +12,25 @@ import java.util.Map;
 @Service
 public class UserService {
 
+        @javax.annotation.PostConstruct
+        public void init() {
+                try {
+                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+                        jdbcTemplate.execute("ALTER TABLE app_users ADD COLUMN wellness_score INT DEFAULT 50");
+                        System.out.println("Migrated DB: Added wellness_score column.");
+                } catch (Exception e) {
+                        System.out.println("DB Migration check: " + e.getMessage());
+                }
+                try {
+                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+                        jdbcTemplate.update(
+                                        "UPDATE app_users SET wellness_score = 50 WHERE wellness_score = 0 OR wellness_score IS NULL");
+                        System.out.println("Migrated DB: Fixed 0 or NULL wellness_score values.");
+                } catch (Exception e) {
+                        System.out.println("DB Data fix check: " + e.getMessage());
+                }
+        }
+
         @Autowired
         private DataSource dataSource;
 
@@ -29,7 +48,7 @@ public class UserService {
                         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
                         // Query app_users table for user's actual data
-                        String sql = "SELECT name, role, points FROM app_users WHERE name = ? LIMIT 1";
+                        String sql = "SELECT name, role, points, wellness_score FROM app_users WHERE name = ? LIMIT 1";
 
                         try {
                                 Map<String, Object> userRow = jdbcTemplate.queryForMap(sql, username);
@@ -38,12 +57,19 @@ public class UserService {
                                 String name = (String) userRow.get("name");
                                 int points = userRow.get("points") != null ? ((Number) userRow.get("points")).intValue()
                                                 : 0;
+                                int wellnessScore = userRow.get("wellness_score") != null
+                                                ? ((Number) userRow.get("wellness_score")).intValue()
+                                                : 50;
+
+                                System.out.println(
+                                                "DEBUG: User " + username + " wellnessScore from DB: " + wellnessScore);
 
                                 data.put("name", name);
                                 data.put("email", username.toLowerCase().replace(" ", "") + "@student.edu");
                                 data.put("roleTitle", "Student");
                                 data.put("department", "Computer Science Department");
                                 data.put("score", points);
+                                data.put("wellnessScore", wellnessScore);
                                 data.put("improvementNote", "Welcome! Start your wellness journey");
                                 data.put("modulesCompleted", 0);
                                 data.put("dayStreak", 0);
@@ -59,6 +85,8 @@ public class UserService {
                                 });
 
                         } catch (Exception e) {
+                                System.err.println("Database lookup failed for " + username + ": " + e.getMessage());
+                                e.printStackTrace();
                                 // User not found in database, use username as fallback
                                 data.put("name", username);
                                 data.put("email", username.toLowerCase() + "@student.edu");
@@ -82,13 +110,16 @@ public class UserService {
 
                 } catch (Exception e) {
                         e.printStackTrace();
+                        System.err.println("Error fetching user data for " + username + ": " + e.getMessage());
                         // Return default data on error
                         return getUserData(role);
                 }
 
                 // Add common calculated fields
                 String avatarInitial = ((String) data.get("name")).substring(0, 1).toUpperCase();
-                int wellnessPercent = Math.min(100, Math.max(0, (int) data.get("score")));
+                // Use persisted wellness score
+                int wellnessPercent = data.containsKey("wellnessScore") ? (int) data.get("wellnessScore")
+                                : Math.min(100, Math.max(0, (int) data.get("score")));
                 int goalCompleted = (int) data.get("goalCompleted");
                 int goalTarget = (int) data.get("goalTarget");
                 int goalPercent = (int) Math.round((goalCompleted * 100.0) / goalTarget);
@@ -248,5 +279,211 @@ public class UserService {
                 data.put("goalPercent", goalPercent);
 
                 return data;
+        }
+
+        /**
+         * Update user points by adding the specified amount
+         * 
+         * @param username    The username to update
+         * @param pointsToAdd The number of points to add
+         * @return true if update was successful, false otherwise
+         */
+        public boolean updateUserPoints(String username, int pointsToAdd) {
+                try {
+                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+                        String sql = "UPDATE app_users SET points = points + ? WHERE name = ?";
+                        int rowsAffected = jdbcTemplate.update(sql, pointsToAdd, username);
+                        return rowsAffected > 0;
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        return false;
+                }
+        }
+
+        /**
+         * Get current points for a user
+         * 
+         * @param username The username to query
+         * @return Current points, or 0 if user not found
+         */
+        public int getUserPoints(String username) {
+                try {
+                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+                        String sql = "SELECT points FROM app_users WHERE name = ? LIMIT 1";
+                        Integer points = jdbcTemplate.queryForObject(sql, Integer.class, username);
+                        return points != null ? points : 0;
+                } catch (Exception e) {
+                        return 0;
+                }
+        }
+
+        /**
+         * Save a mood log entry to the database
+         */
+        public boolean saveMoodLog(String username, String mood, int moodScore, String activities, String note) {
+                try {
+                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+                        String sql = "INSERT INTO mood_logs (username, mood, mood_score, activities, note, log_date) VALUES (?, ?, ?, ?, ?, CURDATE())";
+                        int rowsAffected = jdbcTemplate.update(sql, username, mood, moodScore, activities, note);
+
+                        if (rowsAffected > 0) {
+                                calculateAndSaveWellnessScore(username);
+                                return true;
+                        }
+                        return false;
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        return false;
+                }
+        }
+
+        /**
+         * Get recent mood logs for a user
+         */
+        public java.util.List<Map<String, Object>> getMoodLogsByUsername(String username, int limit) {
+                try {
+                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+                        String sql = "SELECT id, mood, mood_score, activities, note, log_date, created_at FROM mood_logs WHERE username = ? ORDER BY created_at DESC LIMIT ?";
+                        return jdbcTemplate.queryForList(sql, username, limit);
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        return new java.util.ArrayList<>();
+                }
+        }
+
+        /**
+         * Get mood statistics for a user
+         */
+        public Map<String, Object> getMoodStats(String username) {
+                Map<String, Object> stats = new HashMap<>();
+                try {
+                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+                        // Total logs
+                        String countSql = "SELECT COUNT(*) FROM mood_logs WHERE username = ?";
+                        Integer totalLogs = jdbcTemplate.queryForObject(countSql, Integer.class, username);
+                        stats.put("totalLogs", totalLogs != null ? totalLogs : 0);
+
+                        // Average mood score
+                        String avgSql = "SELECT AVG(mood_score) FROM mood_logs WHERE username = ?";
+                        Double avgMood = jdbcTemplate.queryForObject(avgSql, Double.class, username);
+                        stats.put("averageMood", avgMood != null ? Math.round(avgMood * 10.0) / 10.0 : 0.0);
+
+                        // Day streak (consecutive days with logs)
+                        String streakSql = "SELECT COUNT(DISTINCT log_date) FROM mood_logs WHERE username = ? AND log_date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
+                        Integer streak = jdbcTemplate.queryForObject(streakSql, Integer.class, username);
+                        stats.put("dayStreak", streak != null ? streak : 0);
+
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        stats.put("totalLogs", 0);
+                        stats.put("averageMood", 0.0);
+                        stats.put("dayStreak", 0);
+                }
+                return stats;
+        }
+
+        /**
+         * Save an assessment result to the database
+         */
+        public boolean saveAssessmentResult(String username, String assessmentType, int score, String severityLevel) {
+                try {
+                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+                        String sql = "INSERT INTO assessment_results (username, assessment_type, score, severity_level) VALUES (?, ?, ?, ?)";
+                        int rowsAffected = jdbcTemplate.update(sql, username, assessmentType, score, severityLevel);
+
+                        if (rowsAffected > 0) {
+                                calculateAndSaveWellnessScore(username);
+                                return true;
+                        }
+                        return false;
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        return false;
+                }
+        }
+
+        /**
+         * Calculate and update wellness score based on mood and assessment
+         */
+        public void calculateAndSaveWellnessScore(String username) {
+                try {
+                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+                        // 1. Get Average Mood Score (Last 7 Days)
+                        // Normalize 1-5 to 0-100
+                        String moodSql = "SELECT AVG(mood_score) FROM mood_logs WHERE username = ? AND log_date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
+                        Double avgMood = jdbcTemplate.queryForObject(moodSql, Double.class, username);
+
+                        Integer moodComponent = null;
+                        if (avgMood != null) {
+                                moodComponent = (int) Math.round((avgMood / 5.0) * 100);
+                        }
+
+                        // 2. Get Latest Assessment Result
+                        // Score comes as 0-100 (Symptom Severity). We want Wellness, so 100 - Severity.
+                        String assessmentSql = "SELECT score FROM assessment_results WHERE username = ? ORDER BY created_at DESC LIMIT 1";
+                        Integer assessmentSeverity = null;
+                        try {
+                                assessmentSeverity = jdbcTemplate.queryForObject(assessmentSql, Integer.class,
+                                                username);
+                        } catch (org.springframework.dao.EmptyResultDataAccessException e) {
+                                // No assessment found
+                        }
+
+                        Integer assessmentComponent = null;
+                        if (assessmentSeverity != null) {
+                                assessmentComponent = 100 - assessmentSeverity;
+                        }
+
+                        // 3. Calculate Weighted Average
+                        int newScore = 50; // Default
+
+                        if (moodComponent != null && assessmentComponent != null) {
+                                newScore = (moodComponent + assessmentComponent) / 2;
+                        } else if (moodComponent != null) {
+                                newScore = moodComponent;
+                        } else if (assessmentComponent != null) {
+                                newScore = assessmentComponent;
+                        }
+
+                        // Clamp 0-100
+                        newScore = Math.min(100, Math.max(0, newScore));
+
+                        // 4. Update Database
+                        String updateSql = "UPDATE app_users SET wellness_score = ? WHERE name = ?";
+                        jdbcTemplate.update(updateSql, newScore, username);
+
+                } catch (Exception e) {
+                        e.printStackTrace();
+                }
+        }
+
+        /**
+         * Get assessment results for a user
+         */
+        public java.util.List<Map<String, Object>> getAssessmentResultsByUsername(String username) {
+                try {
+                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+                        String sql = "SELECT id, assessment_type, score, severity_level, created_at FROM assessment_results WHERE username = ? ORDER BY created_at DESC";
+                        return jdbcTemplate.queryForList(sql, username);
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        return new java.util.ArrayList<>();
+                }
+        }
+
+        /**
+         * Get current wellness score for a user
+         */
+        public int getWellnessScore(String username) {
+                try {
+                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+                        String sql = "SELECT wellness_score FROM app_users WHERE name = ? LIMIT 1";
+                        Integer score = jdbcTemplate.queryForObject(sql, Integer.class, username);
+                        return score != null ? score : 50;
+                } catch (Exception e) {
+                        return 50;
+                }
         }
 }

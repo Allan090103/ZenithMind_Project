@@ -20,8 +20,9 @@ public class FacultyController {
     @Autowired
     private UserService userService;
 
-    private void setupFacultyContext(String role, Model model, HttpSession session) {
-        Map<String, Object> userData = userService.getUserData(role);
+    private void setupFacultyContext(String role, Model model, HttpSession session, java.security.Principal principal) {
+        String username = principal != null ? principal.getName() : "guest";
+        Map<String, Object> userData = userService.getUserDataByUsername(username, role);
         model.addAllAttributes(userData);
 
         User user = (User) session.getAttribute("user");
@@ -41,24 +42,24 @@ public class FacultyController {
 
     @GetMapping("/training")
     public String training(@RequestParam(required = false, defaultValue = "faculty") String role,
-            Model model, HttpSession session) {
-        setupFacultyContext(role, model, session);
+            Model model, HttpSession session, java.security.Principal principal) {
+        setupFacultyContext(role, model, session, principal);
         model.addAttribute("activeSection", "training");
         return "faculty-training";
     }
 
     @GetMapping("/guides")
     public String guides(@RequestParam(required = false, defaultValue = "faculty") String role,
-            Model model, HttpSession session) {
-        setupFacultyContext(role, model, session);
+            Model model, HttpSession session, java.security.Principal principal) {
+        setupFacultyContext(role, model, session, principal);
         model.addAttribute("activeSection", "guides");
         return "faculty-guides";
     }
 
     @GetMapping("/report")
     public String reportForm(@RequestParam(required = false, defaultValue = "faculty") String role,
-            Model model, HttpSession session) {
-        setupFacultyContext(role, model, session);
+            Model model, HttpSession session, java.security.Principal principal) {
+        setupFacultyContext(role, model, session, principal);
         model.addAttribute("activeSection", "report");
         return "faculty-report";
     }
@@ -69,8 +70,8 @@ public class FacultyController {
             @RequestParam String description,
             @RequestParam String urgency,
             @RequestParam(required = false, defaultValue = "faculty") String role,
-            Model model, HttpSession session) {
-        setupFacultyContext(role, model, session);
+            Model model, HttpSession session, java.security.Principal principal) {
+        setupFacultyContext(role, model, session, principal);
         model.addAttribute("activeSection", "report");
         model.addAttribute("submitted", true);
         model.addAttribute("confirmationId", "REF-" + System.currentTimeMillis());
