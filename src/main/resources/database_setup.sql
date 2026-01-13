@@ -1,6 +1,3 @@
-CREATE DATABASE IF NOT EXISTS zenithmind_db;
-USE zenithmind_db;
-
 -- Drop existing tables if they exist to start fresh
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS authorities;
@@ -13,29 +10,29 @@ DROP TABLE IF EXISTS users;
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- Create users table for Spring Security
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
   username VARCHAR(50) NOT NULL PRIMARY KEY,
   password VARCHAR(500) NOT NULL,
   enabled TINYINT(1) NOT NULL
 );
 
 -- Create authorities table for Spring Security
-CREATE TABLE authorities (
+CREATE TABLE IF NOT EXISTS authorities (
   username VARCHAR(50) NOT NULL,
   authority VARCHAR(50) NOT NULL,
   CONSTRAINT fk_authorities_users FOREIGN KEY (username) REFERENCES users(username)
 );
-CREATE UNIQUE INDEX ix_auth_username ON authorities (username, authority);
+CREATE UNIQUE INDEX IF NOT EXISTS ix_auth_username ON authorities (username, authority);
 
 -- Create app_users table for user profiles
-CREATE TABLE app_users (
+CREATE TABLE IF NOT EXISTS app_users (
   name VARCHAR(255) NOT NULL PRIMARY KEY,
   role VARCHAR(255),
   points INT DEFAULT 0
 );
 
 -- Create posts table
-CREATE TABLE posts (
+CREATE TABLE IF NOT EXISTS posts (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(255),
   content TEXT,
@@ -51,7 +48,7 @@ CREATE TABLE posts (
 );
 
 -- Create comments table
-CREATE TABLE comments (
+CREATE TABLE IF NOT EXISTS comments (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
   post_id BIGINT,
   author VARCHAR(255),
@@ -62,7 +59,7 @@ CREATE TABLE comments (
 );
 
 -- Create post_liked_by_users table (Many-to-Many for likedByUsers Set)
-CREATE TABLE post_liked_by_users (
+CREATE TABLE IF NOT EXISTS post_liked_by_users (
   post_id BIGINT NOT NULL,
   user_id VARCHAR(255) NOT NULL,
   PRIMARY KEY (post_id, user_id),
@@ -70,7 +67,7 @@ CREATE TABLE post_liked_by_users (
 );
 
 -- Create module_contents table
-CREATE TABLE module_contents (
+CREATE TABLE IF NOT EXISTS module_contents (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
   slug VARCHAR(255) UNIQUE,
   title VARCHAR(255),
@@ -86,11 +83,6 @@ CREATE TABLE module_contents (
 );
 
 -- Seed Initial Users (Security)
--- These will be handled by SecurityConfig's JdbcUserDetailsManager if they don't exist,
--- but adding them here for manual setup convenience.
--- Using {bcrypt}$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.TVuHOn2 for 'password' (plain 'student', 'admin', etc in code)
--- Actually, the code uses User.withDefaultPasswordEncoder() which is {bcrypt} for current Spring Security versions.
-
 INSERT IGNORE INTO app_users (name, role, points) VALUES ('student', 'STUDENT', 100);
 INSERT IGNORE INTO app_users (name, role, points) VALUES ('admin', 'ADMIN', 500);
 INSERT IGNORE INTO app_users (name, role, points) VALUES ('faculty', 'FACULTY', 200);

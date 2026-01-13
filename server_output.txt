@@ -1,0 +1,191 @@
+Starting server... 
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< com.zenithmind:zenithmind >----------------------
+[INFO] Building ZenithMind 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ war ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:2.7.14:run (default-cli) > test-compile @ zenithmind >>>
+[WARNING] The artifact mysql:mysql-connector-java:jar:8.0.33 has been relocated to com.mysql:mysql-connector-j:jar:8.0.33: MySQL Connector/J artifacts moved to reverse-DNS compliant Maven 2+ coordinates.
+[INFO] 
+[INFO] --- resources:3.2.0:resources (default-resources) @ zenithmind ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Using 'UTF-8' encoding to copy filtered properties files.
+[INFO] Copying 1 resource
+[INFO] Copying 2 resources
+[INFO] 
+[INFO] --- compiler:3.10.1:compile (default-compile) @ zenithmind ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 23 source files to c:\Users\User\Work\zenithmind\target\classes
+[INFO] /c:/Users/User/Work/zenithmind/src/main/java/com/zenithmind/config/SecurityConfig.java: Some input files use or override a deprecated API.
+[INFO] /c:/Users/User/Work/zenithmind/src/main/java/com/zenithmind/config/SecurityConfig.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- resources:3.2.0:testResources (default-testResources) @ zenithmind ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Using 'UTF-8' encoding to copy filtered properties files.
+[INFO] Copying 0 resource
+[INFO] 
+[INFO] --- compiler:3.10.1:testCompile (default-testCompile) @ zenithmind ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 2 source files to c:\Users\User\Work\zenithmind\target\test-classes
+[INFO] 
+[INFO] <<< spring-boot:2.7.14:run (default-cli) < test-compile @ zenithmind <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:2.7.14:run (default-cli) @ zenithmind ---
+[INFO] Attaching agents: []
+16:03:19.960 [Thread-0] DEBUG org.springframework.boot.devtools.restart.classloader.RestartClassLoader - Created RestartClassLoader org.springframework.boot.devtools.restart.classloader.RestartClassLoader@34b2f916
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::               (v2.7.14)
+
+2026-01-13 16:03:20.697  INFO 3600 --- [  restartedMain] com.zenithmind.ZenithMindApplication     : Starting ZenithMindApplication using Java 17.0.16 on DESKTOP-T0R9KB9 with PID 3600 (C:\Users\User\Work\zenithmind\target\classes started by User in c:\Users\User\Work\zenithmind)
+2026-01-13 16:03:20.700  INFO 3600 --- [  restartedMain] com.zenithmind.ZenithMindApplication     : No active profile set, falling back to 1 default profile: "default"
+2026-01-13 16:03:20.796  INFO 3600 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-01-13 16:03:20.796  INFO 3600 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-01-13 16:03:22.762  INFO 3600 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2026-01-13 16:03:22.762  INFO 3600 --- [  restartedMain] o.a.catalina.core.AprLifecycleListener   : Loaded Apache Tomcat Native library [1.3.1] using APR version [1.7.4].
+2026-01-13 16:03:22.763  INFO 3600 --- [  restartedMain] o.a.catalina.core.AprLifecycleListener   : APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true], UDS [true].
+2026-01-13 16:03:22.763  INFO 3600 --- [  restartedMain] o.a.catalina.core.AprLifecycleListener   : APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2026-01-13 16:03:22.786  INFO 3600 --- [  restartedMain] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 3.0.14 4 Jun 2024]
+2026-01-13 16:03:22.803  INFO 3600 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-01-13 16:03:22.803  INFO 3600 --- [  restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.78]
+2026-01-13 16:03:23.245  INFO 3600 --- [  restartedMain] org.apache.jasper.servlet.TldScanner     : At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2026-01-13 16:03:23.258  INFO 3600 --- [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-01-13 16:03:23.258  INFO 3600 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2461 ms
+2026-01-13 16:03:23.532  INFO 3600 --- [  restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:mysql://localhost:3307/zenithmind_db?createDatabaseIfNotExist=true'
+2026-01-13 16:03:23.752  INFO 3600 --- [  restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.6.15.Final
+2026-01-13 16:03:24.021  INFO 3600 --- [  restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2026-01-13 16:03:24.186  INFO 3600 --- [  restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2026-01-13 16:03:25.020  INFO 3600 --- [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2026-01-13 16:03:25.120  WARN 3600 --- [  restartedMain] o.s.security.core.userdetails.User       : User.withDefaultPasswordEncoder() is considered unsafe for production and is only intended for sample applications.
+2026-01-13 16:03:25.272  WARN 3600 --- [  restartedMain] o.s.security.core.userdetails.User       : User.withDefaultPasswordEncoder() is considered unsafe for production and is only intended for sample applications.
+2026-01-13 16:03:25.397  WARN 3600 --- [  restartedMain] o.s.security.core.userdetails.User       : User.withDefaultPasswordEncoder() is considered unsafe for production and is only intended for sample applications.
+2026-01-13 16:03:25.505  WARN 3600 --- [  restartedMain] o.s.security.core.userdetails.User       : User.withDefaultPasswordEncoder() is considered unsafe for production and is only intended for sample applications.
+2026-01-13 16:03:25.703  INFO 3600 --- [  restartedMain] o.s.s.p.JdbcUserDetailsManager           : No authentication manager set. Reauthentication of users when changing passwords will not be performed.
+2026-01-13 16:03:25.825  INFO 3600 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@21dc73d3, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@49341e32, org.springframework.security.web.context.SecurityContextPersistenceFilter@15635c2d, org.springframework.security.web.header.HeaderWriterFilter@4343a13b, org.springframework.security.web.csrf.CsrfFilter@1c804f12, org.springframework.security.web.authentication.logout.LogoutFilter@6d9956c1, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@2428893f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1f548f47, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@43c987c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@57bfaeb5, org.springframework.security.web.session.SessionManagementFilter@2179f541, org.springframework.security.web.access.ExceptionTranslationFilter@ee186bb, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@5347fdc2]
+2026-01-13 16:03:25.845  WARN 3600 --- [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-01-13 16:03:26.148  INFO 3600 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-01-13 16:03:26.202  INFO 3600 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2026-01-13 16:03:26.212  INFO 3600 --- [  restartedMain] com.zenithmind.ZenithMindApplication     : Started ZenithMindApplication in 6.234 seconds (JVM running for 7.012)
+2026-01-13 16:03:35.978  INFO 3600 --- [nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-01-13 16:03:35.978  INFO 3600 --- [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-01-13 16:03:35.979  INFO 3600 --- [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-01-13 16:04:12.901  WARN 3600 --- [nio-8081-exec-2] o.s.web.servlet.PageNotFound             : No mapping for GET /favicon.ico
+2026-01-13 16:21:37.075  INFO 3600 --- [   File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2026-01-13 16:21:37.282  INFO 3600 --- [       Thread-5] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2026-01-13 16:21:37.324  INFO 3600 --- [       Thread-5] o.a.c.c.C.[Tomcat].[localhost].[/]       : Destroying Spring FrameworkServlet 'dispatcherServlet'
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::               (v2.7.14)
+
+2026-01-13 16:21:37.981  INFO 3600 --- [  restartedMain] com.zenithmind.ZenithMindApplication     : Starting ZenithMindApplication using Java 17.0.16 on DESKTOP-T0R9KB9 with PID 3600 (C:\Users\User\Work\zenithmind\target\classes started by User in c:\Users\User\Work\zenithmind)
+2026-01-13 16:21:37.982  INFO 3600 --- [  restartedMain] com.zenithmind.ZenithMindApplication     : No active profile set, falling back to 1 default profile: "default"
+2026-01-13 16:21:38.425  INFO 3600 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2026-01-13 16:21:38.426  INFO 3600 --- [  restartedMain] o.a.catalina.core.AprLifecycleListener   : Loaded Apache Tomcat Native library [1.3.1] using APR version [1.7.4].
+2026-01-13 16:21:38.426  INFO 3600 --- [  restartedMain] o.a.catalina.core.AprLifecycleListener   : APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true], UDS [true].
+2026-01-13 16:21:38.426  INFO 3600 --- [  restartedMain] o.a.catalina.core.AprLifecycleListener   : APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2026-01-13 16:21:38.439  INFO 3600 --- [  restartedMain] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 3.0.14 4 Jun 2024]
+2026-01-13 16:21:38.440  INFO 3600 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-01-13 16:21:38.440  INFO 3600 --- [  restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.78]
+2026-01-13 16:21:38.604  INFO 3600 --- [  restartedMain] org.apache.jasper.servlet.TldScanner     : At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2026-01-13 16:21:38.605  INFO 3600 --- [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-01-13 16:21:38.606  INFO 3600 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 618 ms
+2026-01-13 16:21:38.632  INFO 3600 --- [  restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:mysql://localhost:3307/zenithmind_db?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false'
+2026-01-13 16:21:38.676  WARN 3600 --- [  restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataSourceInitializer' defined in class path resource [com/zenithmind/config/HibernateConfig.class]: Invocation of init method failed; nested exception is org.springframework.jdbc.datasource.init.CannotReadScriptException: Cannot read SQL script from class path resource [database_setup.sql]; nested exception is java.io.FileNotFoundException: class path resource [database_setup.sql] cannot be opened because it does not exist
+2026-01-13 16:21:38.676  INFO 3600 --- [  restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2026-01-13 16:21:38.685  INFO 3600 --- [  restartedMain] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2026-01-13 16:21:38.717 ERROR 3600 --- [  restartedMain] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataSourceInitializer' defined in class path resource [com/zenithmind/config/HibernateConfig.class]: Invocation of init method failed; nested exception is org.springframework.jdbc.datasource.init.CannotReadScriptException: Cannot read SQL script from class path resource [database_setup.sql]; nested exception is java.io.FileNotFoundException: class path resource [database_setup.sql] cannot be opened because it does not exist
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1804) ~[spring-beans-5.3.29.jar:5.3.29]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:620) ~[spring-beans-5.3.29.jar:5.3.29]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.29.jar:5.3.29]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.29.jar:5.3.29]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.29.jar:5.3.29]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.29.jar:5.3.29]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.29.jar:5.3.29]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:955) ~[spring-beans-5.3.29.jar:5.3.29]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:921) ~[spring-context-5.3.29.jar:5.3.29]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583) ~[spring-context-5.3.29.jar:5.3.29]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:147) ~[spring-boot-2.7.14.jar:2.7.14]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:731) ~[spring-boot-2.7.14.jar:2.7.14]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:408) ~[spring-boot-2.7.14.jar:2.7.14]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307) ~[spring-boot-2.7.14.jar:2.7.14]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1303) ~[spring-boot-2.7.14.jar:2.7.14]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1292) ~[spring-boot-2.7.14.jar:2.7.14]
+	at com.zenithmind.ZenithMindApplication.main(ZenithMindApplication.java:17) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-2.7.14.jar:2.7.14]
+Caused by: org.springframework.jdbc.datasource.init.CannotReadScriptException: Cannot read SQL script from class path resource [database_setup.sql]; nested exception is java.io.FileNotFoundException: class path resource [database_setup.sql] cannot be opened because it does not exist
+	at org.springframework.jdbc.datasource.init.ScriptUtils.executeSqlScript(ScriptUtils.java:239) ~[spring-jdbc-5.3.29.jar:5.3.29]
+	at org.springframework.jdbc.datasource.init.ResourceDatabasePopulator.populate(ResourceDatabasePopulator.java:254) ~[spring-jdbc-5.3.29.jar:5.3.29]
+	at org.springframework.jdbc.datasource.init.DatabasePopulatorUtils.execute(DatabasePopulatorUtils.java:54) ~[spring-jdbc-5.3.29.jar:5.3.29]
+	at org.springframework.jdbc.datasource.init.DataSourceInitializer.execute(DataSourceInitializer.java:111) ~[spring-jdbc-5.3.29.jar:5.3.29]
+	at org.springframework.jdbc.datasource.init.DataSourceInitializer.afterPropertiesSet(DataSourceInitializer.java:96) ~[spring-jdbc-5.3.29.jar:5.3.29]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1863) ~[spring-beans-5.3.29.jar:5.3.29]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1800) ~[spring-beans-5.3.29.jar:5.3.29]
+	... 21 common frames omitted
+Caused by: java.io.FileNotFoundException: class path resource [database_setup.sql] cannot be opened because it does not exist
+	at org.springframework.core.io.ClassPathResource.getInputStream(ClassPathResource.java:203) ~[spring-core-5.3.29.jar:5.3.29]
+	at org.springframework.core.io.support.EncodedResource.getReader(EncodedResource.java:146) ~[spring-core-5.3.29.jar:5.3.29]
+	at org.springframework.jdbc.datasource.init.ScriptUtils.readScript(ScriptUtils.java:328) ~[spring-jdbc-5.3.29.jar:5.3.29]
+	at org.springframework.jdbc.datasource.init.ScriptUtils.executeSqlScript(ScriptUtils.java:236) ~[spring-jdbc-5.3.29.jar:5.3.29]
+	... 27 common frames omitted
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::               (v2.7.14)
+
+2026-01-13 16:22:31.343  INFO 3600 --- [  restartedMain] com.zenithmind.ZenithMindApplication     : Starting ZenithMindApplication using Java 17.0.16 on DESKTOP-T0R9KB9 with PID 3600 (C:\Users\User\Work\zenithmind\target\classes started by User in c:\Users\User\Work\zenithmind)
+2026-01-13 16:22:31.343  INFO 3600 --- [  restartedMain] com.zenithmind.ZenithMindApplication     : No active profile set, falling back to 1 default profile: "default"
+2026-01-13 16:22:31.571  INFO 3600 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+2026-01-13 16:22:31.572  INFO 3600 --- [  restartedMain] o.a.catalina.core.AprLifecycleListener   : Loaded Apache Tomcat Native library [1.3.1] using APR version [1.7.4].
+2026-01-13 16:22:31.572  INFO 3600 --- [  restartedMain] o.a.catalina.core.AprLifecycleListener   : APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true], UDS [true].
+2026-01-13 16:22:31.572  INFO 3600 --- [  restartedMain] o.a.catalina.core.AprLifecycleListener   : APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2026-01-13 16:22:31.572  INFO 3600 --- [  restartedMain] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 3.0.14 4 Jun 2024]
+2026-01-13 16:22:31.573  INFO 3600 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-01-13 16:22:31.573  INFO 3600 --- [  restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.78]
+2026-01-13 16:22:31.665  INFO 3600 --- [  restartedMain] org.apache.jasper.servlet.TldScanner     : At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2026-01-13 16:22:31.668  INFO 3600 --- [  restartedMain] o.a.c.c.C.[Tomcat-1].[localhost].[/]     : Initializing Spring embedded WebApplicationContext
+2026-01-13 16:22:31.668  INFO 3600 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 322 ms
+2026-01-13 16:22:31.677  INFO 3600 --- [  restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:mysql://localhost:3307/zenithmind_db?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false'
+2026-01-13 16:22:31.850  INFO 3600 --- [  restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+Hibernate: alter table comments add column timeAgo varchar(255)
+Hibernate: alter table module_contents add column buttonLabel varchar(255)
+Hibernate: alter table module_contents add column currentSection integer not null
+Hibernate: alter table posts add column authorId varchar(255)
+Hibernate: alter table posts add column timeAgo varchar(255)
+2026-01-13 16:22:31.990  INFO 3600 --- [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2026-01-13 16:22:32.003  WARN 3600 --- [  restartedMain] o.s.security.core.userdetails.User       : User.withDefaultPasswordEncoder() is considered unsafe for production and is only intended for sample applications.
+2026-01-13 16:22:32.090  WARN 3600 --- [  restartedMain] o.s.security.core.userdetails.User       : User.withDefaultPasswordEncoder() is considered unsafe for production and is only intended for sample applications.
+2026-01-13 16:22:32.176  WARN 3600 --- [  restartedMain] o.s.security.core.userdetails.User       : User.withDefaultPasswordEncoder() is considered unsafe for production and is only intended for sample applications.
+2026-01-13 16:22:32.261  WARN 3600 --- [  restartedMain] o.s.security.core.userdetails.User       : User.withDefaultPasswordEncoder() is considered unsafe for production and is only intended for sample applications.
+2026-01-13 16:22:32.407  INFO 3600 --- [  restartedMain] o.s.s.p.JdbcUserDetailsManager           : No authentication manager set. Reauthentication of users when changing passwords will not be performed.
+2026-01-13 16:22:32.415  INFO 3600 --- [  restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@baf1fe6, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4dcc5abb, org.springframework.security.web.context.SecurityContextPersistenceFilter@16154b0b, org.springframework.security.web.header.HeaderWriterFilter@699e2c44, org.springframework.security.web.csrf.CsrfFilter@3001f02c, org.springframework.security.web.authentication.logout.LogoutFilter@3c9fd5a1, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@6304b991, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@63af682c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7b4b9411, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@12b22d35, org.springframework.security.web.session.SessionManagementFilter@29aa5e82, org.springframework.security.web.access.ExceptionTranslationFilter@87fb60b, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@fda1f68]
+2026-01-13 16:22:32.420  WARN 3600 --- [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-01-13 16:22:32.490  INFO 3600 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-01-13 16:22:32.499  INFO 3600 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+2026-01-13 16:22:32.504  INFO 3600 --- [  restartedMain] com.zenithmind.ZenithMindApplication     : Started ZenithMindApplication in 1.219 seconds (JVM running for 1153.304)
+2026-01-13 16:22:32.506  INFO 3600 --- [  restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
