@@ -60,6 +60,22 @@ public class UserService {
                 } catch (Exception e) {
                         System.out.println("DB assessment_results check: " + e.getMessage());
                 }
+
+                // Ensure user_module_progress table exists
+                try {
+                        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS user_module_progress (" +
+                                        "id BIGINT AUTO_INCREMENT PRIMARY KEY," +
+                                        "username VARCHAR(50) NOT NULL," +
+                                        "module_slug VARCHAR(100) NOT NULL," +
+                                        "current_section INT DEFAULT 1," +
+                                        "status VARCHAR(20) DEFAULT 'start'," +
+                                        "updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP," +
+                                        "UNIQUE KEY unique_user_module (username, module_slug)" +
+                                        ")");
+                        System.out.println("Migrated DB: Ensured user_module_progress table exists.");
+                } catch (Exception e) {
+                        System.out.println("DB user_module_progress check: " + e.getMessage());
+                }
         }
 
         @Autowired
@@ -102,7 +118,9 @@ public class UserService {
                                 data.put("score", points);
                                 data.put("wellnessScore", wellnessScore);
                                 data.put("improvementNote", "Welcome! Start your wellness journey");
-                                data.put("modulesCompleted", 0);
+                                // Fetch actual completed modules count
+                                int completedModules = getCompletedModulesCount(username);
+                                data.put("modulesCompleted", completedModules);
                                 data.put("dayStreak", 0);
                                 data.put("goalDescription", "Complete 3 modules this week");
                                 data.put("goalCompleted", 0);
@@ -125,7 +143,9 @@ public class UserService {
                                 data.put("department", "Computer Science Department");
                                 data.put("score", 0);
                                 data.put("improvementNote", "Welcome! Start your wellness journey");
-                                data.put("modulesCompleted", 0);
+                                // Fetch actual completed modules count
+                                int completedModules = getCompletedModulesCount(username);
+                                data.put("modulesCompleted", completedModules);
                                 data.put("dayStreak", 0);
                                 data.put("goalDescription", "Complete 3 modules this week");
                                 data.put("goalCompleted", 0);
@@ -515,6 +535,69 @@ public class UserService {
                         return score != null ? score : 50;
                 } catch (Exception e) {
                         return 50;
+                }
+        }
+
+        /**
+         * Save or update module progress
+         */
+        public void saveModuleProgress(String username, String moduleSlug, int currentSection, String status) {
+                try {
+                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+                        String sql = "INSERT INTO user_module_progress (username, module_slug, current_section, status) "
+                                        +
+                                        "VALUES (?, ?, ?, ?) " +
+                                        "ON DUPLICATE KEY UPDATE current_section = ?, status = ?";
+                        jdbcTemplate.update(sql, username, moduleSlug, currentSection, status, currentSection, status);
+                } catch (Exception e) {
+                        e.printStackTrace();
+                }
+        }
+
+        /**
+         * Get progress for a specific module
+         */
+        public Map<String, Object> getModuleProgress(String username, String moduleSlug) {
+                try {
+                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+                        String sql = "SELECT current_section, status FROM user_module_progress WHERE username = ? AND module_slug = ?";
+                        return jdbcTemplate.queryForMap(sql, username, moduleSlug);
+                } catch (Exception e) {
+                        return null; // No progress found
+                }
+        }
+
+        /**
+         * Get all module progress for a user
+         */
+        public Map<String, Map<String, Object>> getAllModuleProgress(String username) {
+                Map<String, Map<String, Object>> progressMap = new HashMap<>();
+                try {
+                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+                        String sql = "SELECT module_slug, current_section, status FROM user_module_progress WHERE username = ?";
+                        java.util.List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, username);
+
+                        for (Map<String, Object> row : rows) {
+                                String slug = (String) row.get("module_slug");
+                                progressMap.put(slug, row);
+                        }
+                } catch (Exception e) {
+                        e.printStackTrace();
+                }
+                return progressMap;
+        }
+
+        /**
+         * Get count of completed modules
+         */
+        public int getCompletedModulesCount(String username) {
+                try {
+                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+                        String sql = "SELECT COUNT(*) FROM user_module_progress WHERE username = ? AND status = 'done'";
+                        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, username);
+                        return count != null ? count : 0;
+                } catch (Exception e) {
+                        return 0;
                 }
         }
 }

@@ -556,13 +556,26 @@
                                         <div>Video Player</div>
                                         <div style="font-size:13px;font-weight:400;">Video content would play here</div>
                                     </div>
-                                    <div class="detail-actions">
-                                        <button class="prev" ${activeModule.currentSection==1 ? 'disabled' : ''
-                                            }>Previous</button>
-                                        <button class="next">${activeModule.currentSection ==
-                                            fn:length(activeModule.sections) ?
-                                            'Finish' : 'Next'}</button>
-                                    </div>
+                                    <form action="modules/progress" method="post" class="detail-actions">
+                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                        <input type="hidden" name="module" value="${activeModule.slug}" />
+                                        <input type="hidden" name="role" value="${param.role}" />
+
+                                        <button type="submit" name="action" value="prev" class="prev"
+                                            ${activeModule.currentSection==1 ? 'disabled' : '' }>Previous</button>
+
+                                        <c:choose>
+                                            <c:when
+                                                test="${activeModule.currentSection == fn:length(activeModule.sections)}">
+                                                <button type="submit" name="action" value="finish"
+                                                    class="next">Finish</button>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <button type="submit" name="action" value="next"
+                                                    class="next">Next</button>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </form>
                                 </div>
                             </c:when>
                             <c:otherwise>
