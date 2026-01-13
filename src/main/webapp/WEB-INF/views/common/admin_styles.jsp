@@ -60,54 +60,59 @@
         .user-card {
             background: linear-gradient(135deg, rgba(0, 179, 199, 0.08), rgba(80, 157, 255, 0.1));
             border-radius: 18px;
-            padding: 20px;
+            padding: 24px;
+            text-align: left;
         }
 
         .user-card .avatar {
-            width: 54px;
-            height: 54px;
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
             background: #dbefff;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 600;
             color: #3c74f6;
-            margin-bottom: 10px;
+            margin-bottom: 16px;
         }
 
         .user-card .name {
-            font-size: 18px;
-            font-weight: 600;
+            font-size: 20px;
+            font-weight: 700;
             color: var(--dark);
-        }
-
-        .user-card .email {
-            font-size: 13px;
             margin-bottom: 4px;
         }
 
+        .user-card .email {
+            font-size: 14px;
+            margin-bottom: 4px;
+            color: #4c5d70;
+        }
+
         .user-card .dept {
-            font-size: 13px;
-            margin-bottom: 10px;
-            color: #627189;
+            font-size: 14px;
+            margin-bottom: 16px;
+            color: #64748b;
         }
 
         .badge {
-            display: inline-flex;
-            padding: 4px 12px;
+            display: inline-block;
+            width: 100%;
+            padding: 10px 16px;
             border-radius: 12px;
-            background: linear-gradient(135deg, #f59e0b, #d97706);
+            background: #f59e0b;
             color: #fff;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 600;
+            text-align: center;
         }
 
         nav {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 12px;
         }
 
         nav a {
@@ -127,14 +132,19 @@
             color: #fff;
         }
 
+        nav a.active .icon {
+            background: #fff;
+            color: var(--teal);
+        }
+
         nav a:hover:not(.active) {
             background: rgba(0, 178, 199, 0.08);
         }
 
         .icon {
-            width: 22px;
-            height: 22px;
-            border-radius: 6px;
+            width: 24px;
+            height: 24px;
+            border-radius: 8px;
             background: rgba(255, 255, 255, 0.4);
             color: inherit;
             display: inline-flex;

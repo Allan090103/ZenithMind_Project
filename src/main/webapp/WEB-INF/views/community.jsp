@@ -75,17 +75,46 @@
                     padding: 20px;
                 }
 
+                .user-card .avatar {
+                    width: 54px;
+                    height: 54px;
+                    border-radius: 50%;
+                    background: #dbefff;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 24px;
+                    font-weight: 600;
+                    color: #3c74f6;
+                    margin-bottom: 10px;
+                }
+
                 .user-card .name {
                     font-size: 18px;
                     font-weight: 600;
                     color: var(--dark);
                 }
 
-                .user-card .role {
-                    font-size: 12px;
-                    color: #64748b;
-                    margin-top: 4px;
+                .user-card .email {
+                    font-size: 13px;
+                    margin-bottom: 4px;
                     display: block;
+                }
+
+                .user-card .dept {
+                    font-size: 13px;
+                    margin-bottom: 10px;
+                    color: #627189;
+                }
+
+                .role-badge {
+                    display: inline-flex;
+                    padding: 4px 12px;
+                    border-radius: 12px;
+                    background: #2563eb;
+                    color: #fff;
+                    font-size: 12px;
+                    font-weight: 600;
                 }
 
                 nav {
@@ -560,7 +589,7 @@
                         <div class="dept">
                             ${department}
                         </div>
-                        <span class="badge">
+                        <span class="role-badge">
                             ${roleTitle}
                         </span>
                     </div>

@@ -38,7 +38,7 @@
                         <div class="name">${name}</div>
                         <div class="email">${email}</div>
                         <div class="dept">${department}</div>
-                        <span class="badge">${roleTitle}</span>
+                        <span class="badge">Faculty Member</span>
                     </div>
 
                     <nav>

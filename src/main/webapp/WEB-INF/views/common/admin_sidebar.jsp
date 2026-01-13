@@ -34,7 +34,7 @@
                 ${department}
             </div>
             <span class="badge">
-                ${roleTitle}
+                Administrator
             </span>
         </div>
 
