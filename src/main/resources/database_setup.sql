@@ -124,3 +124,23 @@ CREATE TABLE IF NOT EXISTS assessment_results (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_assessment_results_users FOREIGN KEY (username) REFERENCES users(username)
 );
+
+-- Create appointments table
+CREATE TABLE IF NOT EXISTS appointments (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  student_username VARCHAR(50) NOT NULL,
+  counselor_username VARCHAR(50) NOT NULL,
+  appt_date DATE NOT NULL,
+  appt_time VARCHAR(50) NOT NULL,
+  status VARCHAR(20) DEFAULT 'Pending',
+  type VARCHAR(50) DEFAULT 'Video Call',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_appt_student FOREIGN KEY (student_username) REFERENCES users(username),
+  CONSTRAINT fk_appt_counselor FOREIGN KEY (counselor_username) REFERENCES users(username)
+);
+
+-- Seed Counselor Aisyah
+INSERT IGNORE INTO users (username, password, enabled) VALUES ('aisyah@wellness.org', '{noop}password', 1);
+INSERT IGNORE INTO authorities (username, authority) VALUES ('aisyah@wellness.org', 'COUNSELOR');
+INSERT IGNORE INTO app_users (name, role, points, wellness_score) VALUES ('Aisyah', 'COUNSELOR', 0, 85);
+

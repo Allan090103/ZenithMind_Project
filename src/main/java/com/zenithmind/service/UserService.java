@@ -76,6 +76,27 @@ public class UserService {
                 } catch (Exception e) {
                         System.out.println("DB user_module_progress check: " + e.getMessage());
                 }
+
+                // Ensure appointments table exists
+                try {
+                        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS appointments (" +
+                                        "id BIGINT AUTO_INCREMENT PRIMARY KEY," +
+                                        "student_username VARCHAR(50) NOT NULL," +
+                                        "counselor_username VARCHAR(50) NOT NULL," +
+                                        "appt_date DATE NOT NULL," +
+                                        "appt_time VARCHAR(50) NOT NULL," +
+                                        "status VARCHAR(20) DEFAULT 'Pending'," +
+                                        "type VARCHAR(50) DEFAULT 'Video Call'," +
+                                        "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
+                                        "CONSTRAINT fk_appt_student FOREIGN KEY (student_username) REFERENCES users(username),"
+                                        +
+                                        "CONSTRAINT fk_appt_counselor FOREIGN KEY (counselor_username) REFERENCES users(username)"
+                                        +
+                                        ")");
+                        System.out.println("Migrated DB: Ensured appointments table exists.");
+                } catch (Exception e) {
+                        System.out.println("DB appointments check: " + e.getMessage());
+                }
         }
 
         @Autowired
@@ -598,6 +619,45 @@ public class UserService {
                         return count != null ? count : 0;
                 } catch (Exception e) {
                         return 0;
+                }
+        }
+
+        public boolean bookAppointment(String studentUsername, String counselorUsername, String date, String time) {
+                try {
+                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+                        String sql = "INSERT INTO appointments (student_username, counselor_username, appt_date, appt_time) VALUES (?, ?, ?, ?)";
+                        int rowsAffected = jdbcTemplate.update(sql, studentUsername, counselorUsername, date, time);
+                        return rowsAffected > 0;
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        return false;
+                }
+        }
+
+        /**
+         * Get appointments for a counselor
+         */
+        public java.util.List<Map<String, Object>> getAppointmentsForCounselor(String counselorUsername) {
+                try {
+                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+                        // Join with app_users to get student name
+                        String sql = "SELECT a.id, a.appt_time, u.name as student_name, a.type, a.status, a.appt_date "
+                                        +
+                                        "FROM appointments a " +
+                                        "LEFT JOIN app_users u ON a.student_username = u.name " + // Changed to LEFT
+                                                                                                  // JOIN for debugging
+                                        "WHERE a.counselor_username = ? AND a.appt_date >= CURDATE() " +
+                                        "ORDER BY a.appt_date ASC, a.appt_time ASC";
+                        System.out.println("DEBUG: UserService - Fetching appointments for: " + counselorUsername);
+                        java.util.List<Map<String, Object>> results = jdbcTemplate.queryForList(sql, counselorUsername);
+                        System.out.println("DEBUG: UserService - Query returned " + results.size() + " rows");
+                        for (Map<String, Object> row : results) {
+                                System.out.println("DEBUG: Row: " + row);
+                        }
+                        return results;
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        return new java.util.ArrayList<>();
                 }
         }
 }

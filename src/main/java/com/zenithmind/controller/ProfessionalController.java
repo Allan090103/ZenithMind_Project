@@ -49,9 +49,31 @@ public class ProfessionalController {
 
     @GetMapping("/telehealth")
     public String telehealth(@RequestParam(required = false, defaultValue = "professional") String role,
-            Model model, HttpSession session) {
+            Model model, HttpSession session, java.security.Principal principal) {
         setupProfessionalContext(role, model, session);
         model.addAttribute("activeSection", "telehealth");
+
+        if (principal != null) {
+            String username = principal.getName();
+            System.out.println("DEBUG: ProfessionalController - Logged in as: " + username);
+
+            // Fetch real appointments
+            java.util.List<Map<String, Object>> appts = userService.getAppointmentsForCounselor(username);
+            System.out.println("DEBUG: ProfessionalController - Appointments found: " + appts.size());
+
+            // Transform to List<String[]> as expected by JSP
+            java.util.List<String[]> formattedAppts = new java.util.ArrayList<>();
+            for (Map<String, Object> a : appts) {
+                formattedAppts.add(new String[] {
+                        (String) a.get("appt_time"),
+                        (String) a.get("student_name"),
+                        (String) a.get("type"),
+                        (String) a.get("status"),
+                        a.get("appt_date").toString()
+                });
+            }
+            model.addAttribute("appointments", formattedAppts);
+        }
         return "telehealth";
     }
 

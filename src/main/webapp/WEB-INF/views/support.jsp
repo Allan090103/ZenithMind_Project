@@ -5,6 +5,8 @@
     <head>
         <meta charset="UTF-8">
         <title>ZenithMind | Virtual Support</title>
+        <meta name="_csrf" content="${_csrf.token}" />
+        <meta name="_csrf_header" content="${_csrf.headerName}" />
         <style>
             :root {
                 --teal: #00b3c7;
@@ -560,10 +562,10 @@
 
                 const counselors = [
                     {
-                        initials: 'SJ',
-                        name: 'Dr. Sarah Johnson',
-                        specialty: 'Anxiety & Stress Management',
-                        rating: 4.9,
+                        initials: 'A',
+                        name: 'Aisyah',
+                        specialty: 'Mental Health Professional',
+                        rating: 5.0,
                         availability: ['Mon 9AM-5PM', 'Wed 9AM-5PM', 'Fri 9AM-5PM']
                     },
                     {
@@ -579,7 +581,8 @@
                         specialty: 'Student Life & Academic Stress',
                         rating: 4.9,
                         availability: ['Mon 1PM-5PM', 'Tue 9AM-3PM', 'Wed 1PM-5PM', 'Fri 9AM-3PM']
-                    }
+                    },
+
                 ];
 
                 let upcomingSessions = [
@@ -691,10 +694,37 @@
                     if (!time) {
                         return;
                     }
-                    upcomingSessions.push({ counselor: counselor.name, date, time, status: 'Pending' });
-                    alert('Session requested. We will confirm shortly!');
-                    renderSessions();
-                    switchTab(document.querySelector('[data-tab="sessions"]'));
+
+                    const token = document.querySelector("meta[name='_csrf']").getAttribute("content");
+                    const header = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+
+                    let targetUsername = counselor.name;
+                    if (counselor.name === 'Aisyah') targetUsername = 'counselor';
+
+                    // Call API to book
+                    fetch('/api/appointments/book', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            [header]: token
+                        },
+                        body: `counselor=\${encodeURIComponent(targetUsername)}&date=\${encodeURIComponent(date)}&time=\${encodeURIComponent(time)}`
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                // Add local optimistic update
+                                upcomingSessions.push({ counselor: counselor.name, date, time, status: 'Pending' });
+                                alert('Session requested successfully! Check your Telehealth dashboard.');
+                                renderSessions();
+                                switchTab(document.querySelector('[data-tab="sessions"]'));
+                            } else {
+                                alert('Failed to book session. Please try again.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('An error occurred. Please try again.');
+                        });
                 }
 
                 function renderSessions() {

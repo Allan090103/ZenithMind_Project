@@ -64,13 +64,19 @@
                             <div>
                                 <div class="card">
                                     <div class="card-header">
-                                        <h2 class="card-title">Today's Appointments</h2>
-                                        <span style="font-size:13px; color:var(--text);">December 18, 2025</span>
+                                        <h2 class="card-title">Active Appointments</h2>
+                                        <span style="font-size:13px; color:var(--text);">
+                                            <%= new java.text.SimpleDateFormat("MMMM dd, yyyy").format(new
+                                                java.util.Date()) %>
+                                        </span>
                                     </div>
                                     <div class="card-body" style="padding-top:0;">
                                         <c:forEach var="appt" items="${appointments}">
                                             <div class="appt-item">
-                                                <div class="appt-time">${appt[0]}</div>
+                                                <div class="appt-time">
+                                                    <div>${appt[4]}</div>
+                                                    <div style="font-size:12px;color:#64748b;">${appt[0]}</div>
+                                                </div>
                                                 <div class="appt-info">
                                                     <span class="appt-name">${appt[1]}</span>
                                                     <span class="appt-type">${appt[2]} • ${appt[3]}</span>
