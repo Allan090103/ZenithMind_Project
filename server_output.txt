@@ -14315,3 +14315,83 @@ DEBUG: User student wellnessScore from DB: 50
 DEBUG: User student wellnessScore from DB: 50
 DEBUG: User student wellnessScore from DB: 50
 DEBUG: User student wellnessScore from DB: 50
+DEBUG: User student wellnessScore from DB: 50
+DEBUG: User student wellnessScore from DB: 50
+DEBUG: User counselor wellnessScore from DB: 50
+DEBUG: ProfessionalController - Logged in as: counselor
+DEBUG: UserService - Fetching appointments for: counselor
+DEBUG: UserService - Query returned 2 rows
+DEBUG: Row: {id=7, appt_time=2:00 PM, student_name=student, type=Video Call, status=Pending, appt_date=2026-01-14}
+DEBUG: Row: {id=8, appt_time=2:00 PM, student_name=student, type=Video Call, status=Pending, appt_date=2026-01-14}
+DEBUG: ProfessionalController - Appointments found: 2
+DEBUG: ProfessionalController - Logged in as: counselor
+DEBUG: UserService - Fetching appointments for: counselor
+DEBUG: UserService - Query returned 0 rows
+DEBUG: ProfessionalController - Appointments found: 0
+DEBUG: User student wellnessScore from DB: 50
+DEBUG: User student wellnessScore from DB: 50
+DEBUG: User student wellnessScore from DB: 50
+DEBUG: User student wellnessScore from DB: 50
+DEBUG: User student wellnessScore from DB: 50
+DEBUG: User student wellnessScore from DB: 50
+DEBUG: User student wellnessScore from DB: 50
+DEBUG: User student wellnessScore from DB: 50
+DEBUG: User student wellnessScore from DB: 50
+DEBUG: User student wellnessScore from DB: 50
+DEBUG: User student wellnessScore from DB: 50
+DEBUG: User student wellnessScore from DB: 50
+DEBUG: User student wellnessScore from DB: 53
+DEBUG: User student wellnessScore from DB: 53
+DEBUG: User student wellnessScore from DB: 53
+DEBUG: User student wellnessScore from DB: 53
+DEBUG: User student wellnessScore from DB: 76
+DEBUG: User student wellnessScore from DB: 76
+DEBUG: User student wellnessScore from DB: 76
+DEBUG: User student wellnessScore from DB: 76
+DEBUG: User student wellnessScore from DB: 76
+DEBUG: User counselor wellnessScore from DB: 50
+DEBUG: ProfessionalController - Logged in as: counselor
+DEBUG: UserService - Fetching appointments for: counselor
+DEBUG: UserService - Query returned 1 rows
+DEBUG: Row: {id=9, appt_time=1:00 PM, student_name=student, type=Video Call, status=Pending, appt_date=2026-01-14}
+DEBUG: ProfessionalController - Appointments found: 1
+2026-01-14 00:19:58.566  WARN 3600 --- [nio-8081-exec-7] o.s.security.core.userdetails.User       : User.withDefaultPasswordEncoder() is considered unsafe for production and is only intended for sample applications.
+DEBUG: User Rex wellnessScore from DB: 50
+DEBUG: User Rex wellnessScore from DB: 50
+DEBUG: User Rex wellnessScore from DB: 50
+DEBUG: User Rex wellnessScore from DB: 50
+DEBUG: User Rex wellnessScore from DB: 50
+DEBUG: User Rex wellnessScore from DB: 50
+DEBUG: User Rex wellnessScore from DB: 50
+DEBUG: User Rex wellnessScore from DB: 50
+DEBUG: User Rex wellnessScore from DB: 50
+DEBUG: User Rex wellnessScore from DB: 50
+DEBUG: User Rex wellnessScore from DB: 50
+DEBUG: User Rex wellnessScore from DB: 50
+DEBUG: User Rex wellnessScore from DB: 13
+DEBUG: User Rex wellnessScore from DB: 13
+DEBUG: User Rex wellnessScore from DB: 13
+DEBUG: User Rex wellnessScore from DB: 36
+DEBUG: User Rex wellnessScore from DB: 36
+DEBUG: User Rex wellnessScore from DB: 36
+DEBUG: User counselor wellnessScore from DB: 50
+DEBUG: ProfessionalController - Logged in as: counselor
+DEBUG: UserService - Fetching appointments for: counselor
+DEBUG: UserService - Query returned 2 rows
+DEBUG: Row: {id=9, appt_time=1:00 PM, student_name=student, type=Video Call, status=Pending, appt_date=2026-01-14}
+DEBUG: Row: {id=10, appt_time=2:30 PM, student_name=Rex, type=Video Call, status=Pending, appt_date=2026-01-14}
+DEBUG: ProfessionalController - Appointments found: 2
+DEBUG: User student wellnessScore from DB: 76
+DEBUG: User student wellnessScore from DB: 76
+DEBUG: User student wellnessScore from DB: 76
+DEBUG: User student wellnessScore from DB: 76
+DEBUG: User student wellnessScore from DB: 76
+DEBUG: User counselor wellnessScore from DB: 50
+DEBUG: ProfessionalController - Logged in as: counselor
+DEBUG: UserService - Fetching appointments for: counselor
+DEBUG: UserService - Query returned 2 rows
+DEBUG: Row: {id=9, appt_time=1:00 PM, student_name=student, type=Video Call, status=Pending, appt_date=2026-01-14}
+DEBUG: Row: {id=10, appt_time=2:30 PM, student_name=Rex, type=Video Call, status=Pending, appt_date=2026-01-14}
+DEBUG: ProfessionalController - Appointments found: 2
+DEBUG: User student wellnessScore from DB: 76
+DEBUG: User student wellnessScore from DB: 76

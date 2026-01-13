@@ -713,10 +713,11 @@
                         .then(response => {
                             if (response.ok) {
                                 // Add local optimistic update
-                                upcomingSessions.push({ counselor: counselor.name, date, time, status: 'Pending' });
-                                alert('Session requested successfully! Check your Telehealth dashboard.');
+                                upcomingSessions.push({ counselor: counselor.name, date, time, status: 'Confirmed' }); // Changed status to Confirmed to match user screenshot style
+                                alert('Session requested successfully!');
                                 renderSessions();
-                                switchTab(document.querySelector('[data-tab="sessions"]'));
+                                // Switch to "My Sessions" tab
+                                switchTab(document.querySelector('.tab[data-tab="sessions"]'));
                             } else {
                                 alert('Failed to book session. Please try again.');
                             }
