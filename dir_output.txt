@@ -1,0 +1,29 @@
+ Volume in drive C is OS
+ Volume Serial Number is F618-534E
+
+ Directory of c:\Users\User\Work\zenithmind
+
+01/18/2026  04:14 AM    <DIR>          .
+12/19/2025  03:54 PM    <DIR>          ..
+12/18/2025  07:13 AM    <DIR>          .agent
+01/12/2026  02:07 AM             2,357 .classpath
+12/18/2025  07:13 AM               125 .gitignore
+12/19/2025  02:11 PM             1,546 .project
+12/17/2025  09:12 PM    <DIR>          .qodo
+12/19/2025  02:11 PM    <DIR>          .settings
+12/18/2025  07:57 AM    <DIR>          .vscode
+01/13/2026  08:51 PM             4,678 database_setup.sql
+01/18/2026  04:14 AM                 0 dir_output.txt
+01/12/2026  05:12 PM               217 java.log
+01/12/2026  05:12 PM               337 mvn.log
+01/12/2026  02:07 AM             3,781 pom.xml
+01/12/2026  05:12 PM               168 port.log
+12/17/2025  09:03 PM                20 README.md
+01/13/2026  04:02 PM               141 runner.bat
+01/14/2026  10:26 AM         1,695,242 server_output.txt
+12/17/2025  01:39 PM    <DIR>          src
+01/07/2026  02:22 AM    <DIR>          target
+01/12/2026  05:12 PM               312 test_env.bat
+01/13/2026  05:55 PM               425 update_wellness_column.sql
+              14 File(s)      1,709,349 bytes
+               8 Dir(s)  69,284,487,168 bytes free

@@ -75,11 +75,12 @@
                             <div style="display:flex; justify-content:space-between; align-items:center;">
                                 <div>
                                     <div style="font-size:14px; opacity:0.9; margin-bottom:8px;">Your Progress</div>
-                                    <div style="font-size:32px; font-weight:700;">2 of 4 Completed</div>
+                                    <div style="font-size:32px; font-weight:700;">${completedCount} of ${totalModules}
+                                        Completed</div>
                                 </div>
                                 <div
                                     style="width:120px; height:120px; border-radius:50%; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-size:36px; font-weight:700;">
-                                    50%
+                                    ${progressPercent}%
                                 </div>
                             </div>
                         </div>
@@ -112,13 +113,29 @@
                                                         Completed</span>
                                                 </c:when>
                                                 <c:when test="${module[3] == 'In Progress'}">
-                                                    <button class="btn btn-primary"
-                                                        style="padding:8px 24px;">Continue</button>
+                                                    <form action="/faculty/training/progress" method="post"
+                                                        style="display:inline;">
+                                                        <input type="hidden" name="module" value="${module[4]}">
+                                                        <input type="hidden" name="action" value="finish">
+                                                        <input type="hidden" name="role" value="faculty">
+                                                        <input type="hidden" name="${_csrf.parameterName}"
+                                                            value="${_csrf.token}" />
+                                                        <button type="submit" class="btn btn-primary"
+                                                            style="padding:8px 24px;">Complete Module</button>
+                                                    </form>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <button class="btn"
-                                                        style="padding:8px 24px; background:#fff; border:1px solid var(--border);">Start
-                                                        Module</button>
+                                                    <form action="/faculty/training/progress" method="post"
+                                                        style="display:inline;">
+                                                        <input type="hidden" name="module" value="${module[4]}">
+                                                        <input type="hidden" name="action" value="start">
+                                                        <input type="hidden" name="role" value="faculty">
+                                                        <input type="hidden" name="${_csrf.parameterName}"
+                                                            value="${_csrf.token}" />
+                                                        <button type="submit" class="btn"
+                                                            style="padding:8px 24px; background:#fff; border:1px solid var(--border);">Start
+                                                            Module</button>
+                                                    </form>
                                                 </c:otherwise>
                                             </c:choose>
                                         </div>
@@ -148,7 +165,7 @@
                                     <p style="margin:0; color:#166534; line-height:1.6;">Complete all 4 training modules
                                         to receive your Mental Health Awareness Certificate.</p>
                                 </div>
-                                <div style="font-size:24px; font-weight:700; color:#15803d;">50%</div>
+                                <div style="font-size:24px; font-weight:700; color:#15803d;">${progressPercent}%</div>
                             </div>
                         </div>
                     </div>

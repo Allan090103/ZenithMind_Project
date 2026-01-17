@@ -179,6 +179,7 @@ public class AssessmentController {
         model.addAttribute("communityLink", "/forum");
         model.addAttribute("moodLink", "/mood?" + roleSuffix);
         model.addAttribute("supportLink", "/support?" + roleSuffix);
+        model.addAttribute("profileSettingsLink", "/profile-settings?" + roleSuffix);
     }
 
     // Inner Class for Assessment Data

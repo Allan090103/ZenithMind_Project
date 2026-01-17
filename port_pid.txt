@@ -1,0 +1,6 @@
+  TCP    0.0.0.0:8081           0.0.0.0:0              LISTENING       14292
+  TCP    [::]:8081              [::]:0                 LISTENING       14292
+  TCP    [::1]:8081             [::1]:58187            ESTABLISHED     14292
+  TCP    [::1]:8081             [::1]:64500            ESTABLISHED     14292
+  TCP    [::1]:58187            [::1]:8081             ESTABLISHED     10532
+  TCP    [::1]:64500            [::1]:8081             ESTABLISHED     10532

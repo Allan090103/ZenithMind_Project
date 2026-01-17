@@ -37,6 +37,7 @@ public class ProfessionalController {
         model.addAttribute("monitoringLink", "/professional/monitoring?" + roleSuffix);
         model.addAttribute("resourcesLink", "/professional/resources?" + roleSuffix);
         model.addAttribute("communityLink", "/forum");
+        model.addAttribute("profileSettingsLink", "/profile-settings?" + roleSuffix);
     }
 
     @GetMapping("/cases")

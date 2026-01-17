@@ -39,6 +39,7 @@ public class SupportController {
         model.addAttribute("communityLink", "/forum");
         model.addAttribute("moodLink", "/mood?" + roleSuffix);
         model.addAttribute("supportLink", "/support?" + roleSuffix);
+        model.addAttribute("profileSettingsLink", "/profile-settings?" + roleSuffix);
 
         return "support";
     }

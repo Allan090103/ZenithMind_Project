@@ -71,8 +71,8 @@
                     <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:24px; margin-bottom:24px;">
                         <div class="stat-card">
                             <div class="stat-label">Training Completed</div>
-                            <div class="stat-value">2/4</div>
-                            <div class="stat-trend"><span>↑</span> 50% complete</div>
+                            <div class="stat-value">${completedCount}/${totalModules}</div>
+                            <div class="stat-trend"><span>↑</span> ${progressPercent}% complete</div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-label">Concerns Reported</div>
@@ -98,45 +98,44 @@
                                 </div>
                                 <div class="card-body">
                                     <div style="display:flex; flex-direction:column; gap:16px;">
-                                        <div style="padding:16px; border:1px solid var(--border); border-radius:12px;">
+                                        <c:forEach var="module" items="${trainingModules}" end="1">
                                             <div
-                                                style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                                                <div>
-                                                    <div style="font-weight:600; color:var(--dark); margin-bottom:4px;">
-                                                        Mental Health Literacy</div>
-                                                    <div style="font-size:13px; color:#64748b;">45 min • Understanding
-                                                        common conditions</div>
-                                                </div>
-                                                <span
-                                                    style="padding:4px 12px; background:#dcfce7; color:#15803d; border-radius:12px; font-size:12px; font-weight:600;">✓
-                                                    Completed</span>
-                                            </div>
-                                            <div style="width:100%; height:6px; background:#e5e7eb; border-radius:3px;">
+                                                style="padding:16px; border:1px solid var(--border); border-radius:12px;">
                                                 <div
-                                                    style="width:100%; height:100%; background:#15803d; border-radius:3px;">
+                                                    style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                                                    <div>
+                                                        <div
+                                                            style="font-weight:600; color:var(--dark); margin-bottom:4px;">
+                                                            ${module[0]}</div>
+                                                        <div style="font-size:13px; color:#64748b;">${module[2]} •
+                                                            ${module[1]}</div>
+                                                    </div>
+                                                    <c:choose>
+                                                        <c:when test="${module[3] == 'Completed'}">
+                                                            <span
+                                                                style="padding:4px 12px; background:#dcfce7; color:#15803d; border-radius:12px; font-size:12px; font-weight:600;">✓
+                                                                Completed</span>
+                                                        </c:when>
+                                                        <c:when test="${module[3] == 'In Progress'}">
+                                                            <span
+                                                                style="padding:4px 12px; background:#fef3c7; color:#b45309; border-radius:12px; font-size:12px; font-weight:600;">⏳
+                                                                In Progress</span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span
+                                                                style="padding:4px 12px; background:#f3f4f6; color:#4b5563; border-radius:12px; font-size:12px; font-weight:600;">
+                                                                Not Started</span>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </div>
-                                            </div>
-                                        </div>
-
-                                        <div style="padding:16px; border:1px solid var(--border); border-radius:12px;">
-                                            <div
-                                                style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                                                <div>
-                                                    <div style="font-weight:600; color:var(--dark); margin-bottom:4px;">
-                                                        Classroom Support Strategies</div>
-                                                    <div style="font-size:13px; color:#64748b;">60 min • Creating
-                                                        supportive environments</div>
-                                                </div>
-                                                <span
-                                                    style="padding:4px 12px; background:#fef3c7; color:#b45309; border-radius:12px; font-size:12px; font-weight:600;">⏳
-                                                    In Progress</span>
-                                            </div>
-                                            <div style="width:100%; height:6px; background:#e5e7eb; border-radius:3px;">
                                                 <div
-                                                    style="width:65%; height:100%; background:#f59e0b; border-radius:3px;">
+                                                    style="width:100%; height:6px; background:#e5e7eb; border-radius:3px;">
+                                                    <div
+                                                        style="width:${module[3] == 'Completed' ? '100' : (module[3] == 'In Progress' ? '50' : '0')}%; height:100%; background:${module[3] == 'Completed' ? '#15803d' : (module[3] == 'In Progress' ? '#f59e0b' : '#e5e7eb')}; border-radius:3px;">
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </c:forEach>
                                     </div>
                                 </div>
                             </div>

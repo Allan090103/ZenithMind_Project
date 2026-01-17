@@ -601,7 +601,7 @@
                         <a href="${moodLink}"><span class="icon">MT</span>Mood Tracker</a>
                         <a href="${supportLink}"><span class="icon">VS</span>Virtual Support</a>
                         <a class="active" href="${communityLink}"><span class="icon">CF</span>Community Forum</a>
-                        <a href="#"><span class="icon">PS</span>Profile Settings</a>
+                        <a href="${profileSettingsLink}"><span class="icon">PS</span>Profile Settings</a>
                     </nav>
                 </aside>
 

@@ -58,6 +58,7 @@ public class ForumController {
         model.addAttribute("communityLink", "/forum");
         model.addAttribute("moodLink", "/mood?" + roleSuffix);
         model.addAttribute("supportLink", "/support?" + roleSuffix);
+        model.addAttribute("profileSettingsLink", "/profile-settings?" + roleSuffix);
 
         List<Post> posts = forumService.getFilteredPosts(category, search);
 

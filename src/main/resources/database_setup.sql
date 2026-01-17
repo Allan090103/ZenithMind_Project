@@ -140,7 +140,34 @@ CREATE TABLE IF NOT EXISTS appointments (
 );
 
 -- Seed Counselor Aisyah
-INSERT IGNORE INTO users (username, password, enabled) VALUES ('aisyah@wellness.org', '{noop}password', 1);
-INSERT IGNORE INTO authorities (username, authority) VALUES ('aisyah@wellness.org', 'COUNSELOR');
 INSERT IGNORE INTO app_users (name, role, points, wellness_score) VALUES ('Aisyah', 'COUNSELOR', 0, 85);
+
+-- Create user_module_progress table for tracking module progress
+CREATE TABLE IF NOT EXISTS user_module_progress (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) NOT NULL,
+  module_slug VARCHAR(255) NOT NULL,
+  current_section INT DEFAULT 1,
+  status VARCHAR(20) DEFAULT 'start',
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY uk_user_module (username, module_slug)
+);
+
+-- Create faculty_training_progress table for separate tracking of faculty modules
+CREATE TABLE IF NOT EXISTS faculty_training_progress (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) NOT NULL,
+  module_slug VARCHAR(255) NOT NULL,
+  current_section INT DEFAULT 1,
+  status VARCHAR(20) DEFAULT 'start',
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY uk_faculty_module (username, module_slug)
+);
+
+-- Seed Faculty Training Modules
+INSERT IGNORE INTO module_contents (slug, title, description, duration, points, progress, status, button_label, icon) VALUES 
+('identifying-distress', 'Identifying Student Distress', 'Learn to recognize academic, physical, and behavioral signs of distress in students.', '20 min', 50, 0, 'Not Started', 'Start', '🔍'),
+('crisis-response', 'Crisis Response Protocol', 'Understand the immediate steps to take during a student mental health crisis.', '25 min', 50, 0, 'Not Started', 'Start', '⚠️'),
+('inclusive-teaching', 'Inclusive Teaching Practices', 'Strategies to create a supportive and psychologically safe learning environment.', '30 min', 75, 0, 'Not Started', 'Start', '🤝'),
+('self-care-educators', 'Self-Care for Educators', 'Techniques for managing burnout and maintaining your own well-being.', '15 min', 50, 0, 'Not Started', 'Start', '🌱');
 

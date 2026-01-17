@@ -97,6 +97,22 @@ public class UserService {
                 } catch (Exception e) {
                         System.out.println("DB appointments check: " + e.getMessage());
                 }
+
+                // Ensure faculty_training_progress table exists
+                try {
+                        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS faculty_training_progress (" +
+                                        "id BIGINT AUTO_INCREMENT PRIMARY KEY," +
+                                        "username VARCHAR(50) NOT NULL," +
+                                        "module_slug VARCHAR(255) NOT NULL," +
+                                        "current_section INT DEFAULT 1," +
+                                        "status VARCHAR(20) DEFAULT 'start'," +
+                                        "updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP," +
+                                        "UNIQUE KEY uk_faculty_module (username, module_slug)" +
+                                        ")");
+                        System.out.println("Migrated DB: Ensured faculty_training_progress table exists.");
+                } catch (Exception e) {
+                        System.out.println("DB faculty_training_progress check: " + e.getMessage());
+                }
         }
 
         @Autowired
@@ -609,6 +625,42 @@ public class UserService {
         }
 
         /**
+         * Save or update faculty training progress
+         */
+        public void saveFacultyTrainingProgress(String username, String moduleSlug, int currentSection, String status) {
+                try {
+                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+                        String sql = "INSERT INTO faculty_training_progress (username, module_slug, current_section, status) "
+                                        +
+                                        "VALUES (?, ?, ?, ?) " +
+                                        "ON DUPLICATE KEY UPDATE current_section = ?, status = ?";
+                        jdbcTemplate.update(sql, username, moduleSlug, currentSection, status, currentSection, status);
+                } catch (Exception e) {
+                        e.printStackTrace();
+                }
+        }
+
+        /**
+         * Get all faculty training progress for a user
+         */
+        public Map<String, Map<String, Object>> getFacultyTrainingProgress(String username) {
+                Map<String, Map<String, Object>> progressMap = new HashMap<>();
+                try {
+                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+                        String sql = "SELECT module_slug, current_section, status FROM faculty_training_progress WHERE username = ?";
+                        java.util.List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, username);
+
+                        for (Map<String, Object> row : rows) {
+                                String slug = (String) row.get("module_slug");
+                                progressMap.put(slug, row);
+                        }
+                } catch (Exception e) {
+                        e.printStackTrace();
+                }
+                return progressMap;
+        }
+
+        /**
          * Get count of completed modules
          */
         public int getCompletedModulesCount(String username) {
@@ -637,6 +689,10 @@ public class UserService {
         /**
          * Get appointments for a counselor
          */
+
+        /**
+         * Get appointments for a counselor
+         */
         public java.util.List<Map<String, Object>> getAppointmentsForCounselor(String counselorUsername) {
                 try {
                         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
@@ -658,6 +714,145 @@ public class UserService {
                 } catch (Exception e) {
                         e.printStackTrace();
                         return new java.util.ArrayList<>();
+                }
+        }
+
+        /**
+         * Get all users from the database with derived fields
+         */
+        public java.util.List<Map<String, Object>> getAllUsers() {
+                try {
+                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+                        String sql = "SELECT name, role FROM app_users";
+                        java.util.List<Map<String, Object>> users = jdbcTemplate.queryForList(sql);
+
+                        for (Map<String, Object> user : users) {
+                                String name = (String) user.get("name");
+                                String role = (String) user.get("role");
+                                if (role == null)
+                                        role = "student";
+
+                                // Generate email
+                                String emailDomain = "student.edu";
+                                if ("admin".equalsIgnoreCase(role))
+                                        emailDomain = "admin.edu";
+                                else if ("faculty".equalsIgnoreCase(role))
+                                        emailDomain = "faculty.edu";
+                                else if ("professional".equalsIgnoreCase(role) || "counselor".equalsIgnoreCase(role))
+                                        emailDomain = "wellness.org";
+
+                                String email = name.toLowerCase().replace(" ", "") + "@" + emailDomain;
+                                user.put("email", email);
+
+                                // Generate department
+                                String department = "Computer Science";
+                                if ("admin".equalsIgnoreCase(role))
+                                        department = "System Administration";
+                                else if ("faculty".equalsIgnoreCase(role))
+                                        department = "Psychology";
+                                else if ("professional".equalsIgnoreCase(role) || "counselor".equalsIgnoreCase(role))
+                                        department = "Counseling Services";
+                                else if ("student".equalsIgnoreCase(role)) {
+                                        // Randomize department for variety if needed, or stick to default
+                                        department = "Computer Science";
+                                }
+                                user.put("department", department);
+
+                                // Status (assume active for now)
+                                user.put("status", "Active");
+                        }
+                        return users;
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        return new java.util.ArrayList<>();
+                }
+        }
+
+        /**
+         * Get total user count
+         */
+        public int getTotalUserCount() {
+                try {
+                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+                        // Exclude admin from the total count
+                        String sql = "SELECT COUNT(*) FROM app_users WHERE LOWER(role) != 'admin'";
+                        Integer count = jdbcTemplate.queryForObject(sql, Integer.class);
+                        return count != null ? count : 0;
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        return 0;
+                }
+        }
+
+        /**
+         * Get counts for each user role
+         */
+        public java.util.Map<String, Integer> getUserRoleCounts() {
+                java.util.Map<String, Integer> roleCounts = new java.util.HashMap<>();
+                roleCounts.put("student", 0);
+                roleCounts.put("faculty", 0);
+                roleCounts.put("professional", 0);
+
+                try {
+                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+                        String sql = "SELECT role, COUNT(*) as count FROM app_users WHERE LOWER(role) != 'admin' GROUP BY role";
+
+                        java.util.List<java.util.Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+
+                        for (java.util.Map<String, Object> row : rows) {
+                                String role = (String) row.get("role");
+                                Number count = (Number) row.get("count");
+                                if (role != null && count != null) {
+                                        String roleKey = role.toLowerCase();
+                                        if ("counselor".equals(roleKey)) {
+                                                roleKey = "professional";
+                                        }
+                                        roleCounts.put(roleKey, roleCounts.getOrDefault(roleKey, 0) + count.intValue());
+                                }
+                        }
+                        return roleCounts;
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        return roleCounts;
+                }
+        }
+
+        /**
+         * Get platform analytics stats
+         */
+        public java.util.Map<String, Integer> getPlatformAnalytics() {
+                java.util.Map<String, Integer> stats = new java.util.HashMap<>();
+                stats.put("modulesCompleted", 0);
+                stats.put("forumPosts", 0);
+                stats.put("supportSessions", 0);
+
+                try {
+                        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+                        // Modules Completed
+                        try {
+                                String sqlModules = "SELECT COUNT(*) FROM user_module_progress WHERE status = 'done'";
+                                Integer modules = jdbcTemplate.queryForObject(sqlModules, Integer.class);
+                                stats.put("modulesCompleted", modules != null ? modules : 0);
+                        } catch (Exception e) {
+                                // Table might not exist yet, defaulting to 0
+                                System.out.println("Error fetching modules count: " + e.getMessage());
+                        }
+
+                        // Forum Posts
+                        String sqlPosts = "SELECT COUNT(*) FROM posts";
+                        Integer posts = jdbcTemplate.queryForObject(sqlPosts, Integer.class);
+                        stats.put("forumPosts", posts != null ? posts : 0);
+
+                        // Support Sessions
+                        String sqlSessions = "SELECT COUNT(*) FROM appointments";
+                        Integer sessions = jdbcTemplate.queryForObject(sqlSessions, Integer.class);
+                        stats.put("supportSessions", sessions != null ? sessions : 0);
+
+                        return stats;
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        return stats;
                 }
         }
 }

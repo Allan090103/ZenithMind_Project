@@ -133,6 +133,7 @@ public class ModuleController {
         model.addAttribute("communityLink", "/forum");
         model.addAttribute("moodLink", "/mood?" + roleSuffix);
         model.addAttribute("supportLink", "/support?" + roleSuffix);
+        model.addAttribute("profileSettingsLink", "/profile-settings?" + roleSuffix);
 
         model.addAttribute("currentSection", section);
 

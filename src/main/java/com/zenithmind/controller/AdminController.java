@@ -48,6 +48,23 @@ public class AdminController {
             session.setAttribute("user", user);
         }
 
+        // Fetch all users and filter out admin
+        java.util.List<Map<String, Object>> allUsers = userService.getAllUsers();
+        java.util.List<Map<String, Object>> filteredUsers = new java.util.ArrayList<>();
+
+        for (Map<String, Object> u : allUsers) {
+            String role = (String) u.get("role");
+            // Exclude admin role
+            if (!"admin".equalsIgnoreCase(role)) {
+                filteredUsers.add(u);
+            }
+        }
+
+        model.addAttribute("userList", filteredUsers);
+        model.addAttribute("totalUsersCount", allUsers.size()); // Total including admin potentially?
+        // Actually, the UI says "Showing 5 of 1,247 users".
+        // usage: Showing ${userList.size()} of ${totalUsersCount} users
+
         String roleSuffix = "role=admin";
         model.addAttribute("dashboardLink", "/dashboard?" + roleSuffix);
 
@@ -67,6 +84,15 @@ public class AdminController {
 
         String roleSuffix = "role=admin";
         model.addAttribute("dashboardLink", "/dashboard?" + roleSuffix);
+
+        // Fetch stats
+        int totalUsers = userService.getTotalUserCount();
+        model.addAttribute("totalUsers", totalUsers);
+        model.addAttribute("activeUsers", totalUsers);
+
+        java.util.Map<String, Integer> analytics = userService.getPlatformAnalytics();
+        model.addAttribute("modulesCompleted", analytics.getOrDefault("modulesCompleted", 0));
+        model.addAttribute("forumPosts", analytics.getOrDefault("forumPosts", 0));
 
         return "admin/platform_analytics";
     }

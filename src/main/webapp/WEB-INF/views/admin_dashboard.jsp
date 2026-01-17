@@ -528,6 +528,7 @@
                 }
             }
         </style>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
 
     <body>
@@ -551,12 +552,12 @@
 
                         <div class="grid metrics">
                             <div class="card stat-card highlight-blue">
-                                <div class="stat-value">1,247</div>
+                                <div class="stat-value">${totalUsers}</div>
                                 <div class="stat-label">Total Users</div>
                                 <div class="stat-change positive">↑ 12% this week</div>
                             </div>
                             <div class="card stat-card highlight-purple">
-                                <div class="stat-value">342</div>
+                                <div class="stat-value">${activeUsers}</div>
                                 <div class="stat-label">Active Today</div>
                                 <div class="stat-change positive">↑ 8% from yesterday</div>
                             </div>
@@ -579,23 +580,25 @@
                     <div id="platform-analytics">
                         <div class="card">
                             <h3>Platform Analytics</h3>
-                            <div class="chart-placeholder">
-                                User Engagement Chart<br>
-                                <small>(Visualization placeholder)</small>
+                            <div style="height: 300px; width: 100%;">
+                                <canvas id="engagementChart"></canvas>
                             </div>
                             <div
                                 style="margin-top: 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
                                 <div style="text-align: center;">
-                                    <div style="font-size: 20px; font-weight: 700; color: var(--teal);">456</div>
+                                    <div style="font-size: 20px; font-weight: 700; color: var(--teal);">
+                                        ${modulesCompleted}</div>
                                     <div style="font-size: 12px; color: var(--text);">Modules Completed</div>
                                 </div>
                                 <div style="text-align: center;">
-                                    <div style="font-size: 20px; font-weight: 700; color: var(--admin-success);">2,134
+                                    <div style="font-size: 20px; font-weight: 700; color: var(--admin-success);">
+                                        ${forumPosts}
                                     </div>
                                     <div style="font-size: 12px; color: var(--text);">Forum Posts</div>
                                 </div>
                                 <div style="text-align: center;">
-                                    <div style="font-size: 20px; font-weight: 700; color: var(--admin-warning);">178
+                                    <div style="font-size: 20px; font-weight: 700; color: var(--admin-warning);">
+                                        ${supportSessions}
                                     </div>
                                     <div style="font-size: 12px; color: var(--text);">Support Sessions</div>
                                 </div>
@@ -618,7 +621,7 @@
                                         </div>
                                         <div style="display: flex; align-items: center; gap: 12px;">
                                             <span
-                                                style="font-size: 20px; font-weight: 700; color: var(--teal);">847</span>
+                                                style="font-size: 20px; font-weight: 700; color: var(--teal);">${studentCount}</span>
                                             <span class="role-badge student">Student</span>
                                         </div>
                                     </div>
@@ -628,7 +631,8 @@
                                             <div style="font-size: 12px; color: var(--text);">Active users</div>
                                         </div>
                                         <div style="display: flex; align-items: center; gap: 12px;">
-                                            <span style="font-size: 20px; font-weight: 700; color: #a78bfa;">234</span>
+                                            <span
+                                                style="font-size: 20px; font-weight: 700; color: #a78bfa;">${facultyCount}</span>
                                             <span class="role-badge faculty">Faculty</span>
                                         </div>
                                     </div>
@@ -638,13 +642,14 @@
                                             <div style="font-size: 12px; color: var(--text);">Active users</div>
                                         </div>
                                         <div style="display: flex; align-items: center; gap: 12px;">
-                                            <span style="font-size: 20px; font-weight: 700; color: #34d399;">166</span>
+                                            <span
+                                                style="font-size: 20px; font-weight: 700; color: #34d399;">${professionalCount}</span>
                                             <span class="role-badge professional">Professional</span>
                                         </div>
                                     </div>
                                 </div>
                                 <button class="btn btn-view" style="width: 100%; margin-top: 12px;">View All Users
-                                    →</button>
+                                    &rarr;</button>
                             </div>
                         </div>
                     </div>
@@ -747,6 +752,45 @@
                     </div>
                 </main>
         </div>
+        <script>
+            const ctx = document.getElementById('engagementChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'User Engagement',
+                        data: [65, 59, 80, 81, 56, 55, 40],
+                        borderColor: '#00b3c7',
+                        backgroundColor: 'rgba(0, 179, 199, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#e5ebf4'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
     </body>
 
     </html>

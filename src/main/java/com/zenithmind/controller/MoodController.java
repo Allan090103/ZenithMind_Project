@@ -50,6 +50,7 @@ public class MoodController {
         model.addAttribute("communityLink", "/forum");
         model.addAttribute("moodLink", "/mood?" + roleSuffix);
         model.addAttribute("supportLink", "/support?" + roleSuffix);
+        model.addAttribute("profileSettingsLink", "/profile-settings?" + roleSuffix);
 
         // Load mood logs from database
         List<Map<String, Object>> moodLogs = userService.getMoodLogsByUsername(username, 10);

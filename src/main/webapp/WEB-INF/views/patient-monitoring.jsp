@@ -65,14 +65,8 @@
                                     </select>
                                 </div>
                                 <div class="card-body">
-                                    <div
-                                        style="height:300px; background:linear-gradient(180deg, #f0fdfa 0%, white 100%); border-radius:12px; display:flex; align-items:center; justify-content:center; border:2px dashed var(--border);">
-                                        <div style="text-align:center; color:#64748b;">
-                                            <div style="font-size:48px; margin-bottom:12px;">📊</div>
-                                            <div style="font-weight:600;">Mood Trend Chart</div>
-                                            <div style="font-size:13px; margin-top:4px;">Interactive chart showing mood
-                                                patterns</div>
-                                        </div>
+                                    <div style="height:300px; width:100%;">
+                                        <canvas id="moodTrendsChart"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -135,40 +129,106 @@
                             </div>
                         </div>
 
-                        <!-- Module Completion Table -->
-                        <div class="card" style="margin-top:24px;">
-                            <div class="card-header">
-                                <h2 class="card-title">Module Completion Progress</h2>
-                            </div>
-                            <div class="card-body" style="padding-top:0;">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Student</th>
-                                            <th>Stress Management</th>
-                                            <th>Anxiety Relief</th>
-                                            <th>Mindfulness</th>
-                                            <th>Sleep Hygiene</th>
-                                            <th>Overall Progress</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach var="student" items="${assignedStudents}" end="4">
-                                            <tr>
-                                                <td style="font-weight:600;">${student[1]}</td>
-                                                <td><span style="color:#15803d;">✓ Complete</span></td>
-                                                <td><span style="color:#b45309;">⏳ In Progress</span></td>
-                                                <td><span style="color:#15803d;">✓ Complete</span></td>
-                                                <td><span style="color:#64748b;">○ Not Started</span></td>
-                                                <td><span style="font-weight:600; color:var(--teal);">65%</span></td>
-                                            </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </main>
             </div>
+            </div>
+
+            <!-- Module Completion Table -->
+            <div class="card" style="margin-top:24px;">
+                <div class="card-header">
+                    <h2 class="card-title">Module Completion Progress</h2>
+                </div>
+                <div class="card-body" style="padding-top:0;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Stress Management</th>
+                                <th>Anxiety Relief</th>
+                                <th>Mindfulness</th>
+                                <th>Sleep Hygiene</th>
+                                <th>Overall Progress</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="student" items="${assignedStudents}" end="4">
+                                <tr>
+                                    <td style="font-weight:600;">${student[1]}</td>
+                                    <td><span style="color:#15803d;">✓ Complete</span></td>
+                                    <td><span style="color:#b45309;">⏳ In Progress</span></td>
+                                    <td><span style="color:#15803d;">✓ Complete</span></td>
+                                    <td><span style="color:#64748b;">○ Not Started</span></td>
+                                    <td><span style="font-weight:600; color:var(--teal);">65%</span></td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </main>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                const ctx = document.getElementById('moodTrendsChart').getContext('2d');
+
+                // Generate last 30 days labels
+                const labels = [];
+                for (let i = 29; i >= 0; i--) {
+                    const d = new Date();
+                    d.setDate(d.getDate() - i);
+                    labels.push(d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+                }
+
+                // Gradient
+                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, 'rgba(14, 165, 233, 0.2)');
+                gradient.addColorStop(1, 'rgba(14, 165, 233, 0)');
+
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Average Mood Score',
+                            data: [6.5, 6.8, 7.0, 6.9, 7.2, 7.5, 7.3, 7.1, 7.4, 7.6, 7.8, 7.5, 7.2, 7.4, 7.9, 8.0, 7.8, 7.5, 7.6, 7.9, 8.1, 8.2, 8.0, 7.8, 8.1, 8.3, 8.2, 8.4, 8.5, 8.3],
+                            borderColor: '#0ea5e9',
+                            backgroundColor: gradient,
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true,
+                            pointRadius: 3,
+                            pointBackgroundColor: '#fff',
+                            pointBorderColor: '#0ea5e9'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                min: 5,
+                                max: 10,
+                                grid: {
+                                    color: '#f1f5f9'
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    maxTicksLimit: 10
+                                }
+                            }
+                        }
+                    }
+                });
+            </script>
         </body>
 
         </html>

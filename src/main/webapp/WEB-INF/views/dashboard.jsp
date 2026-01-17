@@ -442,7 +442,7 @@
                     <a href="${moodLink}"><span class="icon">MT</span>Mood Tracker</a>
                     <a href="${supportLink}"><span class="icon">VS</span>Virtual Support</a>
                     <a href="${communityLink}"><span class="icon">CF</span>Community Forum</a>
-                    <a href="#"><span class="icon">PS</span>Profile Settings</a>
+                    <a href="${profileSettingsLink}"><span class="icon">PS</span>Profile Settings</a>
                 </nav>
                 <div style="margin-top:auto; padding-top:20px; border-top:1px solid var(--border);">
                     <a href="${pageContext.request.contextPath}/logout" class="btn btn-ghost"
