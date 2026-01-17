@@ -129,7 +129,7 @@ public class Post {
     }
 
     public int getReplies() {
-        return comments.size();
+        return replies;
     }
 
     public void setReplies(int replies) {

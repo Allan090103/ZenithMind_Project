@@ -10,6 +10,9 @@ DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS posts;
 DROP TABLE IF EXISTS module_contents;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS user_module_progress;
+DROP TABLE IF EXISTS appointments;
+DROP TABLE IF EXISTS faculty_training_progress;
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- Create users table for Spring Security
@@ -109,20 +112,19 @@ CREATE TABLE module_contents (
 );
 
 -- Seed Initial Users (Security)
--- These will be handled by SecurityConfig's JdbcUserDetailsManager if they don't exist,
--- but adding them here for manual setup convenience.
--- Using {bcrypt}$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.TVuHOn2 for 'password' (plain 'student', 'admin', etc in code)
--- Actually, the code uses User.withDefaultPasswordEncoder() which is {bcrypt} for current Spring Security versions.
+INSERT IGNORE INTO users (username, password, enabled) VALUES ('student', '{bcrypt}$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.TVuHOn2', 1);
+INSERT IGNORE INTO authorities (username, authority) VALUES ('student', 'ROLE_STUDENT');
 
-INSERT IGNORE INTO app_users (name, role, points) VALUES ('student', 'STUDENT', 100);
-INSERT IGNORE INTO app_users (name, role, points) VALUES ('admin', 'ADMIN', 500);
-INSERT IGNORE INTO app_users (name, role, points) VALUES ('faculty', 'FACULTY', 200);
-INSERT IGNORE INTO app_users (name, role, points) VALUES ('counselor', 'COUNSELOR', 300);
+INSERT IGNORE INTO app_users (name, role, points, wellness_score) VALUES ('student', 'STUDENT', 150, 72);
+INSERT IGNORE INTO app_users (name, role, points, wellness_score) VALUES ('admin', 'ADMIN', 500, 78);
+INSERT IGNORE INTO app_users (name, role, points, wellness_score) VALUES ('faculty', 'FACULTY', 200, 86);
+INSERT IGNORE INTO app_users (name, role, points, wellness_score) VALUES ('counselor', 'COUNSELOR', 300, 91);
 
--- Seed some sample posts
-INSERT IGNORE INTO posts (title, content, category, author, author_id, anonymous, likes, timestamp, time_ago) VALUES 
-('How to manage stress?', 'I am feeling very stressed lately with all the assignments. Any tips?', 'General', 'student', 'student', false, 5, 1705140000000, '1 day ago'),
-('Mental Health Awareness', 'Let\'s talk about the importance of mental health in academia.', 'Health', 'faculty', 'faculty', false, 10, 1705141000000, '1 day ago');
+-- Seed some sample posts matching the UI image
+INSERT IGNORE INTO posts (title, content, category, author, author_id, anonymous, likes, replies, timestamp, time_ago) VALUES 
+('Dealing with exam anxiety - tips that helped me', 'I wanted to share some techniques that really helped me manage my exam anxiety this semester. Deep breathing before exams, regular study breaks, and talking to friends made a huge difference.', 'anxiety', 'Anonymous', 'anon1', true, 24, 2, 1705540000000, '2 hours ago'),
+('How do you balance work, study, and self-care?', 'I\'m struggling to find time for everything. Between part-time work, classes, and trying to maintain my mental health, I feel overwhelmed. Any advice?', 'stress', 'Student_247', 'user2', false, 15, 1, 1705530000000, '5 hours ago'),
+('6 months of therapy - worth it!', 'Just wanted to share that after 6 months of counseling through the campus center, I\'m in such a better place. Don\'t hesitate to reach out for professional help!', 'success-stories', 'Anonymous', 'anon3', true, 45, 0, 1705460000000, '1 day ago');
 
 -- Seed some module content
 INSERT IGNORE INTO module_contents (slug, title, description, duration, points, progress, status, button_label, icon) VALUES 

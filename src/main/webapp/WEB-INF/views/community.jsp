@@ -144,6 +144,11 @@
                     color: #fff;
                 }
 
+                nav a.active .icon {
+                    background: #fff;
+                    color: var(--teal);
+                }
+
                 .icon {
                     width: 22px;
                     height: 22px;
@@ -528,6 +533,41 @@
                         overflow-x: auto;
                     }
                 }
+
+                /* Adjusted for Faculty/Professional roles */
+                <c:if test="${user.role.equalsIgnoreCase('faculty') || user.role.equalsIgnoreCase('admin')}">nav {
+                    gap: 12px;
+                }
+
+                .user-card {
+                    padding: 24px;
+                }
+
+                .user-card .avatar {
+                    width: 64px;
+                    height: 64px;
+                    font-size: 28px;
+                    margin-bottom: 16px;
+                }
+
+                .user-card .name {
+                    font-size: 20px;
+                    font-weight: 700;
+                }
+
+                .user-card .email,
+                .user-card .dept {
+                    font-size: 14px;
+                }
+
+                .role-badge {
+                    width: 100%;
+                    display: block;
+                    text-align: center;
+                    padding: 10px 16px;
+                }
+
+                </c:if>
             </style>
             <script>
                 function openModal() { document.getElementById('newPostModal').style.display = 'flex'; }
@@ -596,12 +636,25 @@
 
                     <nav>
                         <a href="${dashboardLink}"><span class="icon">D</span>Dashboard</a>
-                        <a href="${modulesLink}"><span class="icon">LM</span>Learning Modules</a>
-                        <a href="${selfAssessmentLink}"><span class="icon">SA</span>Self Assessment</a>
-                        <a href="${moodLink}"><span class="icon">MT</span>Mood Tracker</a>
-                        <a href="${supportLink}"><span class="icon">VS</span>Virtual Support</a>
-                        <a class="active" href="${communityLink}"><span class="icon">CF</span>Community Forum</a>
-                        <a href="${profileSettingsLink}"><span class="icon">PS</span>Profile Settings</a>
+                        <c:choose>
+                            <c:when test="${user.role.equalsIgnoreCase('faculty')}">
+                                <a href="${trainingLink}"><span class="icon">TR</span>Training Modules</a>
+                                <a href="${guidesLink}"><span class="icon">QG</span>Quick Guides</a>
+                                <a href="${reportLink}"><span class="icon">CR</span>Report Concern</a>
+                                <a class="active" href="${communityLink}"><span class="icon">CF</span>Community</a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="${modulesLink}"><span class="icon">LM</span>Learning Modules</a>
+                                <a href="${selfAssessmentLink}"><span class="icon">SA</span>Self Assessment</a>
+                                <a href="${moodLink}"><span class="icon">MT</span>Mood Tracker</a>
+                                <a href="${supportLink}"><span class="icon">VS</span>Virtual Support</a>
+                                <a class="active" href="${communityLink}"><span class="icon">CF</span>Community
+                                    Forum</a>
+                            </c:otherwise>
+                        </c:choose>
+                        <c:if test="${!user.role.equalsIgnoreCase('faculty')}">
+                            <a href="${profileSettingsLink}"><span class="icon">PS</span>Profile Settings</a>
+                        </c:if>
                     </nav>
                 </aside>
 
@@ -612,9 +665,11 @@
                                 support each other</p>
                             <h1>Community Forum</h1>
                         </div>
-                        <button class="btn btn-primary" onclick="openModal()">
-                            <span style="font-size:18px;">+</span> New Post
-                        </button>
+                        <c:if test="${!user.role.equalsIgnoreCase('faculty')}">
+                            <button class="btn btn-primary" onclick="openModal()">
+                                <span style="font-size:18px;">+</span> New Post
+                            </button>
+                        </c:if>
                     </div>
 
                     <!-- Stats -->
@@ -685,7 +740,7 @@
                                         <span class="badge">${post.category.replace('-', ' ')}</span>
                                         <span>• ${post.timeAgo}</span>
 
-                                        <c:if test="${post.flagged && user.role != 'admin'}">
+                                        <c:if test="${post.flagged && !user.role.equalsIgnoreCase('admin')}">
                                             <span class="flagged-badge">⚠️ Flagged for Review</span>
                                         </c:if>
                                     </div>
@@ -704,7 +759,8 @@
                                             💬 <span style="margin-left:4px;">${post.replies} replies</span>
                                         </button>
 
-                                        <c:if test="${user.role == 'admin'}">
+                                        <c:if
+                                            test="${user.role.equalsIgnoreCase('admin') || user.role.equalsIgnoreCase('faculty')}">
                                             <a href="${pageContext.request.contextPath}/forum/flag?id=${post.id}"
                                                 class="btn btn-ghost btn-sm ${post.flagged ? 'flag-btn' : ''}"
                                                 style="margin-left:auto;">
@@ -736,6 +792,7 @@
 
                                         <form action="${pageContext.request.contextPath}/forum/comment" method="post"
                                             style="display:flex; gap:8px;">
+                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                             <input type="hidden" name="postId" value="${post.id}">
                                             <input type="text" name="content" placeholder="Write a reply..."
                                                 class="form-input" style="flex:1; padding:8px;" required>
@@ -768,6 +825,7 @@
                             questions with the community</p>
                     </div>
                     <form action="${pageContext.request.contextPath}/forum/create" method="post">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                         <div class="form-group">
                             <label class="form-label">Title</label>
                             <input type="text" name="title" class="form-input"

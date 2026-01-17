@@ -34,9 +34,11 @@ public class ForumController {
             role = user.getRole();
         }
 
-        // Restrict forum access to students only
-        if (!"student".equalsIgnoreCase(role)) {
-            // Redirect non-students to their dashboard
+        // Restrict forum access to students and faculty only
+        if (!"student".equalsIgnoreCase(role) && !"faculty".equalsIgnoreCase(role)) {
+            // Redirect others (like admin or professional) if they try to access student
+            // forum directly
+            // unless we want to allow them too. User specifically asked for faculty.
             return "redirect:/dashboard?role=" + role;
         }
 
@@ -52,13 +54,20 @@ public class ForumController {
         // Links for sidebar
         String roleSuffix = "role=" + role;
         model.addAttribute("dashboardLink", "/dashboard?" + roleSuffix);
-        model.addAttribute("modulesLink", "/modules?" + roleSuffix);
-        model.addAttribute("modulesAssessmentLink", "/modules?section=assessment&" + roleSuffix);
-        model.addAttribute("selfAssessmentLink", "/self-assessment?" + roleSuffix);
-        model.addAttribute("communityLink", "/forum");
-        model.addAttribute("moodLink", "/mood?" + roleSuffix);
-        model.addAttribute("supportLink", "/support?" + roleSuffix);
         model.addAttribute("profileSettingsLink", "/profile-settings?" + roleSuffix);
+        model.addAttribute("communityLink", "/forum");
+
+        if ("faculty".equalsIgnoreCase(role)) {
+            model.addAttribute("trainingLink", "/faculty/training?" + roleSuffix);
+            model.addAttribute("guidesLink", "/faculty/guides?" + roleSuffix);
+            model.addAttribute("reportLink", "/faculty/report?" + roleSuffix);
+        } else {
+            model.addAttribute("modulesLink", "/modules?" + roleSuffix);
+            model.addAttribute("modulesAssessmentLink", "/modules?section=assessment&" + roleSuffix);
+            model.addAttribute("selfAssessmentLink", "/self-assessment?" + roleSuffix);
+            model.addAttribute("moodLink", "/mood?" + roleSuffix);
+            model.addAttribute("supportLink", "/support?" + roleSuffix);
+        }
 
         List<Post> posts = forumService.getFilteredPosts(category, search);
 
@@ -110,8 +119,11 @@ public class ForumController {
         }
         String author = user.getName();
 
-        com.zenithmind.model.Comment comment = new com.zenithmind.model.Comment(
-                System.currentTimeMillis(), author, content, System.currentTimeMillis());
+        com.zenithmind.model.Comment comment = new com.zenithmind.model.Comment();
+        comment.setAuthor(author);
+        comment.setContent(content);
+        comment.setTimestamp(System.currentTimeMillis());
+        comment.setTimeAgo(com.zenithmind.model.Post.calculateTimeAgo(comment.getTimestamp()));
         forumService.addComment(postId, comment);
         return "redirect:/forum";
     }
@@ -119,7 +131,8 @@ public class ForumController {
     @GetMapping("/flag")
     public String flag(@RequestParam Long id, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        if (user == null || !"student".equalsIgnoreCase(user.getRole())) {
+        if (user == null
+                || (!"admin".equalsIgnoreCase(user.getRole()) && !"faculty".equalsIgnoreCase(user.getRole()))) {
             return "redirect:/dashboard?role=" + (user != null ? user.getRole() : "student");
         }
         forumService.toggleFlag(id);

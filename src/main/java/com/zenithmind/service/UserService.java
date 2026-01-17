@@ -148,10 +148,30 @@ public class UserService {
                                 System.out.println(
                                                 "DEBUG: User " + username + " wellnessScore from DB: " + wellnessScore);
 
+                                String dbRole = (String) userRow.get("role");
+                                String displayRole = "Student";
+                                String emailDomain = "student.edu";
+                                String dept = "Computer Science Department";
+
+                                if ("FACULTY".equalsIgnoreCase(dbRole)) {
+                                        displayRole = "Faculty Member";
+                                        emailDomain = "faculty.edu";
+                                        dept = "Psychology Department";
+                                } else if ("ADMIN".equalsIgnoreCase(dbRole)) {
+                                        displayRole = "Administrator";
+                                        emailDomain = "admin.edu";
+                                        dept = "System Administration";
+                                } else if ("PROFESSIONAL".equalsIgnoreCase(dbRole)
+                                                || "COUNSELOR".equalsIgnoreCase(dbRole)) {
+                                        displayRole = "Mental Health Professional";
+                                        emailDomain = "wellness.org";
+                                        dept = "Counseling Services";
+                                }
+
                                 data.put("name", name);
-                                data.put("email", username.toLowerCase().replace(" ", "") + "@student.edu");
-                                data.put("roleTitle", "Student");
-                                data.put("department", "Computer Science Department");
+                                data.put("email", username.toLowerCase().replace(" ", "") + "@" + emailDomain);
+                                data.put("roleTitle", displayRole);
+                                data.put("department", dept);
                                 data.put("score", points);
                                 data.put("wellnessScore", wellnessScore);
                                 data.put("improvementNote", "Welcome! Start your wellness journey");
