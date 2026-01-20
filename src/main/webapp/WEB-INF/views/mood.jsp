@@ -385,6 +385,86 @@
                     width: 100%;
                 }
             }
+            /* Modal Styles */
+            .modal-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(10, 37, 64, 0.4);
+                backdrop-filter: blur(4px);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+
+            .modal-overlay.active {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .modal-content {
+                background: #fff;
+                padding: 32px;
+                border-radius: 24px;
+                width: 90%;
+                max-width: 400px;
+                text-align: center;
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+                transform: translateY(20px);
+                transition: all 0.3s ease;
+            }
+
+            .modal-overlay.active .modal-content {
+                transform: translateY(0);
+            }
+
+            .modal-icon {
+                width: 64px;
+                height: 64px;
+                background: #e0faff;
+                color: #00b3c7;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 32px;
+                margin: 0 auto 20px;
+            }
+
+            .modal-title {
+                font-size: 22px;
+                font-weight: 700;
+                color: var(--dark);
+                margin-bottom: 12px;
+            }
+
+            .modal-text {
+                font-size: 15px;
+                color: var(--text);
+                line-height: 1.6;
+                margin-bottom: 24px;
+            }
+
+            .modal-close-btn {
+                background: var(--dark);
+                color: #fff;
+                border: none;
+                padding: 12px 32px;
+                border-radius: 12px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: background 0.2s;
+            }
+
+            .modal-close-btn:hover {
+                background: #1a3a5a;
+            }
         </style>
     </head>
 
@@ -510,6 +590,18 @@
             </main>
         </div>
 
+        <!-- Reminder Modal -->
+        <div class="modal-overlay" id="reminderModal">
+            <div class="modal-content">
+                <div class="modal-icon">✨</div>
+                <div class="modal-title">Reminders Generated!</div>
+                <div class="modal-text">
+                    Your AI-powered wellness suggestions have been updated based on your latest activity.
+                </div>
+                <button class="modal-close-btn" id="closeModalBtn">Got it!</button>
+            </div>
+        </div>
+
         <script>
             (function () {
                 const moodOptions = [
@@ -578,6 +670,8 @@
             const activeRemindersValue = document.getElementById('activeRemindersValue');
 
             const generateRemindersBtn = document.getElementById('generateRemindersBtn');
+            const reminderModal = document.getElementById('reminderModal');
+            const closeModalBtn = document.getElementById('closeModalBtn');
 
             let selectedMood = null;
             const selectedActivities = new Set();
@@ -870,7 +964,21 @@
                 ];
                 setStoredReminders(reminders);
                 renderReminders();
+                
+                // Show modal
+                reminderModal.classList.add('active');
             }
+
+            closeModalBtn.addEventListener('click', () => {
+                reminderModal.classList.remove('active');
+            });
+
+            // Close modal on overlay click
+            reminderModal.addEventListener('click', (e) => {
+                if (e.target === reminderModal) {
+                    reminderModal.classList.remove('active');
+                }
+            });
 
             renderMoodOptions();
             renderActivityTags();
